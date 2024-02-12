@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMartExpress\Administrator\Field">
+	<fieldset name="shipping_method_price" label="COM_RADICALMART_EXPRESS_PRICE">
+		<fields name="shipping_method_price">
+			<field name="base" type="price"
+				   label="COM_RADICALMART_EXPRESS_PRICE"
+				   filter="\Joomla\Component\RadicalMartExpress\Administrator\Helper\PriceHelper::clean"/>
+		</fields>
+	</fieldset>
+	<fieldset name="shipping_method_fields" label="PLG_RADICALMART_SHIPPING_STANDARD_PARAMS_FIELDS">
+		<fields name="shipping_method_params">
+			<field name="field_country" type="radio"
+				   label="COM_RADICALMART_EXPRESS_COUNTRY"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_city" type="radio"
+				   label="COM_RADICALMART_EXPRESS_CITY"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_zip" type="radio"
+				   label="COM_RADICALMART_EXPRESS_ZIP"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_street" type="radio"
+				   label="COM_RADICALMART_EXPRESS_STREET"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_house" type="radio"
+				   label="COM_RADICALMART_EXPRESS_HOUSE"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_building" type="radio"
+				   label="COM_RADICALMART_EXPRESS_BUILDING"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_entrance" type="radio"
+				   label="COM_RADICALMART_EXPRESS_ENTRANCE"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_floor" type="radio"
+				   label="COM_RADICALMART_EXPRESS_FLOOR"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_apartment" type="radio"
+				   label="COM_RADICALMART_EXPRESS_APARTMENT"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_comment" type="radio"
+				   label="COM_RADICALMART_EXPRESS_COMMENT"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fields>
+	</fieldset>
+</form>

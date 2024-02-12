@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMartExpress\Site\Field">
+	<fieldset name="shipping">
+		<fields name="shipping">
+			<field name="country" type="text"
+				   label="COM_RADICALMART_EXPRESS_COUNTRY"
+				   required="true"/>
+			<field name="city" type="text"
+				   label="COM_RADICALMART_EXPRESS_CITY"
+				   required="true"/>
+			<field name="zip" type="text"
+				   label="COM_RADICALMART_EXPRESS_ZIP"
+				   required="true"/>
+			<field name="street" type="text"
+				   label="COM_RADICALMART_EXPRESS_STREET"
+				   required="true"/>
+			<field name="house" type="text"
+				   label="COM_RADICALMART_EXPRESS_HOUSE"
+				   required="true"/>
+			<field name="building" type="text"
+				   label="COM_RADICALMART_EXPRESS_BUILDING"/>
+			<field name="entrance" type="text"
+				   label="COM_RADICALMART_EXPRESS_ENTRANCE"/>
+			<field name="floor" type="text"
+				   label="COM_RADICALMART_EXPRESS_FLOOR"/>
+			<field name="apartment" type="text"
+				   label="COM_RADICALMART_EXPRESS_APARTMENT"/>
+			<field name="comment" type="textarea"
+				   label="COM_RADICALMART_EXPRESS_COMMENT"/>
+			<field name="date" type="calendar"
+				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
+				   translateformat="true"
+				   showtime="false"/>
+			<field name="note" type="textarea"
+				   label="COM_RADICALMART_EXPRESS_NOTE"/>
+		</fields>
+	</fieldset>
+</form>

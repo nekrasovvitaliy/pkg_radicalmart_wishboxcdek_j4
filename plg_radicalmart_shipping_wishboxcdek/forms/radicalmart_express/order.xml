@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMartExpress\Administrator\Field">
+	<fieldset name="shipping">
+		<fields name="shipping">
+			<field name="country" type="text"
+				   label="COM_RADICALMART_EXPRESS_COUNTRY"
+				   required="true"/>
+			<field name="city" type="text"
+				   label="COM_RADICALMART_EXPRESS_CITY"
+				   required="true"/>
+			<field name="zip" type="text"
+				   label="COM_RADICALMART_EXPRESS_ZIP"
+				   required="true"/>
+			<field name="street" type="text"
+				   label="COM_RADICALMART_EXPRESS_STREET"
+				   required="true"/>
+			<field name="house" type="text"
+				   label="COM_RADICALMART_EXPRESS_HOUSE"
+				   required="true"/>
+			<field name="building" type="text"
+				   label="COM_RADICALMART_EXPRESS_BUILDING"/>
+			<field name="entrance" type="text"
+				   label="COM_RADICALMART_EXPRESS_ENTRANCE"/>
+			<field name="floor" type="text"
+				   label="COM_RADICALMART_EXPRESS_FLOOR"/>
+			<field name="apartment" type="text"
+				   label="COM_RADICALMART_EXPRESS_APARTMENT"/>
+			<field name="comment" type="textarea"
+				   label="COM_RADICALMART_EXPRESS_COMMENT"/>
+			<field name="separator" type="spacer"
+				   hr="true"/>
+			<field name="date" type="calendar"
+				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
+				   hint="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE_HINT"
+				   translateformat="true"
+				   showtime="false"
+				   filter="user_utc"/>
+			<field name="note" type="textarea"
+				   label="COM_RADICALMART_EXPRESS_NOTE"/>
+			<fields name="price">
+				<field name="base" type="price"
+					   label="COM_RADICALMART_EXPRESS_PRICE"
+					   filter="\Joomla\Component\RadicalMartExpress\Administrator\Helper\PriceHelper::clean"
+					   class="clean-price"/>
+			</fields>
+		</fields>
+	</fieldset>
+</form>

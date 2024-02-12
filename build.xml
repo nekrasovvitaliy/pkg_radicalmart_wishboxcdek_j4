@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="plg_radicalmart_wishboxcdek_j4" default="make" basedir=".">
+    <property name="build" value="build" />
+    <property name="prefix" value="pkg" />
+    <property name="extension" value="radicalmart_wishboxcdek" />
+    <property name="version" value="1.0.0" />
+
+    <target name="make" description="Builds the extension release package for a version.">
+        <delete quiet="yes">
+            <fileset dir=".">
+                <include name="pkg_radicalmart_wishboxcdek_j4.zip" />
+            </fileset>
+        </delete>
+
+        <zip destfile="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip">
+            <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
+                <include name="forms/**" />
+                <include name="language/**" />
+                <include name="layouts/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="wishboxcdek.xml" />
+            </fileset>
+        </zip>
+        <zip destfile="plg_radicalmart_wishboxcdekorderregistrator/plg_radicalmart_wishboxcdekorderregistrator.zip">
+            <fileset dir="./plg_radicalmart_wishboxcdekorderregistrator">
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="wishboxcdekorderregistrator.xml" />
+            </fileset>
+        </zip>
+
+        <zip destfile="pkg_radicalmart_wishboxcdek_j4.zip">
+            <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
+                <include name="plg_radicalmart_shipping_wishboxcdek.zip" />
+            </fileset>
+            <fileset dir="./plg_radicalmart_wishboxcdekorderregistrator">
+                <include name="plg_radicalmart_wishboxcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir="./">
+                <include name="pkg_radicalmart_wishboxcdek.xml" />
+            </fileset>
+        </zip>
+        <delete quiet="yes">
+            <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdek/plg_radicalmart_wishboxcdek.zip" />
+            </fileset>
+        </delete>
+        <delete quiet="yes">
+            <fileset dir=".">
+                <include name="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip" />
+            </fileset>
+        </delete>
+    </target>
+</project>

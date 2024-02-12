@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
+	<fieldset name="fields" label="PLG_RADICALMART_SHIPPING_WISHBOCDEK_FIELDSET_PARAMS_BASIC">
+		<fields name="params">
+			<field name="tariffCodes"
+				   type="Tariff"
+				   multiple="true"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFFS_LABEL"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="1"
+				   hide_none="1"
+				   layout="joomla.form.field.list-fancy-select"
+			/>
+			<field name="cdekProductCodeSource"
+				   type="list"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CDEK_PRODUCT_CODE_SOURCE_LABEL"
+				   required="true"
+				   default="id"
+			>
+				<option value="code">code</option>
+				<option value="id">id</option>
+			</field>
+			<field name="calculatePrice"
+				   type="radio"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CALCULATE_PRICE_LABEL"
+				   default="1"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field
+					name="deliveryRecipientCost"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DELIVERY_RECIPIENT_COST_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="useDefaultValue"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_VALUE_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="defaultValue"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_VALUE_LABEL"
+							   showon="useDefaultValue:1"
+						/>
+						<field name="useTariffValue"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_TARIFF_VALUE_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="tariffValueRatio"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_VALUE_RATIO_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="useTariffValue:1"
+						/>
+					</fieldset>
+				</form>
+			</field>
+
+			<field name="registerProductsAsOneSingleProduct"
+				   type="radio"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_REGISTER_PRODUCTS_AS_ONE_SINGLE_PRODUCT_LABEL"
+				   default="1"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field name="useDefaultProductCost"
+				   type="radio"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PRODUCT_COST_LABEL"
+				   default="1"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="defaultProductCost"
+					type="number"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PRODUCT_COST_LABEL"
+					showon="useDefaultProductCost:1"
+			/>
+			<field name="useDefaultPackageWeight"
+				   type="radio"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PACKAGE_WEIGHT_LABEL"
+				   default="1"
+				   layout="joomla.form.field.radio.switcher"
+				   filter="integer"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="defaultPackageWeight"
+					type="number"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_WEIGHT_G_LABEL"
+					showon="useDefaultPackageWeight:1"
+			/>
+			<field
+					name="defaultDimensions"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_DIMENSIONS_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="width"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_WIDTH_LABEL"
+							   required="true"
+						/>
+
+						<field name="height"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_HEIGHT_LABEL"
+							   required="true"
+						/>
+
+						<field name="length"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_LENGTH_LABEL"
+							   required="true"
+						/>
+					</fieldset>
+				</form>
+			</field>
+			<field name="field_country" type="radio"
+				   label="COM_RADICALMART_COUNTRY"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_city" type="radio"
+				   label="COM_RADICALMART_CITY"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_zip" type="radio"
+				   label="COM_RADICALMART_ZIP"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_street" type="radio"
+				   label="COM_RADICALMART_STREET"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_house" type="radio"
+				   label="COM_RADICALMART_HOUSE"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_building" type="radio"
+				   label="COM_RADICALMART_BUILDING"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_entrance" type="radio"
+				   label="COM_RADICALMART_ENTRANCE"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_floor" type="radio"
+				   label="COM_RADICALMART_FLOOR"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_apartment" type="radio"
+				   label="COM_RADICALMART_APARTMENT"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="field_comment" type="radio"
+				   label="COM_RADICALMART_COMMENT"
+				   class="btn-group btn-group-yesno"
+				   default="1">
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fields>
+	</fieldset>
+
+	<fieldset name="sender" label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELDSET_SENDER">
+		<fields name="params">
+			<field name="senderCompany"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_COMPANY_LABEL"
+			/>
+			<field name="senderCityCode"
+				   type="listajaxsearch"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOЧCDEK_FIELD_SENDER_CITY_LABEL"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Wishbox\Field"
+				   minTermLength="3"
+				   url="index.php?option=com_wishboxcdek&amp;task=cities.searchAjax"
+				   hide_default="1"
+				   query="SELECT fullname FROM #__wishboxcdek_cities WHERE code = "
+			>
+				<option value="7">Миасс</option>
+				<option value="17">Пушкино</option>
+			</field>
+
+			<field name="senderOfficeCode"
+				   type="office"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_OFFICE_LABEL"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+			/>
+
+			<field name="senderName"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_NAME_LABEL"
+			/>
+			<field name="sellerInn"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_INN_LABEL"
+			/>
+			<field name="sellerPhone"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_PHONE_LABEL"
+			/>
+			<field name="sellerOwnerShipFormCode"
+				   type="list"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_OWNER_SHIP_FORM_CODE_LABEL"
+				   hide_default="true"
+			>
+				<option value="9">Акционерное общество</option>
+				<option value="61">Закрытое акционерное общество</option>
+				<option value="63">Индивидуальный предприниматель</option>
+				<option value="119">Открытое акционерное общество</option>
+				<option value="137">Общество с ограниченной ответственностью</option>
+				<option value="147">Публичное акционерное общество</option>
+			</field>
+		</fields>
+	</fieldset>
+
+	<fieldset name="seller" label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELDSET_SELLER">
+		<fields name="params">
+			<field name="sellerName"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_NAME_LABEL"
+			/>
+		</fields>
+	</fieldset>
+</form>

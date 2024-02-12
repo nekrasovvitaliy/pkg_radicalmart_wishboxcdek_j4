@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
+	<fieldset name="shipping">
+		<fields name="shipping">
+
+			<field name="cityCode"
+				   type="listajaxsearch"
+				   label="COM_RADICALMART_CITY"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Wishbox\Field"
+				   minTermLength="3"
+				   url="index.php?option=com_wishboxcdek&amp;task=cities.searchAjax"
+				   onchange="RadicalMartCheckout().reloadForm(this);"
+				   query="SELECT fullname FROM #__wishboxcdek_cities WHERE code = "
+			>
+				<option value="7">Миасс</option>
+				<option value="17">Пушкино</option>
+			</field>
+
+			<field name="officeCode"
+				   type="office"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+				   onchange="RadicalMartCheckout().reloadForm(this);"
+			/>
+
+			<field name="tariffCode"
+				   type="tariff"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
+				   required="true"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+			/>
+
+			<field name="trackingNumber"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TRACKING_NUMBER_LABEL"
+				   readonly="true"
+			/>
+
+			<field
+					name="dimensions"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_DIMENSIONS_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="width"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_WIDTH_LABEL"
+							   required="true"
+						/>
+
+						<field name="height"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_HEIGHT_LABEL"
+							   required="true"
+						/>
+
+						<field name="length"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_LENGTH_LABEL"
+							   required="true"
+						/>
+					</fieldset>
+				</form>
+			</field>
+
+			<field name="country" type="text"
+				   label="COM_RADICALMART_COUNTRY"
+				   required="true" />
+			<field name="city" type="text"
+				   label="COM_RADICALMART_CITY"
+				   required="true" />
+			<field name="zip" type="text"
+				   label="COM_RADICALMART_ZIP"
+				   required="true" />
+			<field name="street" type="text"
+				   label="COM_RADICALMART_STREET"
+				   required="true"/>
+			<field name="house" type="text"
+				   label="COM_RADICALMART_HOUSE"
+				   required="true"/>
+			<field name="building" type="text"
+				   label="COM_RADICALMART_BUILDING"/>
+			<field name="entrance" type="text"
+				   label="COM_RADICALMART_ENTRANCE"/>
+			<field name="floor" type="text"
+				   label="COM_RADICALMART_FLOOR"/>
+			<field name="apartment" type="text"
+				   label="COM_RADICALMART_APARTMENT"/>
+			<field name="comment" type="textarea"
+				   label="COM_RADICALMART_COMMENT"/>
+			<field name="separator" type="spacer"
+				   hr="true"/>
+			<field name="date" type="calendar"
+				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
+				   hint="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE_HINT"
+				   translateformat="true"
+				   showtime="false"
+				   filter="user_utc"/>
+			<field name="note"
+				   type="textarea"
+				   label="COM_RADICALMART_NOTE"
+			/>
+			<fields name="price">
+				<field name="base"
+					   type="price"
+					   label="COM_RADICALMART_PRICE"
+					   currency="{currency_code}"
+					   class="clean-price"
+				/>
+				<field name="tariff"
+					   type="price"
+					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_TARIFF_PRICE_LABEL"
+					   currency="{currency_code}"
+					   class="clean-price"
+				/>
+			</fields>
+		</fields>
+	</fieldset>
+</form>

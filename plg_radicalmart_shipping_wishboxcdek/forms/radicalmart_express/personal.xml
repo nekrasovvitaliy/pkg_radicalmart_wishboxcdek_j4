@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMartExpress\Administrator\Field">
+	<fieldset>
+		<field name="country" type="text"
+			   label="COM_RADICALMART_EXPRESS_COUNTRY"/>
+		<field name="city" type="text"
+			   label="COM_RADICALMART_EXPRESS_CITY"/>
+		<field name="zip" type="text"
+			   label="COM_RADICALMART_EXPRESS_ZIP"/>
+		<field name="street" type="text"
+			   label="COM_RADICALMART_EXPRESS_STREET"/>
+		<field name="house" type="text"
+			   label="COM_RADICALMART_EXPRESS_HOUSE"/>
+		<field name="building" type="text"
+			   label="COM_RADICALMART_EXPRESS_BUILDING"/>
+		<field name="entrance" type="text"
+			   label="COM_RADICALMART_EXPRESS_ENTRANCE"/>
+		<field name="floor" type="text"
+			   label="COM_RADICALMART_EXPRESS_FLOOR"/>
+		<field name="apartment" type="text"
+			   label="COM_RADICALMART_EXPRESS_APARTMENT"/>
+	</fieldset>
+</form>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMartExpress\Administrator\Field">
+	<fieldset name="shipping">
+		<fields name="shipping">
+			<field name="country" type="text"
+				   label="COM_RADICALMART_EXPRESS_COUNTRY"
+				   hint="COM_RADICALMART_EXPRESS_COUNTRY"
+				   required="true"/>
+			<field name="city" type="text"
+				   label="COM_RADICALMART_EXPRESS_CITY"
+				   hint="COM_RADICALMART_EXPRESS_CITY"
+				   required="true"/>
+			<field name="zip" type="text"
+				   label="COM_RADICALMART_EXPRESS_ZIP"
+				   hint="COM_RADICALMART_EXPRESS_ZIP"
+				   required="true"/>
+			<field name="street" type="text"
+				   label="COM_RADICALMART_EXPRESS_STREET"
+				   hint="COM_RADICALMART_EXPRESS_STREET"
+				   required="true"/>
+			<field name="house" type="text"
+				   label="COM_RADICALMART_EXPRESS_HOUSE"
+				   hint="COM_RADICALMART_EXPRESS_HOUSE"
+				   required="true"/>
+			<field name="building" type="text"
+				   label="COM_RADICALMART_EXPRESS_BUILDING"
+				   hint="COM_RADICALMART_EXPRESS_BUILDING"/>
+			<field name="entrance" type="text"
+				   label="COM_RADICALMART_EXPRESS_ENTRANCE"
+				   hint="COM_RADICALMART_EXPRESS_ENTRANCE"/>
+			<field name="floor" type="text"
+				   label="COM_RADICALMART_EXPRESS_FLOOR"
+				   hint="COM_RADICALMART_EXPRESS_FLOOR"/>
+			<field name="apartment" type="text"
+				   label="COM_RADICALMART_EXPRESS_APARTMENT"
+				   hint="COM_RADICALMART_EXPRESS_APARTMENT"/>
+			<field name="comment" type="textarea"
+				   label="COM_RADICALMART_EXPRESS_COMMENT"
+				   hint="COM_RADICALMART_EXPRESS_COMMENT"/>
+		</fields>
+	</fieldset>
+</form>

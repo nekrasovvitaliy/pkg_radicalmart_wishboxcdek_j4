@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
+	<fieldset name="shipping">
+		<fields name="shipping">
+			<field name="country" type="text"
+				   label="COM_RADICALMART_COUNTRY"
+				   required="true"/>
+
+			<field name="cityCode"
+				   type="listajaxsearch"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Wishbox\Field"
+				   minTermLength="3"
+				   url="index.php?option=com_wishboxcdek&amp;task=cities.searchAjax"
+				   onchange="RadicalMartCheckout().reloadForm(this);"
+				   query="SELECT fullname FROM #__wishboxcdek_cities WHERE code = "
+				   hide_default="true"
+				   hide_none="true"
+			>
+				<option value="">JNONE</option>
+				<option value="7">Миасс</option>
+				<option value="17">Пушкино</option>
+			</field>
+
+			<field name="officeCode"
+				   type="office"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
+				   required="true"
+				   remote-search="1"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+				   hide_none="true"
+				   onchange="RadicalMartCheckout().reloadForm(this);"
+			>
+				<option value="">JNONE</option>
+			</field>
+
+			<field name="tariffCode"
+				   type="tariff"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
+				   required="true"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+				   hide_none="true"
+				   readonly="true"
+			>
+				<option value="">JNONE</option>
+			</field>
+
+
+
+			<field name="zip"
+				   type="text"
+				   label="COM_RADICALMART_ZIP"
+				   required="true"
+			/>
+
+			<field name="street"
+				   type="text"
+				   label="COM_RADICALMART_STREET"
+				   required="true"
+			/>
+
+			<field name="house"
+				   type="text"
+				   label="COM_RADICALMART_HOUSE"
+				   required="true"
+			/>
+
+			<field name="building"
+				   type="text"
+				   label="COM_RADICALMART_BUILDING"
+			/>
+
+			<field name="entrance"
+				   type="text"
+				   label="COM_RADICALMART_ENTRANCE"
+			/>
+
+			<field name="floor"
+				   type="text"
+				   label="COM_RADICALMART_FLOOR"
+			/>
+
+			<field name="apartment"
+				   type="text"
+				   label="COM_RADICALMART_APARTMENT"
+			/>
+
+			<field name="comment"
+				   type="textarea"
+				   label="COM_RADICALMART_COMMENT"
+			/>
+		</fields>
+	</fieldset>
+</form>

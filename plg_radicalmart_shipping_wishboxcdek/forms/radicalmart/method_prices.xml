@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
+	<fieldset name="prices_{currency_group}" label="{currency_title}">
+		<fields name="prices">
+			<fields name="{currency_group}">
+				<field name="currency"
+					   type="hidden"
+					   label="COM_RADICALMART_CURRENCY"
+					   default="{currency_code}"
+					   class="input-small"
+					   readonly="true"/>
+				<field name="base"
+					   type="price"
+					   label="COM_RADICALMART_PRICE"
+					   currency="{currency_code}"
+				/>
+			</fields>
+		</fields>
+	</fieldset>
+</form>

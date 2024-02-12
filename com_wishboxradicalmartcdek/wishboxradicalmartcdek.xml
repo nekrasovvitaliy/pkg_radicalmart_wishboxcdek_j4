@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.0" method="upgrade">
+    <name>com_wishboxcdek</name>
+    <creationDate>December 2023</creationDate>
+    <author>Nekrasov Vitaliy</author>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <version>1.0.0</version>
+    <description>COM_WISHBOXCDEK_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Component\Wishboxcdek</namespace>
+    <files folder="site">
+        <folder>forms</folder>
+        <folder>language</folder>
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+    <media destination="com_wishboxcdek" folder="media">
+        <folder>css</folder>
+        <folder>js</folder>
+        <filename>joomla.asset.json</filename>
+    </media>
+    <install>
+        <sql>
+            <file driver="mysqli">administrator/sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+    <administration>
+        <menu img="class:bookmark">com_wishboxcdek</menu>
+        <submenu>
+
+		</submenu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <folder>forms</folder>
+            <folder>language</folder>
+            <folder>services</folder>
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+    </administration>
+    <config>
+        <fields name="params">
+            <fieldset name="component">
+                <field name="save_history" default="0" />
+            </fieldset>
+        </fields>
+    </config>
+    <dashboards>
+		<dashboard title="COM_WISHBOXCDEK_DASHBOARD_TITLE" icon="icon-file-alt">content</dashboard>
+	</dashboards>
+</extension>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="4.3.4" method="upgrade">
+    <name>Wishbox Radicalm Cdek Package</name>
+    <author>Nekrasov Vitaliy</author>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <creationDate>December 2023</creationDate>
+    <packagename>wishboxcdek</packagename>
+    <version>1.0.0</version>
+    <packager>Nekrasov Vitaliy</packager>
+    <description>Wishbox Cdek Package</description>
+    <files>
+        <file
+                type="plugin"
+                id="plg_radicalmart_shipping_wishboxcdek"
+        >plg_radicalmart_shipping_wishboxcdek.zip</file>
+        <file
+                type="plugin"
+                id="plg_radicalmart_wishboxcdekorderregistrator"
+        >plg_radicalmart_wishboxcdekorderregistrator.zip</file>
+    </files>
+</extension>
