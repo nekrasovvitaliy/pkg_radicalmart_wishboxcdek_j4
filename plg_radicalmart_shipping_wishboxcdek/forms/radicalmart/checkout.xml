@@ -33,6 +33,7 @@
 				   hide_default="true"
 				   hide_none="true"
 				   onchange="RadicalMartCheckout().reloadForm(this);"
+				   layout="joomla.form.field.list-fancy-select"
 			>
 				<option value="">JNONE</option>
 			</field>
