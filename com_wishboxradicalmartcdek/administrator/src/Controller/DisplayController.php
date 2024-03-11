@@ -3,7 +3,7 @@
  * @copyright (c) 2023 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxcdek\Administrator\Controller;
+namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Controller;
 
 use Exception;
 use Joomla\CMS\MVC\Controller\BaseController;
@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Wishboxcdek primary display controller.
+ * Wishboxradicalmartcdek primary display controller.
  *
  * @since 1.0.0
  */

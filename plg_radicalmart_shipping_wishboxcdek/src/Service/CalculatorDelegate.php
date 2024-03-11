@@ -22,13 +22,6 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	private stdClass $method;
 
 	/**
-	 * @var array
-	 *
-	 * @since 1.0.0
-	 */
-	private array $data;
-
-	/**
 	 * @var array $products Products
 	 *
 	 * @since 1.0.0
@@ -36,17 +29,24 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	private array $products;
 
 	/**
-	 * @param   stdClass    $method    Method
-	 * @param   array|null  $data      Data
-	 * @param   array       $products  Data
+	 * @var integer $receiverCityCode Receiver city code
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(stdClass $method, ?array $data, array $products)
+	private int $receiverCityCode;
+
+	/**
+	 * @param   stdClass    $method            Method
+	 * @param   array       $products          Data
+	 * @param   integer     $receiverCityCode  Receiver city code
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct(stdClass $method, array $products, int $receiverCityCode)
 	{
 		$this->method = $method;
-		$this->data = $data;
 		$this->products = $products;
+		$this->receiverCityCode = $receiverCityCode;
 	}
 
 	/**
@@ -76,19 +76,7 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 */
 	public function getReceiverCityCode(): int
 	{
-		$receiverCityCode = 0;
-
-		if (isset($this->data['shipping']['cityCode']))
-		{
-			$receiverCityCode = (int) $this->data['shipping']['cityCode'];
-		}
-
-		if ($receiverCityCode <= 0)
-		{
-			$receiverCityCode = 0;
-		}
-
-		return $receiverCityCode;
+		return $this->receiverCityCode;
 	}
 
 	/**

@@ -8,16 +8,11 @@
 	<version>1.0.0</version>
 	<description>PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator</namespace>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/plg_radicalmart_wishboxcdekorderregistrator.ini</language>
-		<language tag="en-GB">en-GB/plg_radicalmart_wishboxcdekorderregistrator.sys.ini</language>
-		<language tag="ru-RU">ru-RU/plg_radicalmart_wishboxcdekorderregistrator.ini</language>
-		<language tag="ru-RU">ru-RU/plg_radicalmart_wishboxcdekorderregistrator.sys.ini</language>
-	</languages>
+	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder plugin="wishboxcdekorderregistrator">src</folder>
+		<folder>language</folder>
 		<folder>services</folder>
-		<folder>src</folder>
 	</files>
 	<config>
 		<fields name="params">

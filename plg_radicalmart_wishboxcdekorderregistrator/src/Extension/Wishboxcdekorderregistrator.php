@@ -5,18 +5,12 @@
  */
 namespace Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Extension;
 
-use AntistressStore\CdekSDK2\Exceptions\CdekV2RequestException;
-use Error;
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
-use Joomla\Component\Wishboxcdek\Site\Service\Registrator;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
 use Joomla\Event\SubscriberInterface;
-use Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Service\RegistratorDelegate;
 use Joomla\Registry\Registry;
 use stdClass;
 use function defined;
@@ -155,86 +149,26 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 		bool $isNew
 	): void
 	{
-		try
+		if ($order->shipping->plugin != 'wishboxcdek')
 		{
-			if ($order->shipping->plugin != 'wishboxcdek')
-			{
-				return;
-			}
-
-			$allowedStatusids = [
-				(int) $this->params->get('ready_status_id', 0),
-				(int) $this->params->get('error_status_id', 0),
-				(int) $this->params->get('completed_status_id', 0),
-			];
-
-			if (!in_array($order->status->id, $allowedStatusids))
-			{
-				return;
-			}
-
-			$app = Factory::getApplication();
-
-			/** @var OrderModel $orderModel */
-			$orderModel = $app->bootComponent('com_radicalmart')
-				->getMVCFactory()
-				->createModel('order', 'Administrator', ['ignore_request' => true]);
-
-			try
-			{
-				$registratorDelegate = new RegistratorDelegate($order);
-				$registrator = new Registrator($registratorDelegate);
-				$registrator->register();
-
-				$app->enqueueMessage(
-					Text::_(
-						'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_COMPLETED_MESSAGE'
-					),
-					CMSApplicationInterface::MSG_NOTICE
-				);
-
-				$orderModel->addLog(
-					$order->id,
-					'delivery_service_registration_completed',
-					[
-						'action_text' => Text::_(
-							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_COMPLETED_MESSAGE'
-						),
-						'message' => ''
-					]
-				);
-			}
-			catch (CdekV2RequestException $e)
-			{
-				$app->enqueueMessage(
-					Text::_(
-						'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
-					) . ': ' . $e->errorMessage,
-					CMSApplicationInterface::MSG_WARNING
-				);
-
-				$orderModel->addLog(
-					$order->id,
-					'delivery_service_registration_error',
-					[
-						'action_text' => Text::_(
-							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
-						),
-						'message' => $e->errorMessage
-					]
-				);
-
-				$orderModel->updateStatus(
-					$order->id,
-					(int) $this->params->get('error_status_id', 0)
-				);
-			}
+			return;
 		}
-		catch (Exception | Error $e)
+
+		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
+
+		$allowedStatusIds = [
+			(int) $componentParams->get('ready_status_id', 0),
+			(int) $componentParams->get('error_status_id', 0),
+			(int) $componentParams->get('completed_status_id', 0),
+		];
+
+		if (!in_array($order->status->id, $allowedStatusIds))
 		{
-			echo $e;
-			die;
+			return;
 		}
+
+		$orderService = new OrderService;
+		$orderService->register($order);
 	}
 
 	/**
@@ -272,53 +206,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 			return;
 		}
 
-		$app = Factory::getApplication();
-
-		/** @var OrderModel $orderModel */
-		$orderModel = $app->bootComponent('com_radicalmart')
-			->getMVCFactory()
-			->createModel('order', 'Administrator', ['ignore_request' => true]);
-
-		try
-		{
-			$registratorDelegate = new RegistratorDelegate($order);
-			$registrator = new Registrator($registratorDelegate);
-			$registrator->register();
-
-			$app->enqueueMessage(
-				Text::_(
-					'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_COMPLETED_MESSAGE'
-				),
-				CMSApplicationInterface::MSG_NOTICE
-			);
-
-			$orderModel->updateStatus(
-				$order->id,
-				(int) $this->params->get('completed_status_id', 0)
-			);
-		}
-		catch (Exception $e)
-		{
-			$app->enqueueMessage(
-				Text::_(
-					'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
-				) . ': ' . $e->errorMessage,
-				CMSApplicationInterface::MSG_WARNING
-			);
-
-			$orderModel->addLog(
-				$order->id,
-				'delivery_service_registration_error',
-				[
-					'action_text' => 'Delivery service registration error',
-					'message' => $e->getMessage()
-				]
-			);
-
-			$orderModel->updateStatus(
-				$order->id,
-				(int) $this->params->get('error_status_id', 0)
-			);
-		}
+//		$orderService = new OrderService;
+//		$orderService->register($order);
 	}
 }

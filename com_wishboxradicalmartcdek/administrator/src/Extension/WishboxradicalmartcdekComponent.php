@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright (c) 2023 Nekrasov Vitaliy
+ * @copyright (c) 2013-2024 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxcdek\Administrator\Extension;
+namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Extension;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
@@ -13,7 +13,7 @@ use Joomla\CMS\Cache\CacheControllerFactoryAwareInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormFactoryAwareInterface;
 use Joomla\CMS\Router\SiteRouterAwareInterface;
-use Joomla\Component\Wishboxcdek\Administrator\Service\Html\Wishboxcdek;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\Html\Wishboxradicalmartcdek;
 use Joomla\CMS\Association\AssociationServiceTrait;
 use Joomla\CMS\Categories\CategoryServiceTrait;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
@@ -31,11 +31,11 @@ use UnexpectedValueException;
 use function defined;
 
 /**
- * Component class for Wishboxcdek
+ * Component class for Wishboxradicalmartcdek
  *
  * @since  1.0.0
  */
-class WishboxcdekComponent extends MVCComponent implements RouterServiceInterface, BootableExtensionInterface
+class WishboxradicalmartcdekComponent extends MVCComponent implements RouterServiceInterface, BootableExtensionInterface
 {
 	use AssociationServiceTrait;
 	use RouterServiceTrait;
@@ -63,7 +63,7 @@ class WishboxcdekComponent extends MVCComponent implements RouterServiceInterfac
 	public function boot(ContainerInterface $container)
 	{
 		$db = $container->get('DatabaseDriver');
-		$this->getRegistry()->register('wishboxcdek', new Wishboxcdek($db));
+		$this->getRegistry()->register('wishboxradicalmartcdek', new Wishboxradicalmartcdek($db));
 	}
 
 	/**
@@ -91,7 +91,7 @@ class WishboxcdekComponent extends MVCComponent implements RouterServiceInterfac
 	public function createModel(string $name, string $prefix, array $config = []): mixed
 	{
 		$mvcFactory = $this->getMVCFactory();
-		$className = 'Joomla\\Component\\Wishboxcdek\\'.$prefix.'\\'.ucfirst($name).'Model';
+		$className = 'Joomla\\Component\\Wishboxradicalmartcdek\\' . $prefix . '\\' . ucfirst($name) . 'Model';
 		$model = new $className($config, $mvcFactory);
 
 		if ($model instanceof FormFactoryAwareInterface)

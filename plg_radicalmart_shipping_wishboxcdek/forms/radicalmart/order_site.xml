@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form addfieldprefix="Joomla\Component\RadicalMart\Site\Field">
-	<fieldset name="shipping">
+	<fieldset name="shipping" label="COM_RADICALMART_SHIPPING">
 		<fields name="shipping">
 			<field name="country" type="text"
 				   label="COM_RADICALMART_COUNTRY"
@@ -35,6 +35,12 @@
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   hide_default="true"
 				   onchange="RadicalMartCheckout().reloadForm(this);"
+			/>
+
+			<field name="address"
+				   type="textarea"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ADDRESS_LABEL"
+				   required="true"
 			/>
 
 			<field name="tariffCode"

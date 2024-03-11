@@ -9,22 +9,15 @@
 	<description>PLG_RADICALMART_SHIPPING_WISHBOXCDEK_DESCRIPTION</description>
 	<namespace path="src">Joomla\Plugin\RadicalMartShipping\Wishboxcdek</namespace>
 	<scriptfile>script.php</scriptfile>
-	<languages folder="language">
-		<language tag="en-GB">en-GB/plg_radicalmart_shipping_wishboxcdek.ini</language>
-		<language tag="en-GB">en-GB/plg_radicalmart_shipping_wishboxcdek.sys.ini</language>
-		<language tag="ru-RU">ru-RU/plg_radicalmart_shipping_wishboxcdek.ini</language>
-		<language tag="ru-RU">ru-RU/plg_radicalmart_shipping_wishboxcdek.sys.ini</language>
-	</languages>
 	<files>
 		<folder plugin="wishboxcdek">src</folder>
 		<folder>forms</folder>
+		<folder>language</folder>
 		<folder>services</folder>
-		<folder>src</folder>
 	</files>
 	<layouts destination="plugins/radicalmart_shipping/wishboxcdek" folder="layouts">
 		<folder>radicalmart</folder>
 		<folder>radicalmart_express</folder>
-		<filename>checkout.php</filename>
 	</layouts>
 	<config>
 		<fields name="params">

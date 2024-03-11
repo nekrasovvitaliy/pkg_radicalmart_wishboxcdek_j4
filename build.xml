@@ -12,6 +12,12 @@
             </fileset>
         </delete>
 
+        <zip destfile="com_wishboxradicalmartcdek/com_wishboxradicalmartcdek.zip">
+            <fileset dir="./com_wishboxradicalmartcdek">
+                <include name="administrator/**" />
+                <include name="wishboxradicalmartcdek.xml" />
+            </fileset>
+        </zip>
         <zip destfile="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip">
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="forms/**" />
@@ -31,26 +37,47 @@
                 <include name="wishboxcdekorderregistrator.xml" />
             </fileset>
         </zip>
+        <zip destfile="plg_task_wishboxradicalmartcdekorderregistrator/plg_task_wishboxradicalmartcdekorderregistrator.zip">
+            <fileset dir="./plg_task_wishboxradicalmartcdekorderregistrator">
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="wishboxradicalmartcdekorderregistrator.xml" />
+            </fileset>
+        </zip>
 
         <zip destfile="pkg_radicalmart_wishboxcdek_j4.zip">
+            <fileset dir="./com_wishboxradicalmartcdek">
+                <include name="com_wishboxradicalmartcdek.zip" />
+            </fileset>
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="plg_radicalmart_shipping_wishboxcdek.zip" />
             </fileset>
             <fileset dir="./plg_radicalmart_wishboxcdekorderregistrator">
                 <include name="plg_radicalmart_wishboxcdekorderregistrator.zip" />
             </fileset>
-            <fileset dir="./">
+            <fileset dir="./plg_task_wishboxradicalmartcdekorderregistrator">
+                <include name="plg_task_wishboxradicalmartcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="language/**" />
+                <include name="script.php" />
                 <include name="pkg_radicalmart_wishboxcdek.xml" />
             </fileset>
         </zip>
+
         <delete quiet="yes">
             <fileset dir=".">
-                <include name="plg_radicalmart_wishboxcdek/plg_radicalmart_wishboxcdek.zip" />
+                <include name="com_wishboxradicalmartcdek/com_wishboxradicalmartcdek.zip" />
             </fileset>
-        </delete>
-        <delete quiet="yes">
             <fileset dir=".">
                 <include name="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdekorderregistrator/plg_radicalmart_wishboxcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_task_wishboxradicalmartcdekorderregistrator/plg_task_wishboxradicalmartcdekorderregistrator.zip" />
             </fileset>
         </delete>
     </target>

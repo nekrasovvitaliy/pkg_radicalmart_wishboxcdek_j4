@@ -7,17 +7,22 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension;
 
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Helper\PriceHelper as RadicalMartPriceHelper;
-use Joomla\Component\RadicalMart\Administrator\Table\ShippingMethodTable;
 use Joomla\Component\Wishboxcdek\Site\Service\Calculator;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\CheckoutPreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrderPreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrdersitePreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\PersonalshippingmethodPreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\ShippingmethodPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Service\CalculatorDelegate;
 use Joomla\Registry\Registry;
 use stdClass;
@@ -28,7 +33,7 @@ defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * @since       1.0.0
+ * @since 1.0.0
  */
 class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 {
@@ -71,6 +76,27 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	public bool $radicalmart_express = true; // phpcs:ignore
 
 	/**
+	 * @var array $customerData Customer data
+	 *
+	 * @since 1.0.0
+	 */
+	public array $customerData;
+
+	/**
+	 * @var integer $receiverCityCode Receiver city code
+	 *
+	 * @since 1.0.0
+	 */
+	public int $receiverCityCode;
+
+	/**
+	 * @var integer $tariffCode Receiver city code
+	 *
+	 * @since 1.0.0
+	 */
+	public int $tariffCode = 0;
+
+	/**
 	 * Returns an array of events this subscriber will listen to.
 	 *
 	 * @return  array
@@ -82,13 +108,13 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		return [
 			'onRadicalMartNormaliseRequestData'       => 'onRadicalMartNormaliseRequestData',
 			'onRadicalMartGetOrderShippingMethods'    => 'onRadicalMartGetOrderShippingMethods',
-			'onRadicalMartGetOrderForm'               => 'onGetOrderForm',
+			'onRadicalMartGetOrderForm'               => 'onRadicalMartGetOrderForm',
 			'onRadicalMartGetOrderTotal'              => 'onGetOrderTotal',
 			'onRadicalMartGetOrderCustomerUpdateData' => 'onGetOrderCustomerUpdateData',
 			'onRadicalMartGetCheckoutCustomerData'    => 'onGetCheckoutCustomerData',
-			'onRadicalMartGetCustomerMethodForm'      => 'onGetCustomerMethodForm',
+			'onRadicalMartGetCustomerMethodForm'      => 'onRadicalMartGetPersonalMethodForm',
 			'onRadicalMartGetPersonalShippingMethods' => 'onGetPersonalShippingMethods',
-			'onRadicalMartGetPersonalMethodForm'      => 'onGetCustomerMethodForm',
+			'onRadicalMartGetPersonalMethodForm'      => 'onRadicalMartGetPersonalMethodForm',
 			'onContentPrepareForm'                    => 'onContentPrepareForm',
 			'onRadicalMartPrepareMethodForm'          => 'onRadicalMartPrepareMethodForm'
 		];
@@ -147,9 +173,6 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
-		/** @var SiteApplication $app */
-		$app = Factory::getApplication();
-
 		// Set disabled
 		$method->disabled = false;
 
@@ -172,18 +195,16 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 		if ($context == 'com_radicalmart.checkout')
 		{
-			$data = $app->getUserState('com_radicalmart.checkout.data');
+			$this->receiverCityCode = $this->getReceiverCityCode($method->id);
 
-			if ($data)
+			if ($this->receiverCityCode)
 			{
 				$calculatorDelegate = new CalculatorDelegate(
 					$method,
-					$data,
-					$products
+					$products,
+					$this->receiverCityCode
 				);
-
 				$calculator = new Calculator($calculatorDelegate);
-
 				$tariff = $calculator->getTariff();
 
 				if ($tariff)
@@ -195,40 +216,15 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 						$price['base'] = $tariff->shipping;
 					}
 
-					$price['tariff'] = $tariff->shipping;
-
-					$data['shipping']['tariffCode'] = $tariff->code;
-
-					$app->setUserState('com_radicalmart.checkout.data', $data);
+					$price['tariff']  = $tariff->shipping;
+					$this->tariffCode = (int) $tariff->code;
 				}
 			}
 		}
-
-		if ($context == 'com_radicalmart.order')
+		elseif ($context == 'com_radicalmart.order')
 		{
-			$calculatorDelegate = new CalculatorDelegate(
-				$method,
-				$formData,
-				$products
-			);
-
-			$calculator = new Calculator($calculatorDelegate);
-
-			$tariff = $calculator->getTariff();
-
-			if ($tariff)
-			{
-				$calculatePrice = (bool) $method->params->get('calculatePrice', 0);
-
-				if ($calculatePrice)
-				{
-					$price['base'] = $tariff->shipping;
-				}
-
-				$price['tariff'] = $tariff->shipping;
-
-				$formData['shipping']['tariffCode'] = $tariff->code;
-			}
+			$this->receiverCityCode = $formData['shipping']['cityCode'];
+			$this->tariffCode = $formData['shipping']['tariffCode'];
 		}
 
 		$price['base_string']   = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
@@ -261,6 +257,58 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	}
 
 	/**
+	 * @param   integer  $shippingId  Shipping id
+	 *
+	 * @return integer
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	private function getReceiverCityCode(int $shippingId): int
+	{
+		$app = Factory::getApplication();
+		$user = $app->getIdentity();
+		$data = $app->getUserState('com_radicalmart.checkout.data');
+
+		$receiverCityCode = 0;
+
+		if (isset($data['shipping']['cityCode']))
+		{
+			$receiverCityCode = (int) $data['shipping']['cityCode'];
+		}
+		else
+		{
+			if ($user->id > 0)
+			{
+				$customerShippingData = $this->getCustomerShippingData($shippingId);
+				$receiverCityCode = (isset($customerShippingData['cityCode']))
+					? (int) $customerShippingData['cityCode']
+					: 0;
+			}
+		}
+
+		return $receiverCityCode;
+	}
+
+	/**
+	 * @param   integer  $tariffCode  Tariff code
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	private function setTariffCodeToUserState(int $tariffCode): void
+	{
+		$app = Factory::getApplication();
+		$data = $app->getUserState('com_radicalmart.checkout.data');
+		$data['shipping']['tariffCode'] = $tariffCode;
+		$app->setUserState('com_radicalmart.checkout.data', $data);
+	}
+
+	/**
 	 * Prepare RadicalMart & RadicalMart Express order form.
 	 *
 	 * @param   string             $context   Context selector string.
@@ -281,7 +329,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onGetOrderForm(
+	public function onRadicalMartGetOrderForm(
 		string $context,
 		Form $form,
 		array $formData,
@@ -291,8 +339,6 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
-		$app = Factory::getApplication();
-
 		// Remove fields
 		$fields = ['country', 'city', 'zip', 'street', 'house', 'building', 'entrance', 'floor', 'apartment', 'comment'];
 
@@ -327,26 +373,48 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			);
 		}
 
-		$data = $app->getUserState('com_radicalmart.checkout.data');
+		$formName = $form->getName();
 
-		if (isset($data['shipping']['officeCode']))
+		if ($formName == 'com_radicalmart.checkout')
 		{
-			$formData['shipping']['officeCode'] = $data['shipping']['officeCode'];
+			$preparer = new CheckoutPreparer($form, $shipping->id, $this->receiverCityCode, $this->tariffCode);
+			$preparer->prepare();
 		}
-
-		if (isset($data['shipping']['tariffCode']))
+		elseif ($formName == 'com_radicalmart.order_site')
 		{
-			$formData['shipping']['tariffCode'] = $data['shipping']['tariffCode'];
+			$preparer = new OrdersitePreparer($form, $shipping->id, $this->receiverCityCode, $this->tariffCode);
+			$preparer->prepare();
 		}
-
-		if (isset($data['shipping']['cityCode']))
+		elseif ($formName == 'com_radicalmart.order')
 		{
-			$form->setFieldAttribute(
-				'officeCode',
-				'cityCode',
-				$data['shipping']['cityCode'],
-				'shipping'
-			);
+			$preparer = new OrderPreparer($form, $shipping->id, $formData);
+			$preparer->prepare();
+		}
+	}
+
+	/**
+	 * @param   Form                      $form     Form
+	 * @param   array|CMSObject|Registry  $data     Data
+	 * @param   array|CMSObject           $tmpData  Tmp data
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 *
+	 * @noinspection PhpUnused
+	 *
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function onRadicalMartPrepareMethodForm(Form $form, array|CMSObject|Registry $data, array|CMSObject $tmpData): void
+	{
+		$formName = $form->getName();
+
+		if ($formName == 'com_radicalmart.shippingmethod')
+		{
+			$preparer = new ShippingmethodPreparer($form, $data);
+			$preparer->prepare();
 		}
 	}
 
@@ -444,6 +512,8 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 */
 	public function onGetCheckoutCustomerData(string $context, object $shipping, array $customerData): array|false
 	{
+		$this->customerData = $customerData;
+
 		return (!empty($customerData)) ? $customerData : false;
 	}
 
@@ -465,7 +535,12 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onGetCustomerMethodForm(string $context, Form $form, object|array $data, object|array $shipping): void
+	public function onRadicalMartGetPersonalMethodForm(
+		string $context,
+		Form $form,
+		object|array $data,
+		object|array $shipping
+	): void
 	{
 		$fields = ['country', 'city', 'zip', 'street', 'house', 'building', 'entrance', 'floor', 'apartment', 'comment'];
 
@@ -477,12 +552,23 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			}
 		}
 
-		if (isset($data->shipping['shipping_method_' . $shipping->id])
-			&& isset($data->shipping['shipping_method_' . $shipping->id]['cityCode']))
-		{
-			$cityCode = (int) $data->shipping['shipping_method_' . $shipping->id]['cityCode'];
-			$form->setFieldAttribute('officeCode', 'cityCode', $cityCode);
-		}
+		$preparer = new PersonalshippingmethodPreparer($form, $data, $shipping);
+		$preparer->prepare();
+	}
+
+	/**
+	 * @param   Form       $form  Form
+	 * @param   CMSObject  $data  Data
+	 *
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 *
+	 * @noinspection PhpUnused
+	 */
+	public function onRadicalMartPreparePricesForm(Form $form, CMSObject $data): void
+	{
+
 	}
 
 	/**
@@ -513,110 +599,36 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @since 1.0.0
 	 *
-	 * @noinspection PhpUndefinedFieldInspection
 	 */
 	public function onContentPrepareForm(Event $event): void
 	{
 		/** @var Form $form */
 		$form = $event->getArgument(0);
 
-		/** @var array $data */
+		/** @var array|stdClass $data */
 		$data = $event->getArgument(1);
 
 		$formName = $form->getName();
 
-		if ($formName == 'com_radicalmart.shippingmethod')
-		{
-			if (is_object($data))
-			{
-				$senderCityCode = $data->params['senderCityCode'];
-
-				if (!$form->setFieldAttribute(
-					'senderOfficeCode',
-					'cityCode',
-					$senderCityCode,
-					'params'
-				))
-				{
-					throw new Exception('', 500);
-				}
-			}
-		}
-
-		$app = Factory::getApplication();
-
-		$availableFormNames = [
+		$notAllowedFormNames = [
 			'com_radicalmart.checkout',
-			'com_radicalmart.order'
+			'com_radicalmart.order_site',
+			'com_radicalmart.shippingmethod',
+			'com_radicalmart.shippingmethod.prices'
 		];
 
-		if (!in_array($form->getName(), $availableFormNames))
+		if (in_array($formName, $notAllowedFormNames))
 		{
 			return;
 		}
 
-		if (!isset($data['shipping']))
+		if ($formName == 'com_radicalmart.shippingmethod.prices')
 		{
-			return;
-		}
 
-		/** @var ShippingMethodTable $table */
-		$table = $app->bootComponent('com_radicalmart')
-			->getMVCFactory()
-			->createTable('ShippingMethod', 'Administrator');
-
-		$table->load((int) $data['shipping']['id']);
-
-		if ($table->plugin != 'wishboxcdek')
-		{
-			return;
-		}
-
-		$app = Factory::getApplication();
-
-		if ($form->getName() == 'com_radicalmart.checkout')
-		{
-			if (isset($data['shipping']['id']))
-			{
-				$this->onContentPrepareCheckoutForm($form, $data);
-			}
-		}
-
-		if ($form->getName() == 'com_radicalmart.order')
-		{
-			$cityCode = $data['shipping']['cityCode'];
-			$form->setFieldAttribute('officeCode', 'cityCode', $cityCode, 'shipping');
-		}
-
-		if ($form->getName() == 'com_radicalmart.shippingmethod')
-		{
-			$senderCityCode = $data->params['senderCityCode'];
-
-			if (!$form->setFieldAttribute('senderOfficeCode', 'cityCode', $senderCityCode, 'params'))
-			{
-				throw new Exception('', 500);
-			}
 		}
 
 		$event->setArgument(0, $form);
 		$event->setArgument(1, $data);
-	}
-
-	/**
-	 * @param   Form             $form     Form
-	 * @param   CMSObject|array  $data     Data
-	 * @param   CMSObject|array  $tmpData  Tmp data
-	 *
-	 * @return void
-	 *
-	 * @since 1.0.0
-	 *
-	 * @noinspection PhpUnused
-	 * @noinspection PhpUnusedParameterInspection
-	 */
-	public function onRadicalMartPrepareMethodForm(Form $form, CMSObject|array $data, CMSObject|array $tmpData): void
-	{
-
 	}
 
 	/**
@@ -665,72 +677,31 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	}
 
 	/**
-	 * @param   Form   $form  Form
-	 * @param   array  $data  Data
+	 * @param   integer  $shippingId  Shipping id
 	 *
-	 * @return void
+	 * @return array
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	private function onContentPrepareCheckoutForm(Form $form, array $data): void
+	public function getCustomerShippingData(int $shippingId): array
 	{
 		$app = Factory::getApplication();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$user = $app->getIdentity();
 
-		$userStateData = $app->getUserState('com_radicalmart.checkout.data');
+		$query = $db->getQuery(true)
+			->select(['c.id', 'c.contacts', 'c.shipping', 'c.payment', 'c.plugins'])
+			->from($db->quoteName('#__radicalmart_customers', 'c'))
+			->where($db->quoteName('c.id') . ' = :id')
+			->bind(':id', $user->id, ParameterType::INTEGER);
 
-		$cityCode = (int) $data['shipping']['cityCode'];
-
-		if (!$cityCode)
+		if ($data = $db->setQuery($query, 0, 1)->loadAssoc())
 		{
-			$cityCode = isset($userStateData['shipping']['cityCode'])
-				? (int) $userStateData['shipping']['cityCode']
-				: 0;
+			return (new Registry($data['shipping']))->toArray()['shipping_method_' . $shippingId];
 		}
 
-		if ($cityCode > 0)
-		{
-			if (!$form->setFieldAttribute('officeCode', 'cityCode', $cityCode, 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
-		else
-		{
-			if (!$form->setFieldAttribute('officeCode', 'type', 'hidden', 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
-
-		$tariffCode = (int) $data['shipping']['tariffCode'];
-
-		if (!$tariffCode)
-		{
-			$tariffCode = isset($userStateData['shipping']['tariffCode'])
-				? (int) $userStateData['shipping']['tariffCode']
-				: 0;
-		}
-
-		if ($tariffCode > 0)
-		{
-			if (!$form->setFieldAttribute('tariffCode', 'filterCode', $tariffCode, 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-
-			if (!$form->setFieldAttribute('tariffCode', 'default', $tariffCode, 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
-		else
-		{
-			if (!$form->setFieldAttribute('tariffCode', 'type', 'hidden', 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
+		return [];
 	}
 }

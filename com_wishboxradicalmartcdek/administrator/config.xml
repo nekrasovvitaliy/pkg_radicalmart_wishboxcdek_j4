@@ -1,295 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
     <fieldset
-			label="COM_WISHBOXCDEK"
+			label="COM_WISHBOXRADICALMARTCDEK"
 			name="wishboxcdek"
-			addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+			addfieldprefix="Joomla\Component\Wishboxradicalmartcdek\Administrator\Field"
 	>
+		<field
+				name="debug_mode"
+				type="radio"
+				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DEBUG_MODE_LABEL"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="ready_status_id"
+			   type="Statuses"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_READY_STATUS_LABEL"
+			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
+		/>
+		<field name="error_status_id"
+			   type="Statuses"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_ERROR_STATUS_LABEL"
+			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
+		/>
+		<field name="completed_status_id"
+			   type="Statuses"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_COMPLETED_STATUS_LABEL"
+			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
+		/>
+		<field name="order_number_prefix"
+			   type="text"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_ORDER_NUMBER_PREFIX_LABEL"
+		/>
     </fieldset>
 
     <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
         <field
 			name="rules"
 			type="rules"
-			component="com_wishboxcdek"
+			component="com_wishboxradicalmartcdek"
 			class="inputbox"
 			filter="rules"
 			validate="rules"
 			label="JCONFIG_PERMISSIONS_LABEL"
 			section="component"
 		/>
-	</fieldset>
-
-    <fieldset name="component" label="COM_WISHBOXCDEK_FIELDSET_COMPONENT_LABEL">
-		<field
-				name="debug_mode"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_DEBUG_MODE_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_DEBUG_MODE_DESC"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="country_codes"
-				type="list"
-				label="COM_WISHBOXCDEK_FIELD_COUNTRIES_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_COUNTRIES_DESC"
-				layout="joomla.form.field.list-fancy-select"
-				hide_none="true"
-				hide_default="true"
-				multiple="true"
-				size="6"
-		>
-			<option value="AM">COM_WISHBOXCDEK_FIELD_COUNTRIES_ARMENIA_OPTION</option>
-			<option value="BY">COM_WISHBOXCDEK_FIELD_COUNTRIES_BELARUS_OPTION</option>
-			<option value="KZ">COM_WISHBOXCDEK_FIELD_COUNTRIES_KAZAKHSTAN_OPTION</option>
-			<option value="KG">COM_WISHBOXCDEK_FIELD_COUNTRIES_KYRGYZSTAN_OPTION</option>
-			<option value="RU">COM_WISHBOXCDEK_FIELD_COUNTRIES_RUSSIA_OPTION</option>
-		</field>
-	</fieldset>
-	<fieldset name="api" label="COM_WISHBOXCDEK_FIELDSET_API_LABEL">
-		<field
-				name="account"
-				type="textarea"
-				label="COM_WISHBOXCDEK_FIELD_ACCOUNT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ACCOUNT_DESC"
-		/>
-		<field
-				name="secure"
-				type="textarea"
-				label="COM_WISHBOXCDEK_FIELD_SECURE_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_SECURE_DESC"
-		/>
-		<field
-				name="account_test"
-				type="textarea"
-				label="COM_WISHBOXCDEK_FIELD_ACCOUNT_TEST_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ACCOUNT_TEST_DESC"
-		/>
-		<field
-				name="secure_test"
-				type="textarea"
-				label="COM_WISHBOXCDEK_FIELD_SECURE_TEST_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_SECURE_TEST_DESC"
-		/>
-		<field
-				name="sender_city_name"
-				type="text"
-				label="COM_WISHBOXCDEK_FIELD_SENDER_CITY_NAME_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_SENDER_CITY_NAME_DESC"
-		/>
-		<field
-				name="sender_city_id"
-				type="text"
-				readonly="true"
-				label="COM_WISHBOXCDEK_FIELD_SENDER_CITY_ID_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_SENDER_CITY_ID_DESC"
-		/>
-		<field
-				name="shipment_point"
-				type="text"
-				label="COM_WISHBOXCDEK_FIELD_SHIPMENT_POINT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_DESC"
-		/>
-		<field
-				name="calculation_method"
-				type="list"
-				default="with_parcels"
-				label="COM_WISHBOXCDEK_FIELD_CALCULATION_METHOD_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_CALCULATION_METHOD_DESC"
-		>
-			<option value="with_parcels">COM_WISHBOXCDEK_FIELD_CALCULATION_METHOD_OPTION_WITH_PARCELS</option>
-			<option value="without_parcels">COM_WISHBOXCDEK_FIELD_CALCULATION_METHOD_OPTION_WITHOUT_PARCELS</option>
-		</field>
-		<field
-				name="use_dimencions"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_USE_DIMENSIONS_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_USE_DIMENSIONS_DESC"
-				showon="calculation_method:with_parcels"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="dimencion_unit"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_DIMENSION_UNIT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_DIMENSION_UNIT_DESC"
-				showon="calculation_method:with_parcels[AND]use_dimencions:1"
-				class="btn-group"
-				default="1"
-		>
-			<option value="0.1">mm</option>
-			<option value="1">cm</option>
-			<option value="2.54">inch</option>
-			<option value="100">m</option>
-		</field>
-		<field
-				name="width_extra_field_id"
-				type="wishboxjshoppingextrafield"
-				hide_default="true"
-				extrafield_type="1"
-				showon="calculation_method:with_parcels[AND]use_dimencions:1"
-				label="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_WIDTH_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_WIDTH_DESC"
-		/>
-		<field
-				name="height_extra_field_id"
-				type="wishboxjshoppingextrafield"
-				hide_default="true"
-				extrafield_type="1"
-				showon="calculation_method:with_parcels[AND]use_dimencions:1"
-				label="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_HEIGHT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_HEIGHT_DESC"
-		/>
-		<field
-				name="length_extra_field_id"
-				type="wishboxjshoppingextrafield"
-				hide_default="true"
-				extrafield_type="1"
-				showon="calculation_method:with_parcels[AND]use_dimencions:1"
-				label="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_LENGTH_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_EXTRA_FIELD_LENGTH_DESC"
-		/>
-	</fieldset>
-	<fieldset name="checkout_address" label="COM_WISHBOXCDEK_FIELDSET_CHECKOUT_ADDRESS_LABEL">
-		<field
-				name="autocomplete"
-				type="radio"
-				label="COM_WISHBOXCDEK_AUTOCOMPLETE_LABEL"
-				description="COM_WISHBOXCDEK_AUTOCOMPLETE_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="only_select_city_from_list"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_ONLY_SELECT_CITY_FROM_LIST_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ONLY_SELECT_CITY_FROM_LIST_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-	</fieldset>
-	<fieldset name="checkout_shippings" label="COM_WISHBOXCDEK_FIELDSET_CHECKOUT_SHIPPING_LABEL">
-		<field
-				name="offices_layout"
-				type="filelist"
-				default="list"
-				directory="/components/com_wishboxcdek/layouts/shippingform/offices"
-				hide_default="true"
-				stripext="true"
-				label="COM_WISHBOXCDEK_FIELD_OFFICES_LAYOUTS_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_OFFICES_LAYOUTS_DESC"
-		/>
-		<field
-				name="offices_modal_layout"
-				type="folderlist"
-				default="list"
-				directory="/components/com_jshopping/addons/wishboxcdek/layouts/offices_modal"
-				hide_default="true"
-				label="COM_WISHBOXCDEK_FIELD_OFFICES_MODAL_LAYOUT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_OFFICES_MODAL_LAYOUT_DESC"
-		/>
-		<field
-				name="modal_script_layout"
-				type="folderlist"
-				default="highslide"
-				directory="/components/com_jshopping/addons/wishboxcdek/layouts/shippingform/modal"
-				hide_default="true"
-				hide_none="true"
-				label="COM_WISHBOXCDEK_FIELD_MODAL_SCRIPT_LAYOUT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_MODAL_SCRIPT_LAYOUT_DESC"
-		/>
-		<field
-				name="add_modal_js"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_ADD_MODAL_JS_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ADD_MODAL_JS_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="show_non_calculated_shipping_methods"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_SHOW_NON_CALCULATED_SHIPPING_METHODS_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_SHOW_NON_CALCULATED_SHIPPING_METHODS_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="checkout_shippings_show_tariff_names"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_CHECKOUT_SHIPPINGS_SHOW_TARIFF_NAMES_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_CHECKOUT_SHIPPINGS_SHOW_TARIFF_NAMES_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field
-				name="office_list_type"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_OFFICE_LIST_TYPE_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_OFFICE_LIST_TYPE_DESC"
-				layout="joomla.form.field.radio.buttons"
-				default="city"
-		>
-			<option value="city">COM_WISHBOXCDEK_FIELD_OFFICE_LIST_TYPE_CITY</option>
-			<option value="distance">COM_WISHBOXCDEK_FIELD_OFFICE_LIST_TYPE_DISTANCE</option>
-		</field>
-	</fieldset>
-	<fieldset name="order_list" label="COM_WISHBOXCDEK_FIELDSET_ORDER_LIST_LABEL">
-		<field
-				name="order_list_show_wishbox_shipping_number"
-				type="radio"
-				label="COM_WISHBOXCDEK_FIELD_ORDER_LIST_SHOW_WISHBOX_SHIPPING_NUMBER_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ORDER_LIST_SHOW_WISHBOX_SHIPPING_NUMBER_DESC"
-				layout="joomla.form.field.radio.switcher"
-				default="0"
-		>
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-	</fieldset>
-	<fieldset name="order_show" label="COM_WISHBOXCDEK_FIELDSET_ORDER_SHOW_LABEL">
-		<field
-				name="order_show_layout"
-				type="list"
-				default="default"
-				label="COM_WISHBOXCDEK_FIELD_ORDER_SHOW_LAYOUT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ORDER_SHOW_LAYOUT_DESC"
-		>
-			<option value="default">Default</option>
-			<option value="list">List</option>
-		</field>
-		<field
-				name="order_show_admin_layout"
-				type="list"
-				default="default"
-				label="COM_WISHBOXCDEK_FIELD_ORDER_SHOW_ADMIN_LAYOUT_LABEL"
-				description="COM_WISHBOXCDEK_FIELD_ORDER_SHOW_ADMIN_LAYOUT_DESC"
-		>
-			<option value="default">Default</option>
-			<option value="list">List</option>
-		</field>
 	</fieldset>
 </config>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.4.2" method="upgrade">
+    <name>com_wishboxradicalmartcdek</name>
+    <creationDate>February 2024</creationDate>
+    <author>Nekrasov Vitaliy</author>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <version>1.0.0</version>
+    <description>COM_WISHBOXRADICALMARTCDEK_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Component\Wishboxradicalmartcdek</namespace>
+    <administration>
+        <menu img="class:bookmark">com_wishboxradicalmartcdek</menu>
+        <files folder="administrator">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <folder>services</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+        <languages folder="administrator">
+            <language tag="en-GB">language/en-GB/com_wishboxradicalmartcdek.ini</language>
+            <language tag="en-GB">language/en-GB/com_wishboxradicalmartcdek.sys.ini</language>
+            <language tag="ru-RU">language/ru-RU/com_wishboxradicalmartcdek.ini</language>
+            <language tag="ru-RU">language/ru-RU/com_wishboxradicalmartcdek.sys.ini</language>
+        </languages>
+    </administration>
+    <config>
+        <fields name="params">
+            <fieldset name="component">
+                <field name="save_history" default="0" />
+            </fieldset>
+        </fields>
+    </config>
+    <dashboards>
+		<dashboard title="COM_WISHBOXCDEK_DASHBOARD_TITLE" icon="icon-file-alt">content</dashboard>
+	</dashboards>
+</extension>

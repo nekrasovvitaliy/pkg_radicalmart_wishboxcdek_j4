@@ -28,6 +28,12 @@
 				   onchange="RadicalMartCheckout().reloadForm(this);"
 			/>
 
+			<field name="address"
+				   type="textarea"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ADDRESS_LABEL"
+				   required="true"
+			/>
+
 			<field name="tariffCode"
 				   type="tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"

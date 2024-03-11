@@ -228,7 +228,7 @@
 			/>
 			<field name="senderCityCode"
 				   type="listajaxsearch"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOЧCDEK_FIELD_SENDER_CITY_LABEL"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_CITY_LABEL"
 				   required="true"
 				   remote-search="1"
 				   addfieldprefix="Wishbox\Field"

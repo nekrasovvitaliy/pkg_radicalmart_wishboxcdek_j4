@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="plugin" group="task" method="upgrade">
+	<name>plg_task_wishboxradicalmartcdekorderregistrator</name>
+	<author>Nekrasov Vitaliy</author>
+	<creationDate>February 2024</creationDate>
+	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+	<version>1.0.0</version>
+	<description>PLG_TASK_WISHBOXRADICALMARTCDEKORDERREGISTRATOR_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator</namespace>
+	<files>
+		<folder plugin="wishboxradicalmartcdekorderregistrator">src</folder>
+		<folder>language</folder>
+		<folder>services</folder>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>

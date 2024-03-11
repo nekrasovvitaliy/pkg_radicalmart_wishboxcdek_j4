@@ -6,33 +6,22 @@
  * @author      Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @copyright   2023 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
- * Put the verbs in brackets into the Present Perfect or Present Perfect Continuous Tense.
- *
- * 1) Margaret is worried. She has been waiting for her husband for 2 hours.
- * 2) They have just bought a pet dog.
- * 3) Has your brother ever traveled to Australia? — No, he has not .
- * 4) How long has Mark been preparing for the competition? — He has been training since last year.
- * 5) Look! Mr. Jackson has grown a beard.
- * 6) Why have you been surfing the Internet for two hours? — Because I have looked for some information for my new project.
- * 7) Why is Victor so sad? — Because he has lost his money.
- * 8) How long have you been playing the guitar? — I have been playing it for six years.
  */
-defined('_JEXEC') or die;
-
 use Joomla\CMS\Application\AdministratorApplication;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Installer\Installer;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
-use Joomla\CMS\Version;
 use Joomla\Database\DatabaseDriver;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Filesystem\File;
 use Joomla\Filesystem\Folder;
 use Joomla\Filesystem\Path;
+
+defined('_JEXEC') or die;
 
 return new class implements ServiceProviderInterface
 {
@@ -65,24 +54,6 @@ return new class implements ServiceProviderInterface
 				 * @since  1.0.0
 				 */
 				protected DatabaseDriver $db;
-
-				/**
-				 * Minimum Joomla version required to install the extension.
-				 *
-				 * @var  string
-				 *
-				 * @since  1.0.0
-				 */
-				protected string $minimumJoomla = '4.2';
-
-				/**
-				 * Minimum PHP version required to install the extension.
-				 *
-				 * @var  string
-				 *
-				 * @since 1.0.0
-				 */
-				protected string $minimumPhp = '7.4';
 
 				/**
 				 * Constructor.
@@ -153,12 +124,6 @@ return new class implements ServiceProviderInterface
 				 */
 				public function preflight(string $type, InstallerAdapter $adapter): bool
 				{
-					// Check compatible
-					if (!$this->checkCompatible())
-					{
-						return false;
-					}
-
 					return true;
 				}
 
@@ -191,51 +156,13 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Method to check compatible.
-				 *
-				 * @throws  Exception
-				 *
-				 * @return  boolean True on success, False on failure.
-				 *
-				 * @since  1.0.0
-				 */
-				protected function checkCompatible(): bool
-				{
-					$app = Factory::getApplication();
-
-					// Check joomla version
-					if (!(new Version)->isCompatible($this->minimumJoomla))
-					{
-						$app->enqueueMessage(
-							Text::sprintf('PLG_RADICALMART_SHIPPING_APISHIP_ERROR_COMPATIBLE_JOOMLA', $this->minimumJoomla),
-							'error'
-						);
-
-						return false;
-					}
-
-					// Check PHP
-					if (!(version_compare(PHP_VERSION, $this->minimumPhp) >= 0))
-					{
-						$app->enqueueMessage(
-							Text::sprintf('PLG_RADICALMART_SHIPPING_APISHIP_ERROR_COMPATIBLE_PHP', $this->minimumPhp),
-							'error'
-						);
-
-						return false;
-					}
-
-					return true;
-				}
-
-				/**
 				 * Enable plugin after installation.
 				 *
 				 * @param   InstallerAdapter  $adapter  Parent object calling object.
 				 *
 				 * @return void
 				 *
-				 * @since  1.0.0
+				 * @since 1.0.0
 				 */
 				protected function enablePlugin(InstallerAdapter $adapter): void
 				{
@@ -250,15 +177,16 @@ return new class implements ServiceProviderInterface
 					$this->db->updateObject('#__extensions', $plugin, ['type', 'element', 'folder']);
 				}
 
+
 				/**
-				 * Method to parse through a layouts' element of the installation manifest and take appropriate action.
+				 * Method to parse through a layouts element of the installation manifest and take appropriate action.
 				 *
 				 * @param   SimpleXMLElement|null  $element    The XML node to process.
 				 * @param   Installer|null         $installer  Installer calling object.
 				 *
 				 * @return  boolean  True on success.
 				 *
-				 * @since  1.0.0
+				 * @since  __DEPLOY_VERSION__
 				 */
 				public function parseLayouts(SimpleXMLElement $element = null, Installer $installer = null): bool
 				{
@@ -274,7 +202,7 @@ return new class implements ServiceProviderInterface
 					// Get source
 					$folder = (string) $element->attributes()->folder;
 					$source = ($folder && file_exists($installer->getPath('source') . '/' . $folder))
-					? $installer->getPath('source') . '/' . $folder : $installer->getPath('source');
+						? $installer->getPath('source') . '/' . $folder : $installer->getPath('source');
 
 					// Prepare files
 					$copyFiles = [];
@@ -295,7 +223,8 @@ return new class implements ServiceProviderInterface
 							{
 								Log::add(
 									Text::sprintf('JLIB_INSTALLER_ERROR_CREATE_DIRECTORY', $newdir),
-									Log::WARNING, 'jerror'
+									Log::WARNING,
+									'jerror'
 								);
 
 								return false;
@@ -309,13 +238,13 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Method to parse through a layouts' element of the installation manifest and remove the files that were installed.
+				 * Method to parse through a layouts element of the installation manifest and remove the files that were installed.
 				 *
 				 * @param   SimpleXMLElement|null  $element  The XML node to process.
 				 *
 				 * @return  boolean  True on success.
 				 *
-				 * @since  1.0.0
+				 * @since  __DEPLOY_VERSION__
 				 */
 				protected function removeLayouts(SimpleXMLElement $element = null): bool
 				{

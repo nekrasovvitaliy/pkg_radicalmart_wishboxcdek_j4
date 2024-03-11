@@ -3,7 +3,7 @@
  * @copyright 2023 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Service;
+namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
 use Joomla\CMS\Factory;
@@ -30,7 +30,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	private stdClass $order;
 
 	/**
-	 * @param   stdClass $order  Order
+	 * @param   stdClass  $order  Order
 	 *
 	 * @since 1.0.0
 	 */
@@ -148,6 +148,16 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	public function getDeliveryPoint(): string
 	{
 		return $this->order->formData['shipping']['officeCode'];
+	}
+
+	/**
+	 * @return integer
+	 *
+	 * @since 1.0.0
+	 */
+	public function getCityCode(): int
+	{
+		return $this->order->formData['shipping']['cityCode'];
 	}
 
 	/**
@@ -356,12 +366,15 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 			->bootComponent('com_radicalmart')
 			->getMVCFactory()
 			->createTable('Order', 'Administrator');
+
 		$orderTable->load($this->order->id);
 
+		/** @noinspection PhpUndefinedFieldInspection */
 		$registry = new Registry($orderTable->shipping);
-		$data = $registry->get('data');
 
-		if ($data->trackingNumber != $trackingNumber)
+		$data     = $registry->get('data');
+
+		if (!isset($data->trackingNumber) || $data->trackingNumber != $trackingNumber)
 		{
 			$data->trackingNumber = $trackingNumber;
 			$registry->set('data', $data);
@@ -372,6 +385,16 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 				throw new Exception('$orderTable->store() return false', 500);
 			}
 		}
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @since 1.0.0
+	 */
+	public function getDeliveryAddress(): string
+	{
+		return $this->order->formData['shipping']['address'];
 	}
 
 	/**
@@ -469,5 +492,42 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 			$this->getTotalWeight(),
 			1
 		);
+	}
+
+	/**
+	 * @param   float  $shippingPriceTariff  Shipping price tariff
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function setShippingPriceTariff(float $shippingPriceTariff): void
+	{
+		/** @var OrderTable $orderTable */
+		$orderTable = Factory::getApplication()
+			->bootComponent('com_radicalmart')
+			->getMVCFactory()
+			->createTable('Order', 'Administrator');
+
+		$orderTable->load($this->order->id);
+
+		/** @noinspection PhpUndefinedFieldInspection */
+		$registry = new Registry($orderTable->shipping);
+
+		$price     = $registry->get('price');
+
+		if ($price->tariff != $shippingPriceTariff)
+		{
+			$price->tariff = $shippingPriceTariff;
+			$registry->set('price', $price);
+			$orderTable->shipping = $registry->toString();
+
+			if (!$orderTable->store())
+			{
+				throw new Exception('$orderTable->store() return false', 500);
+			}
+		}
 	}
 }

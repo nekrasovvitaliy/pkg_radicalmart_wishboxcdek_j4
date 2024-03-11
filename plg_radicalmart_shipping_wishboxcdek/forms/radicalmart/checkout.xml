@@ -22,6 +22,7 @@
 				<option value="">JNONE</option>
 				<option value="7">Миасс</option>
 				<option value="17">Пушкино</option>
+				<option value="286">Благовещенск, городской округ Благовещенск, Амурская область</option>
 			</field>
 
 			<field name="officeCode"
@@ -32,11 +33,16 @@
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
-				   onchange="RadicalMartCheckout().reloadForm(this);"
 				   layout="joomla.form.field.list-fancy-select"
 			>
 				<option value="">JNONE</option>
 			</field>
+
+			<field name="address"
+				   type="textarea"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ADDRESS_LABEL"
+				   required="true"
+			/>
 
 			<field name="tariffCode"
 				   type="tariff"
@@ -45,12 +51,9 @@
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
-				   readonly="true"
 			>
 				<option value="">JNONE</option>
 			</field>
-
-
 
 			<field name="zip"
 				   type="text"
