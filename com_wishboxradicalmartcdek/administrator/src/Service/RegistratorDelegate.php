@@ -523,6 +523,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 			$price->tariff = $shippingPriceTariff;
 			$registry->set('price', $price);
 			$orderTable->shipping = $registry->toString();
+			//$this->order->shipping
 
 			if (!$orderTable->store())
 			{

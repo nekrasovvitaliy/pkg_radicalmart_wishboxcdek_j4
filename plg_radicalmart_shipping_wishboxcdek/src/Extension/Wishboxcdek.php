@@ -106,17 +106,18 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onRadicalMartNormaliseRequestData'       => 'onRadicalMartNormaliseRequestData',
-			'onRadicalMartGetOrderShippingMethods'    => 'onRadicalMartGetOrderShippingMethods',
-			'onRadicalMartGetOrderForm'               => 'onRadicalMartGetOrderForm',
-			'onRadicalMartGetOrderTotal'              => 'onGetOrderTotal',
-			'onRadicalMartGetOrderCustomerUpdateData' => 'onGetOrderCustomerUpdateData',
-			'onRadicalMartGetCheckoutCustomerData'    => 'onGetCheckoutCustomerData',
-			'onRadicalMartGetCustomerMethodForm'      => 'onRadicalMartGetPersonalMethodForm',
-			'onRadicalMartGetPersonalShippingMethods' => 'onGetPersonalShippingMethods',
-			'onRadicalMartGetPersonalMethodForm'      => 'onRadicalMartGetPersonalMethodForm',
-			'onContentPrepareForm'                    => 'onContentPrepareForm',
-			'onRadicalMartPrepareMethodForm'          => 'onRadicalMartPrepareMethodForm'
+			'onRadicalMartNormaliseRequestData'         => 'onRadicalMartNormaliseRequestData',
+			'onRadicalMartGetOrderShippingMethods'      => 'onRadicalMartGetOrderShippingMethods',
+			'onRadicalMartGetOrderForm'                 => 'onRadicalMartGetOrderForm',
+			'onRadicalMartGetOrderTotal'                => 'onGetOrderTotal',
+			'onRadicalMartGetOrderCustomerUpdateData'   => 'onGetOrderCustomerUpdateData',
+			'onRadicalMartGetCheckoutCustomerData'      => 'onGetCheckoutCustomerData',
+			'onRadicalMartGetCustomerMethodForm'        => 'onRadicalMartGetPersonalMethodForm',
+			'onRadicalMartGetPersonalShippingMethods'   => 'onGetPersonalShippingMethods',
+			'onRadicalMartGetPersonalMethodForm'        => 'onRadicalMartGetPersonalMethodForm',
+			'onContentPrepareForm'                      => 'onContentPrepareForm',
+			'onRadicalMartPrepareMethodForm'            => 'onRadicalMartPrepareMethodForm',
+			'onRadicalMartBeforeOrderSave'              => 'onRadicalMartBeforeOrderSave'
 		];
 	}
 
