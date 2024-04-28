@@ -29,7 +29,11 @@
 			   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 			   hide_default="true"
 		/>
-
+		<field name="address"
+			   type="textarea"
+			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ADDRESS_LABEL"
+			   required="true"
+		/>
 
 		<field name="zip" type="text"
 			   label="COM_RADICALMART_ZIP"/>

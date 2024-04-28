@@ -6,7 +6,6 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 
 /**
  * @method getTariffCode(): integer
@@ -25,18 +24,28 @@ trait CheckoutOfficecodePreparerTrait
 	 */
 	protected function prepareOfficeCodeField(): void
 	{
-		if ($this->getCityCode() > 0
-			&& $this->getTariffCode() > 0
-			&& WishboxcdekHelper::isTariffToPoint($this->getTariffCode()))
+		$cityCode = $this->getCityCode();
+		$isTariffToPoint = $this->isTariffToPoint();
+
+		if ($cityCode > 0
+			&& $isTariffToPoint
+		)
 		{
-			if (!$this->getForm()->setFieldAttribute('officeCode', 'cityCode', $this->getCityCode(), 'shipping'))
+			$result = $this->getForm()->setFieldAttribute(
+				'officeCode',
+				'cityCode',
+				$this->getCityCode(),
+				$this->shippingFieldAttributeGroup
+			);
+
+			if (!$result)
 			{
 				throw new Exception('failed to set attribute', 500);
 			}
 		}
 		else
 		{
-			if (!$this->getForm()->removeField('officeCode', 'shipping'))
+			if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
 			{
 				throw new Exception('failed to removeField', 500);
 			}

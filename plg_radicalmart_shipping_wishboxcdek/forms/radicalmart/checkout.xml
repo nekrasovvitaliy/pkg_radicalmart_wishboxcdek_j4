@@ -44,17 +44,6 @@
 				   required="true"
 			/>
 
-			<field name="tariffCode"
-				   type="tariff"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
-				   required="true"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-				   hide_default="true"
-				   hide_none="true"
-			>
-				<option value="">JNONE</option>
-			</field>
-
 			<field name="zip"
 				   type="text"
 				   label="COM_RADICALMART_ZIP"

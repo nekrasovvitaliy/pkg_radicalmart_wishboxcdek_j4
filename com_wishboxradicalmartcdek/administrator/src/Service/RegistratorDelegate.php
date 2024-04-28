@@ -6,8 +6,8 @@
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\RadicalMart\Administrator\Table\OrderTable;
 use Joomla\Component\Wishboxcdek\Site\Entity\ProductEntity;
 use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
@@ -106,7 +106,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	public function isTariffFromDoor(): bool
 	{
 		$app = Factory::getApplication();
-		$tariffCode = $this->order->formData['shipping']['tariffCode'];
+		$tariffCode = $this->order->shipping->order->price['tariffCode'];
 
 		$tariffTable = $app->bootComponent('com_wishboxcdek')
 			->getMVCFactory()
@@ -123,9 +123,8 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getOrderNumber(): string
 	{
-		$plugin = PluginHelper::getPlugin('radicalmart', 'wishboxcdekorderregistrator');
-		$pluginParams = new Registry($plugin->params);
-		$prefix = $pluginParams->get('order_number_prefix');
+		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
+		$prefix = $componentParams->get('order_number_prefix');
 
 		return $prefix . $this->order->number;
 	}
@@ -137,7 +136,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getTariffCode(): int
 	{
-		return $this->order->formData['shipping']['tariffCode'];
+		return $this->order->shipping->order->price['tariffCode'];
 	}
 
 	/**
@@ -516,14 +515,16 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 		/** @noinspection PhpUndefinedFieldInspection */
 		$registry = new Registry($orderTable->shipping);
 
-		$price     = $registry->get('price');
+		$price = $registry->get('price');
 
 		if ($price->tariff != $shippingPriceTariff)
 		{
 			$price->tariff = $shippingPriceTariff;
 			$registry->set('price', $price);
 			$orderTable->shipping = $registry->toString();
-			//$this->order->shipping
+
+			$this->order->formData['shipping']['price']['tariff'] = $shippingPriceTariff;
+			$this->order->shipping->order->price['tariff'] = $shippingPriceTariff;
 
 			if (!$orderTable->store())
 			{

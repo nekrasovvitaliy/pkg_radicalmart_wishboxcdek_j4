@@ -33,6 +33,22 @@ extract($displayData);
  */
 ?>
 <div class="uk-grid-small" uk-grid="">
+	<?php if ($shipping->params->get('field_cityCode', 1)): ?>
+        <div class="uk-width-1-1">
+            <?php echo $form->renderField('cityCode', 'shipping'); ?>
+        </div>
+	<?php endif; ?>
+	<?php if ($shipping->params->get('field_officeCode', 1)): ?>
+        <div class="uk-width-1-1">
+			<?php echo $form->renderField('officeCode', 'shipping'); ?>
+        </div>
+	<?php endif; ?>
+	<?php if ($shipping->params->get('field_address', 1)): ?>
+        <div class="uk-width-1-1">
+			<?php echo $form->renderField('address', 'shipping'); ?>
+        </div>
+	<?php endif; ?>
+
 	<?php if ($shipping->params->get('field_country', 1)): ?>
 		<div class="uk-width-1-1"><?php echo $form->renderField('country', 'shipping'); ?></div>
 	<?php endif; ?>

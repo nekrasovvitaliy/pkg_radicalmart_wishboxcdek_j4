@@ -34,14 +34,6 @@
 				   required="true"
 			/>
 
-			<field name="tariffCode"
-				   type="tariff"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
-				   required="true"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-				   hide_default="true"
-			/>
-
 			<field name="trackingNumber"
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TRACKING_NUMBER_LABEL"
@@ -127,6 +119,12 @@
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_TARIFF_PRICE_LABEL"
 					   currency="{currency_code}"
 					   class="clean-price"
+				/>
+				<field name="tariffCode"
+					   type="tariff"
+					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_TARIFF_LABEL"
+					   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+					   readonly="true"
 				/>
 			</fields>
 		</fields>

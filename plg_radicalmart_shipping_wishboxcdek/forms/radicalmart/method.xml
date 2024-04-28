@@ -2,6 +2,14 @@
 <form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
 	<fieldset name="fields" label="PLG_RADICALMART_SHIPPING_WISHBOCDEK_FIELDSET_PARAMS_BASIC">
 		<fields name="params">
+			<field name="tariffMode"
+				   type="list"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_MODE_LABEL"
+				   hide_default="1"
+			>
+				<option value="С-С">С-С</option>
+				<option value="С-Д">С-Д</option>
+			</field>
 			<field name="tariffCodes"
 				   type="Tariff"
 				   multiple="true"
@@ -20,12 +28,11 @@
 				<option value="code">code</option>
 				<option value="id">id</option>
 			</field>
-			<field name="calculatePrice"
+			<field name="includeShippingPriceInOrder"
 				   type="radio"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CALCULATE_PRICE_LABEL"
-				   default="1"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_INCLUDE_SHIPPING_PRICE_IN_ORDER_LABEL"
 				   layout="joomla.form.field.radio.switcher"
-				   filter="integer"
+				   default="0"
 			>
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>

@@ -6,7 +6,6 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 
 /**
  * @method getTariffCode(): integer
@@ -26,11 +25,14 @@ trait CheckoutAddressPreparerTrait
 	 */
 	protected function prepareAddressField(): void
 	{
-		if ($this->getCityCode() <= 0
-			|| $this->getTariffCode() <= 0
-			|| WishboxcdekHelper::isTariffToPoint($this->getTariffCode()))
+		$cityCode = $this->getCityCode();
+		$isTariffToPoint = $this->isTariffToPoint();
+
+		if ($cityCode <= 0 || $isTariffToPoint)
 		{
-			if (!$this->getForm()->removeField('address', 'shipping'))
+			$result = $this->getForm()->removeField('address', $this->shippingFieldAttributeGroup);
+
+			if (!$result)
 			{
 				throw new Exception('failed to removeField', 500);
 			}

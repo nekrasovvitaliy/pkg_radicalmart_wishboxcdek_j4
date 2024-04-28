@@ -10,7 +10,6 @@ use Joomla\CMS\Form\Form;
 use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
 
 /**
  * @since 1.0.0
@@ -18,7 +17,6 @@ use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutTa
 class OrdersitePreparer extends FormPreparer
 {
 	use CheckoutOfficecodePreparerTrait;
-	use CheckoutTariffcodePreparerTrait;
 
 	/**
 	 * @var   integer  $shippingId  Shipping id
@@ -42,22 +40,27 @@ class OrdersitePreparer extends FormPreparer
 	protected int $tariffCode;
 
 	/**
+	 * @var string|null
+	 *
+	 * @since 1.0.0
+	 */
+	protected ?string $shippingFieldAttributeGroup = 'shipping';
+
+	/**
 	 * @param   Form     $form        Form
 	 * @param   integer  $shippingId  Shipping id
 	 * @param   integer  $cityCode    City code
-	 * @param   integer  $tariffCode  Tariff code
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, int $shippingId, int $cityCode, int $tariffCode)
+	public function __construct(Form $form, int $shippingId, int $cityCode)
 	{
 		parent::__construct($form);
 
 		$this->shippingId = $shippingId;
 		$this->cityCode = $cityCode;
-		$this->tariffCode = $tariffCode;
 	}
 
 	/**
@@ -94,44 +97,9 @@ class OrdersitePreparer extends FormPreparer
 	}
 
 	/**
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
-	protected function prepareTariffCodeField(): void
-	{
-		if ($this->tariffCode > 0)
-		{
-			if (!$this->getForm()->setFieldAttribute('tariffCode', 'filterCode', $this->tariffCode, 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-
-			if (!$this->getForm()->setFieldAttribute('tariffCode', 'default', $this->tariffCode, 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
-		else
-		{
-			if (!$this->getForm()->removeField('tariffCode', 'shipping'))
-			{
-				throw new Exception('failed to set attribute', 500);
-			}
-		}
-	}
-
-	/**
 	 * @return integer
 	 *
 	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
-	/**
-	 * @return integer
 	 *
 	 * @since 1.0.0
 	 */

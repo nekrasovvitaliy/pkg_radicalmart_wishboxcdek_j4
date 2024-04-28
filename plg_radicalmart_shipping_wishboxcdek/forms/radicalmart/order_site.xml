@@ -43,15 +43,6 @@
 				   required="true"
 			/>
 
-			<field name="tariffCode"
-				   type="tariff"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
-				   required="true"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-				   hide_default="true"
-				   hide_none="true"
-			/>
-
 			<field name="trackingNumber"
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TRACKING_NUMBER_LABEL"

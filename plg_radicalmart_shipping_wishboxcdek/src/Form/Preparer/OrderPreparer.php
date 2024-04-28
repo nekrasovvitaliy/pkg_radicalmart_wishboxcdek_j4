@@ -9,9 +9,11 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
+use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use stdClass;
 
 /**
  * @since 1.0.0
@@ -22,11 +24,11 @@ class OrderPreparer extends FormPreparer
 	use CheckoutAddressPreparerTrait;
 
 	/**
-	 * @var   integer  $shippingId  Shipping id
+	 * @var   stdClass  $shipping  Shipping
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $shippingId;
+	protected stdClass $shipping;
 
 	/**
 	 * @var   array  $formData  Form data
@@ -36,19 +38,26 @@ class OrderPreparer extends FormPreparer
 	protected array $formData;
 
 	/**
-	 * @param   Form     $form        Form
-	 * @param   integer  $shippingId  Shipping id
-	 * @param   array    $formData    Form data
+	 * @var string|null
+	 *
+	 * @since 1.0.0
+	 */
+	protected ?string $shippingFieldAttributeGroup = 'shipping';
+
+	/**
+	 * @param   Form      $form      Form
+	 * @param   stdClass  $shipping  Shipping
+	 * @param   array     $formData  Form data
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, int $shippingId, array $formData)
+	public function __construct(Form $form, stdClass $shipping, array $formData)
 	{
 		parent::__construct($form);
 
-		$this->shippingId = $shippingId;
+		$this->shipping = $shipping;
 		$this->formData = $formData;
 
 	}
@@ -89,7 +98,7 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getShippingId(): int
 	{
-		return $this->shippingId;
+		return $this->shipping->id;
 	}
 
 	/**
@@ -99,6 +108,21 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return (int) $this->formData['shipping']['tariffCode'];
+		return $this->shipping->order->price['tariffCode'] ?? 0;
+	}
+
+	/**
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	protected function isTariffToPoint(): bool
+	{
+		/** @noinspection PhpUnnecessaryLocalVariableInspection */
+		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
+
+		return $isTariffToPoint;
 	}
 }

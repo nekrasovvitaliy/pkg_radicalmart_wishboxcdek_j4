@@ -1,14 +1,17 @@
 <?php
 /**
- * @copyright 2013-2024 Nekrasov Vitaliy
- * @license GNU General Public License version 2 or later
+ * @copyright   2013-2024 Nekrasov Vitaliy
+ * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
 
 use Exception;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
 use Joomla\Registry\Registry;
 use stdClass;
 
@@ -17,8 +20,13 @@ use stdClass;
  */
 class PersonalshippingmethodPreparer extends FormPreparer
 {
+	use CheckoutOfficecodePreparerTrait;
+	use CheckoutAddressPreparerTrait;
+
 	/**
-	 * @var   array|CMSObject|stdClass  $shipping  Shipping
+	 * Shipping
+	 *
+	 * @var array|CMSObject|stdClass
 	 *
 	 * @since 1.0.0
 	 */
@@ -30,6 +38,13 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	 * @since 1.0.0
 	 */
 	protected int $cityCode;
+
+	/**
+	 * @var string|null
+	 *
+	 * @since 1.0.0
+	 */
+	protected ?string $shippingFieldAttributeGroup = null;
 
 	/**
 	 * @param   Form                      $form      Form
@@ -66,34 +81,8 @@ class PersonalshippingmethodPreparer extends FormPreparer
 			return;
 		}
 
-		$this->cityCode = $this->getCityCode();
-
 		$this->prepareOfficeCodeField();
-	}
-
-	/**
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
-	protected function prepareOfficeCodeField(): void
-	{
-		if (is_object($this->data))
-		{
-			if ($this->cityCode)
-			{
-				if (!$this->form->setFieldAttribute(
-					'officeCode',
-					'cityCode',
-					$this->cityCode
-				))
-				{
-					throw new Exception('form->setFieldAttribute return false', 500);
-				}
-			}
-		}
+		$this->prepareAddressField();
 	}
 
 	/**
@@ -105,8 +94,30 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
-		/** @noinspection PhpUndefinedFieldInspection */
-		return (int) $this->data->shipping['shipping_method_' . $this->getShippingId()]['cityCode'];
+		$app = Factory::getApplication();
+		$method = $app->input->getMethod();
+
+		if ($method == 'GET')
+		{
+			if (is_array($this->data))
+			{
+				return isset($this->data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode'])
+					? (int) $this->data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode']
+					: 0;
+			}
+
+			return isset($this->data->shipping['shipping_method_' . $this->getShippingId()]['cityCode'])
+				? (int) $this->data->shipping['shipping_method_' . $this->getShippingId()]['cityCode']
+				: 0;
+		}
+		else
+		{
+			$data = $app->input->post->get('jform');
+
+			return isset($data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode'])
+				? (int) $data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode']
+				: 0;
+		}
 	}
 
 	/**
@@ -117,5 +128,19 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	protected function getShippingId(): int
 	{
 		return $this->shipping->id;
+	}
+
+	/**
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	protected function isTariffToPoint(): bool
+	{
+		$tariffMode = $this->shipping->params->get('tariffMode', '');
+
+		return in_array($tariffMode, ['С-С', 'Д-С']);
 	}
 }

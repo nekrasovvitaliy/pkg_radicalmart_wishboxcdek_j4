@@ -75,7 +75,9 @@
           <mappings>
             <mapping deploy="plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek" web="/" />
             <mapping deploy="plugins\radicalmart\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdek" web="/" />
-            <mapping deploy="/templates/shaper_helixultimate/html/layouts/plugins/radicalmart_shipping/wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator" web="/" />
+            <mapping deploy="administrator\components\com_wishboxradicalmartcdek" local="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator" web="/" />
+            <mapping deploy="plugins\task\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator" web="/" />
           </mappings>
         </serverdata>
       </paths>
@@ -115,6 +117,13 @@
         </serverdata>
       </paths>
       <paths name="testphp8optom.semena-tut.ru">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="yootheme.test1.ru">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

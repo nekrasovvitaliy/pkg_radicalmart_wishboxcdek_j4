@@ -5,6 +5,7 @@
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Service;
 
+use Exception;
 use Joomla\Component\Wishboxcdek\Site\Entity\ProductEntity;
 use stdClass;
 use Wishbox\ShippingService\Cdek\Interface\CalculatorDelegateInterface;
@@ -106,11 +107,20 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	/**
 	 * @return array
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getTariffCodes(): array
 	{
-		return $this->method->params->get('tariffCodes');
+		$tariffCodes = $this->method->params->get('tariffCodes');
+
+		if (!is_array($tariffCodes) || !count($tariffCodes))
+		{
+			throw new Exception('Shipping method "' . $this->method->title . '" doesn`t have any tariffs.', 500);
+		}
+
+		return $tariffCodes;
 	}
 
 	/**
