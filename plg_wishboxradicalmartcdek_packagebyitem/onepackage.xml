@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="wishboxradicalmartcdek" method="upgrade">
+    <name>plg_wishboxradicalmartcdek_onepackage</name>
+    <author>Nekrasov Vitaliy</author>
+    <creationDate>July 2024</creationDate>
+    <license>GNU General Public License version 3 or later</license>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <version>1.0.0</version>
+    <description>PLG_WISHBOXRADICALMARTCDEK_ONEPACKAGE_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Plugin\Wishboxradicalmartcdek\Onepackage</namespace>
+    <scriptfile>script.php</scriptfile>
+    <files>
+        <folder>language</folder>
+        <folder plugin="onepackage">services</folder>
+        <folder>src</folder>
+    </files>
+    <config>
+    </config>
+</extension>

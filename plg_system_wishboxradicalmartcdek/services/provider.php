@@ -1,9 +1,7 @@
 <?php
 /**
- * @package     Joomla.Plugin
- * @subpackage  Radicalmart.Wishboxcdek
- * @copyright 2023 Nekrasov Vitaliy
- * @license GNU General Public License version 2 or later
+ * @copyright   2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;

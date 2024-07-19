@@ -18,6 +18,16 @@
                 <include name="wishboxradicalmartcdek.xml" />
             </fileset>
         </zip>
+        <zip destfile="plg_radicalmart_wishboxcdekonepackage/plg_radicalmart_wishboxcdekonepackage.zip">
+            <fileset dir="./plg_radicalmart_wishboxcdekonepackage">
+                <include name="forms/**" />
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="wishboxcdekonepackage.xml" />
+            </fileset>
+        </zip>
         <zip destfile="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip">
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="forms/**" />
@@ -53,6 +63,12 @@
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="plg_radicalmart_shipping_wishboxcdek.zip" />
             </fileset>
+            <fileset dir="./plg_radicalmart_wishboxcdek">
+                <include name="plg_radicalmart_wishboxcdek.zip" />
+            </fileset>
+            <fileset dir="./plg_radicalmart_wishboxcdekonepackage">
+                <include name="plg_radicalmart_wishboxcdekonepackage.zip" />
+            </fileset>
             <fileset dir="./plg_radicalmart_wishboxcdekorderregistrator">
                 <include name="plg_radicalmart_wishboxcdekorderregistrator.zip" />
             </fileset>
@@ -72,6 +88,12 @@
             </fileset>
             <fileset dir=".">
                 <include name="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdek/plg_radicalmart_wishboxcdek.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdekonepackage/plg_radicalmart_wishboxcdekonepackage.zip" />
             </fileset>
             <fileset dir=".">
                 <include name="plg_radicalmart_wishboxcdekorderregistrator/plg_radicalmart_wishboxcdekorderregistrator.zip" />

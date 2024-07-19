@@ -1,24 +1,9 @@
 <?php
 /**
- * @version 1.0.0
- * @package Joomla.Plugin
- * @subpackage Radicalmart_shipping.Wishboxcdek
- * @author Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @copyright Copyright (c) 2023 Nekrasov Vitaliy
- * @license GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license     GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 use Joomla\CMS\Form\Form;
-use Joomla\Component\RadicalMart\Administrator\Helper\LayoutsHelper;
-
-defined('_JEXEC') or die;
-
-/* @deprecated  RadicalMart Shipping - Wishboxcdek v? */
-if (LayoutsHelper::isSiteLayoutOverride('plugins.radicalmart_shipping.wishboxcdek.checkout'))
-{
-	echo LayoutsHelper::renderSiteLayout('plugins.radicalmart_shipping.wishboxcdek.checkout', $displayData);
-
-	return;
-}
 
 extract($displayData);
 

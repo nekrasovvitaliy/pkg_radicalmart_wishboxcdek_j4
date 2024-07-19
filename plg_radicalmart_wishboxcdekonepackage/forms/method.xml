@@ -1,0 +1,65 @@
+<form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
+    <fieldset name="wishboxcdekonepackage" label="PLG_RADICALMART_WISHBOXCDEKONEPACKAGE_FIELDSET_ONE_PACKAGE">
+        <fields name="params">
+            <field name="useDefaultProductCost"
+                   type="radio"
+                   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PRODUCT_COST_LABEL"
+                   default="1"
+                   layout="joomla.form.field.radio.switcher"
+                   filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field
+                    name="defaultProductCost"
+                    type="number"
+                    label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PRODUCT_COST_LABEL"
+                    showon="useDefaultProductCost:1"
+            />
+            <field name="wishboxcdekonepackageUseDefaultWeight"
+                   type="radio"
+                   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PACKAGE_WEIGHT_LABEL"
+                   default="1"
+                   layout="joomla.form.field.radio.switcher"
+                   filter="integer"
+            >
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
+            <field
+                    name="wishboxcdekonepackageDefaultWeight"
+                    type="number"
+                    label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_WEIGHT_G_LABEL"
+                    showon="wishboxcdekonepackageUseDefaultPackageWeight:1"
+            />
+            <field
+                    name="wishboxcdekonepackageDefaultDimensions"
+                    type="subform"
+                    label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_DIMENSIONS_LABEL"
+                    buttons="add,remove,move"
+                    layout="joomla.form.field.subform.repeatable"
+                    showon="useDefaultPackageDimensions:1"
+            >
+                <form>
+                    <fieldset>
+                        <field name="width"
+                               type="number"
+                               label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_WIDTH_LABEL"
+                        />
+
+                        <field name="height"
+                               type="number"
+                               label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_HEIGHT_LABEL"
+                        />
+
+                        <field name="length"
+                               type="number"
+                               label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_LENGTH_LABEL"
+                        />
+                    </fieldset>
+                </form>
+            </field>
+        </fields>
+    </fieldset>
+</form>

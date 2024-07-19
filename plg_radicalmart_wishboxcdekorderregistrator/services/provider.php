@@ -1,10 +1,6 @@
 <?php
 /**
- * @version 1.0.0
- * @package Joomla.Plugins
- * @subpackage Radicalmart.Wishboxcdekorderregistrator
- * @author Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @copyright 2023 Nekrasov Vitaliy
+ * @copyright   2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Extension\PluginInterface;

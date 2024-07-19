@@ -19,15 +19,30 @@
 				   hide_none="1"
 				   layout="joomla.form.field.list-fancy-select"
 			/>
+			<field name="shippingPayer"
+				   type="list"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_PAYER_LABEL"
+				   required="true"
+				   default="id"
+				   hide_none="true"
+				   hide_default="true"
+			>
+				<option value="buyer">PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_PAYER_BUYER_OPTION</option>
+				<option value="seller">PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_PAYER_SELLER_OPTION</option>
+			</field>
+
 			<field name="cdekProductCodeSource"
 				   type="list"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CDEK_PRODUCT_CODE_SOURCE_LABEL"
 				   required="true"
 				   default="id"
+				   hide_none="true"
+				   hide_default="true"
 			>
 				<option value="code">code</option>
 				<option value="id">id</option>
 			</field>
+
 			<field name="includeShippingPriceInOrder"
 				   type="radio"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_INCLUDE_SHIPPING_PRICE_IN_ORDER_LABEL"
@@ -78,78 +93,6 @@
 							   default="1"
 							   step="0.01"
 							   showon="useTariffValue:1"
-						/>
-					</fieldset>
-				</form>
-			</field>
-
-			<field name="registerProductsAsOneSingleProduct"
-				   type="radio"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_REGISTER_PRODUCTS_AS_ONE_SINGLE_PRODUCT_LABEL"
-				   default="1"
-				   layout="joomla.form.field.radio.switcher"
-				   filter="integer"
-			>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field name="useDefaultProductCost"
-				   type="radio"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PRODUCT_COST_LABEL"
-				   default="1"
-				   layout="joomla.form.field.radio.switcher"
-				   filter="integer"
-			>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field
-					name="defaultProductCost"
-					type="number"
-					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PRODUCT_COST_LABEL"
-					showon="useDefaultProductCost:1"
-			/>
-			<field name="useDefaultPackageWeight"
-				   type="radio"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PACKAGE_WEIGHT_LABEL"
-				   default="1"
-				   layout="joomla.form.field.radio.switcher"
-				   filter="integer"
-			>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field
-					name="defaultPackageWeight"
-					type="number"
-					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_WEIGHT_G_LABEL"
-					showon="useDefaultPackageWeight:1"
-			/>
-			<field
-					name="defaultDimensions"
-					type="subform"
-					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_DIMENSIONS_LABEL"
-					buttons="add,remove,move"
-					layout="joomla.form.field.subform.repeatable"
-			>
-				<form>
-					<fieldset>
-						<field name="width"
-							   type="number"
-							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_WIDTH_LABEL"
-							   required="true"
-						/>
-
-						<field name="height"
-							   type="number"
-							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_HEIGHT_LABEL"
-							   required="true"
-						/>
-
-						<field name="length"
-							   type="number"
-							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_LENGTH_LABEL"
-							   required="true"
 						/>
 					</fieldset>
 				</form>

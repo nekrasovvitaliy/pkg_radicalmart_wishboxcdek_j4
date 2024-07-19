@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="radicalmart" method="upgrade">
+    <name>plg_radicalmart_wishboxcdekonepackage</name>
+    <author>Nekrasov Vitaliy</author>
+    <creationDate>July 2024</creationDate>
+    <license>GNU General Public License version 3 or later</license>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <version>1.0.0</version>
+    <description>PLG_RADICALMART_WISHBOXCDEKONEPACKAGE_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Plugin\Radicalmart\Wishboxcdekonepackage</namespace>
+    <scriptfile>script.php</scriptfile>
+    <files>
+        <folder>forms</folder>
+        <folder plugin="wishboxcdekonepackage">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdek.ini</language>
+        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdek.sys.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdek.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdek.sys.ini</language>
+    </languages>
+    <config>
+    </config>
+</extension>

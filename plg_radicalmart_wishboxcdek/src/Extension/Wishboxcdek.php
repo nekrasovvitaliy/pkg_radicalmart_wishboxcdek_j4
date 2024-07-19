@@ -1,8 +1,6 @@
 <?php
 /**
- * @package     Joomla.Plugins
- * @subpackage  Radicalmart.Wishboxcdek
- * @copyright   2023 Nekrasov Vitaliy
+ * @copyright   2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\Radicalmart\Wishboxcdek\Extension;
@@ -182,8 +180,8 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 
 		$query = $db->getQuery(true)
 			->select(['c.id', 'c.contacts', 'c.shipping', 'c.payment', 'c.plugins'])
-			->from($db->quoteName('#__radicalmart_customers', 'c'))
-			->where($db->quoteName('c.id') . ' = :id')
+			->from($db->qn('#__radicalmart_customers', 'c'))
+			->where($db->qn('c.id') . ' = :id')
 			->bind(':id', $user->id, ParameterType::INTEGER);
 
 		if ($data = $db->setQuery($query, 0, 1)->loadAssoc())

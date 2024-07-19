@@ -10,10 +10,9 @@
 	<namespace path="src">Joomla\Plugin\RadicalMartShipping\Wishboxcdek</namespace>
 	<scriptfile>script.php</scriptfile>
 	<files>
-		<folder plugin="wishboxcdek">src</folder>
 		<folder>forms</folder>
-		<folder>language</folder>
-		<folder>services</folder>
+		<folder plugin="wishboxcdek">services</folder>
+		<folder>src</folder>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/plg_radicalmart_shipping_wishboxcdek.ini</language>

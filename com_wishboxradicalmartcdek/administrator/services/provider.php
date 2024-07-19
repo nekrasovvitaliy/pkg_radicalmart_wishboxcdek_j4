@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright (c) 2013-2024 Nekrasov Vitaliy
- * @license GNU General Public License version 2 or later;
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy
+ * @license     GNU General Public License version 2 or later;
  */
 
 use Joomla\CMS\Component\Router\RouterFactoryInterface;

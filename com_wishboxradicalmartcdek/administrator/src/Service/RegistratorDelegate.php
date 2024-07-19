@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2023 Nekrasov Vitaliy
+ * @copyright   (с) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
@@ -11,9 +11,11 @@ use Joomla\CMS\Factory;
 use Joomla\Component\RadicalMart\Administrator\Table\OrderTable;
 use Joomla\Component\Wishboxcdek\Site\Entity\ProductEntity;
 use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Exception\OrderServiceException;
 use Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Exception\EmptyProductCodeException;
 use Joomla\Registry\Registry;
 use stdClass;
+use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest;
 
 /**
  * @property Registry|null $orderShippingMethodParams
@@ -27,7 +29,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 *
 	 * @since 1.0.0
 	 */
-	private stdClass $order;
+	public stdClass $order;
 
 	/**
 	 * @param   stdClass  $order  Order
@@ -286,14 +288,6 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getProducts(): array
 	{
-		if ($this->orderShippingMethodParams->get(
-			'registerProductsAsOneSingleProduct',
-			0
-		))
-		{
-			return [$this->getOneSingleProduct()];
-		}
-
 		$products = [];
 
 		$cdekProductCodeSource = $this->getCdekProductCodeSource();
@@ -389,10 +383,21 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return string
 	 *
+	 * @throws OrderServiceException
+	 *
 	 * @since 1.0.0
 	 */
 	public function getDeliveryAddress(): string
 	{
+		if (!isset($this->order->formData['shipping']['address']))
+		{
+			throw new OrderServiceException(
+				'Order with has empty address',
+				500,
+				$this->order->id
+			);
+		}
+
 		return $this->order->formData['shipping']['address'];
 	}
 
@@ -476,24 +481,6 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	}
 
 	/**
-	 * @return ProductEntity
-	 *
-	 * @since 1.0.0
-	 */
-	private function getOneSingleProduct(): ProductEntity
-	{
-		return new ProductEntity(
-			'Product',
-			time(),
-			$this->getTotalProductPrice(),
-			$this->getTotalPayment(),
-			$this->getTotalProductCost(),
-			$this->getTotalWeight(),
-			1
-		);
-	}
-
-	/**
 	 * @param   float  $shippingPriceTariff  Shipping price tariff
 	 *
 	 * @return void
@@ -531,5 +518,37 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 				throw new Exception('$orderTable->store() return false', 500);
 			}
 		}
+	}
+
+	/**
+	 * @return PackageRequest[]
+	 *
+	 * @since 1.0.0
+	 */
+	public function getOrdersPostPackages(): array
+	{
+		/** @var PackageRequest[] $packages */
+		$packages = [];
+
+		$app = Factory::getApplication();
+		$app->triggerEvent('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages', [&$packages, $this]);
+
+		return $packages;
+	}
+
+	/**
+	 * @return PackageRequest[]
+	 *
+	 * @since 1.0.0
+	 */
+	public function getOrdersPatchPackages(): array
+	{
+		/** @var PackageRequest[] $packages */
+		$packages = [];
+
+		$app = Factory::getApplication();
+		$app->triggerEvent('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages', [&$packages, $this]);
+
+		return $packages;
 	}
 }

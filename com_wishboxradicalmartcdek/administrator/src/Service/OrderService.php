@@ -1,11 +1,10 @@
 <?php
 /**
- * @copyright 2023 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
-use AntistressStore\CdekSDK2\Exceptions\CdekV2RequestException;
 use Error;
 use Exception;
 use Joomla\CMS\Application\CMSApplicationInterface;
@@ -14,8 +13,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
 use Joomla\Component\Wishboxcdek\Site\Service\Registrator;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Exception\OrderServiceException;
 use Joomla\Registry\Registry;
 use stdClass;
+use WishboxCdekSDK2\Exception\Api\ErrorException;
+use WishboxCdekSDK2\Exception\Api\ErrorsException;
+use WishboxCdekSDK2\Exception\Api\RequestErrorException;
 
 /**
  * @property Registry|null $orderShippingMethodParams
@@ -81,12 +84,12 @@ class OrderService
 					$completedStatusId
 				);
 			}
-			catch (CdekV2RequestException $e)
+			catch (ErrorException | ErrorsException | RequestErrorException $e)
 			{
 				$app->enqueueMessage(
 					Text::_(
 						'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
-					) . ': ' . $e->errorMessage,
+					) . ': ' . $e->getMessage(),
 					CMSApplicationInterface::MSG_WARNING
 				);
 
@@ -97,12 +100,37 @@ class OrderService
 						'action_text' => Text::_(
 							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
 						),
-						'message' => $e->errorMessage
+						'message' => $e->getMessage()
 					]
 				);
 
 				$orderModel->updateStatus(
 					$order->id,
+					$errorStatusId
+				);
+			}
+			catch (OrderServiceException $e)
+			{
+				$app->enqueueMessage(
+					Text::_(
+						'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
+					) . ': ' . $e->getMessage(),
+					CMSApplicationInterface::MSG_WARNING
+				);
+
+				$orderModel->addLog(
+					$order->id,
+					'delivery_service_registration_error',
+					[
+						'action_text' => Text::_(
+							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
+						),
+						'message' => $e->getMessage()
+					]
+				);
+
+				$orderModel->updateStatus(
+					$e->getOrderId(),
 					$errorStatusId
 				);
 			}

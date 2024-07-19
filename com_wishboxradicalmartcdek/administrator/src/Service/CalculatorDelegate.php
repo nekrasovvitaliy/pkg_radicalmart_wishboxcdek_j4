@@ -1,14 +1,15 @@
 <?php
 /**
- * @copyright 2023 Nekrasov Vitaliy
+ * @copyright   (с) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Service;
+namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Entity\ProductEntity;
+use Joomla\CMS\Factory;
+use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
 use stdClass;
-use Wishbox\ShippingService\Cdek\Interface\CalculatorDelegateInterface;
+use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest;
 
 /**
  * @since 1.0.0
@@ -20,7 +21,7 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 *
 	 * @since 1.0.0
 	 */
-	private stdClass $method;
+	public stdClass $method;
 
 	/**
 	 * @var array $products Products
@@ -87,13 +88,6 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 */
 	public function getTotalWeight(): int
 	{
-		$useDefaultPackageWeight = $this->method->params->get('useDefaultPackageWeight', 0);
-
-		if ($useDefaultPackageWeight)
-		{
-			return (int) $this->method->params->get('defaultPackageWeight', 0);
-		}
-
 		$totalWeight = 0;
 
 		foreach ($this->products as $product)
@@ -124,34 +118,23 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	}
 
 	/**
-	 * @return string
+	 * Metod returns array of packages
+	 *
+	 * @return   PackageRequest[]
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function getCalculationMethod(): string
+	public function getPackages(): array
 	{
-		return 'without_parcels';
-	}
+		/** @var PackageRequest[] $packages */
+		$packages = [];
 
-	/**
-	 * @return array
-	 *
-	 * @since 1.0.0
-	 */
-	public function getProducts(): array
-	{
-		$products = [];
+		$app = Factory::getApplication();
+		$app->triggerEvent('onWishboxRadicalMartCdekCalculatorDelegateGetPackages', [&$packages, $this]);
 
-		foreach ($this->products as $product)
-		{
-			print_r($product);
-			die;
-			$p = new ProductEntity(
-
-			);
-		}
-
-		return [];
+		return $packages;
 	}
 
 	/**
@@ -159,44 +142,8 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 *
 	 * @since 1.0.0
 	 */
-	public function useDimencions(): bool
+	public function useDimensions(): bool
 	{
 		return false;
-	}
-
-	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	public function getPackageWidth(): int
-	{
-		$dimensions = $this->method->params->get('defaultDimensions');
-
-		return (int) $dimensions->width;
-	}
-
-	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	public function getPackageHeight(): int
-	{
-		$dimensions = $this->method->params->get('defaultDimensions');
-
-		return (int) $dimensions->height;
-	}
-
-	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	public function getPackageLength(): int
-	{
-		$dimensions = $this->method->params->get('defaultDimensions');
-
-		return (int) $dimensions->length;
 	}
 }

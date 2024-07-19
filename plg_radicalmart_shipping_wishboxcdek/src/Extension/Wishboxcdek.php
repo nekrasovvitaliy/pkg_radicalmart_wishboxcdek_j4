@@ -1,25 +1,26 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension;
 
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Helper\PriceHelper as RadicalMartPriceHelper;
 use Joomla\Component\Wishboxcdek\Site\Service\Calculator;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\CheckoutPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrderPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrdersitePreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\PersonalshippingmethodPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\ShippingmethodPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Service\CalculatorDelegate;
 use Joomla\Registry\Registry;
 use stdClass;
 use function defined;
@@ -156,6 +157,8 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
+		$app = Factory::getApplication();
+
 		// Set price
 		if (!empty($formData['shipping']['price']))
 		{
@@ -187,19 +190,27 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 					$cityCode
 				);
 				$calculator = new Calculator($calculatorDelegate);
-				$tariff = $calculator->getTariff();
 
-				if ($tariff)
+				try
 				{
-					$calculatePrice = (bool) $method->params->get('calculatePrice', 0);
+					$tariff = $calculator->getTariff();
 
-					if ($calculatePrice)
+					if ($tariff)
 					{
-						$price['base'] = $tariff->shipping;
-					}
+						$shippingPayer = $method->params->get('shippingPayer', 'buyer');
 
-					$price['tariff']  = $tariff->shipping;
-					$price['tariffCode'] = (int) $tariff->code;
+						if ($shippingPayer == 'buyer')
+						{
+							$price['base'] = $tariff->shipping;
+						}
+
+						$price['tariff']  = $tariff->shipping;
+						$price['tariffCode'] = (int) $tariff->code;
+					}
+				}
+				catch (Exception $e)
+				{
+					$app->enqueueMessage($e->getMessage(), 'error');
 				}
 			}
 		}
@@ -392,11 +403,11 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @param   string   $context   Context selector string.
 	 * @param   array    $data      Method saved  data.
-	 * @param   object   $method    Order shipping method object.
+	 * @param   object   $method    Order a shipping method object.
 	 * @param   array    $formData  Order form data.
 	 * @param   array    $products  Order products data.
 	 * @param   array    $currency  Order currency data.
-	 * @param   boolean  $isNew     Is new order.
+	 * @param   boolean  $isNew     Is a new order.
 	 *
 	 * @return void
 	 *
@@ -589,20 +600,6 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		bool $isNew
 	): void
 	{
-		if ($context != 'com_radicalmart.checkout')
-		{
-			return;
-		}
 
-		if ($shipping->plugin != 'wishboxcdek')
-		{
-			return;
-		}
-
-		$registry = new Registry($data['shipping']);
-		$d = $registry->get('data');
-		$d->dimensions = $shipping->params->get('defaultDimensions');
-		$registry->set('data', $d);
-		$data['shipping'] = $registry->toString();
 	}
 }

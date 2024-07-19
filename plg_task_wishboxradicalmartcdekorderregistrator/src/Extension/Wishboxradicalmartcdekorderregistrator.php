@@ -1,10 +1,7 @@
 <?php
 /**
- * @package     Joomla.Plugins
- * @subpackage  Task.Wishboxretailcrm
- *
- * @copyright   (C) 2021 Open Source Matters, Inc. <https://www.joomla.org>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator\Extension;
 

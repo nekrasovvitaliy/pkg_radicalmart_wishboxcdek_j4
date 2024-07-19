@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright (c) 2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later;
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Extension;
