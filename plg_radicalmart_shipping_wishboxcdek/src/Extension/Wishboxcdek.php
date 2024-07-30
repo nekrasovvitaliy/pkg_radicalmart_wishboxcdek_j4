@@ -364,7 +364,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				? (int) $formData['shipping']['cityCode']
 				: 0;
 
-			$preparer = new OrdersitePreparer($form, $shipping->id, $receiverCityCode);
+			$preparer = new OrdersitePreparer($form, $shipping, $formData);
 			$preparer->prepare();
 		}
 		elseif ($formName == 'com_radicalmart.order')

@@ -10,6 +10,7 @@ use Joomla\CMS\Form\Form;
 use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use stdClass;
 
 /**
  * @since 1.0.0
@@ -19,18 +20,18 @@ class OrdersitePreparer extends FormPreparer
 	use CheckoutOfficecodePreparerTrait;
 
 	/**
-	 * @var   integer  $shippingId  Shipping id
+	 * @var   stdClass  $shipping  Shipping
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $shippingId;
+	protected stdClass $shipping;
 
 	/**
-	 * @var   integer  $cityCode  City code
+	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $cityCode;
+	protected array $formData;
 
 	/**
 	 * @var   integer  $tariffCode  Tariff code
@@ -47,20 +48,20 @@ class OrdersitePreparer extends FormPreparer
 	protected ?string $shippingFieldAttributeGroup = 'shipping';
 
 	/**
-	 * @param   Form     $form        Form
-	 * @param   integer  $shippingId  Shipping id
-	 * @param   integer  $cityCode    City code
+	 * @param   Form      $form      Form
+	 * @param   stdClass  $shipping  Shipping
+	 * @param   array     $formData  Form data
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, int $shippingId, int $cityCode)
+	public function __construct(Form $form, stdClass $shipping, array $formData)
 	{
 		parent::__construct($form);
 
-		$this->shippingId = $shippingId;
-		$this->cityCode = $cityCode;
+		$this->shipping = $shipping;
+		$this->formData = $formData;
 	}
 
 	/**
@@ -76,6 +77,8 @@ class OrdersitePreparer extends FormPreparer
 		{
 			return;
 		}
+
+		$this->prepareOfficeCodeField();
 	}
 
 	/**
@@ -87,7 +90,9 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function prepareAddressField(): void
 	{
-		if ($this->cityCode <= 0 || $this->tariffCode <= 0 || WishboxcdekHelper::isTariffToPoint($this->tariffCode))
+		if ($this->getCityCode() <= 0
+			|| $this->getTariffCode() <= 0
+			|| WishboxcdekHelper::isTariffToPoint($this->getTariffCode()))
 		{
 			if (!$this->getForm()->removeAttribute('address', 'shipping'))
 			{
@@ -105,7 +110,7 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
-		return $this->cityCode;
+		return (int) $this->formData['shipping']['cityCode'];
 	}
 
 	/**
@@ -115,7 +120,7 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return $this->tariffCode;
+		return $this->shipping->order->price['tariffCode'] ?? 0;
 	}
 
 	/**
@@ -125,6 +130,21 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function getShippingId(): int
 	{
-		return $this->shippingId;
+		return $this->shipping->id;
+	}
+
+	/**
+	 * @return boolean
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	protected function isTariffToPoint(): bool
+	{
+		/** @noinspection PhpUnnecessaryLocalVariableInspection */
+		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
+
+		return $isTariffToPoint;
 	}
 }
