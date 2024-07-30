@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy<nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -135,19 +135,6 @@ return new class implements ServiceProviderInterface
 				 */
 				public function postflight(string $type, InstallerAdapter $adapter): bool
 				{
-					$installer = $adapter->getParent();
-
-					if ($type !== 'uninstall')
-					{
-						// Parse layouts
-						$this->parseLayouts($installer->getManifest()->layouts, $installer);
-					}
-					else
-					{
-						// Remove layouts
-						$this->removeLayouts($installer->getManifest()->layouts);
-					}
-
 					return true;
 				}
 

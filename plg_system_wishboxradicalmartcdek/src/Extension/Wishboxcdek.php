@@ -1,7 +1,5 @@
 <?php
 /**
- * @package     Joomla.Plugins
- * @subpackage  Radicalmart.Wishboxcdek
  * @copyright   2023 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
  */
@@ -14,7 +12,6 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
-use stdClass;
 use Wishbox\Plugin;
 use function defined;
 
@@ -37,8 +34,6 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	protected $autoloadLanguage = true;
 
 	/**
-	 * @inheritDoc
-	 *
 	 * @return string[]
 	 *
 	 * @since 1.0.0
@@ -47,7 +42,6 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	{
 		return [
 			'onBeforeRender' => 'onBeforeRender',
-			'onRadicalMartAfterChangeOrderStatus' => 'onRadicalMartAfterChangeOrderStatus'
 		];
 	}
 
@@ -96,43 +90,5 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 				Text::_('PLG_RADICALMART_WISHBOXCDEK_REGISTER_IN_CDEK')
 			);
 		}
-	}
-
-	/**
-	 * @param   string    $context
-	 * @param   stdClass  $order
-	 * @param   integer   $oldStatus
-	 * @param   integer   $newStatus
-	 * @param   boolean   $isNew
-	 *
-	 * @return void
-	 *
-	 * @since 1.0.0
-	 *
-	 */
-	public function onRadicalMartAfterChangeOrderStatus(
-		string $context,
-		stdClass $order,
-		int $oldStatus,
-		int $newStatus,
-		bool $isNew
-	): void
-	{
-
-//		$context = $event->getArgument(0);
-//		$order = $event->getArgument(1);
-//		$oldStatus = $event->getArgument(2);
-//		$newStatus = $event->getArgument(3);
-//		$isNew = $event->getArgument(4);
-
-		print_r($order);
-		die;
-
-		$apiAccount = $this->params->get('api_account', '');
-		$apiSecure = $this->params->get('api_secure', '');
-		$orderType = $this->params->get('order_type', '');
-
-		$orderCreator = new \Joomla\Plugin\Radicalmart\Wishboxcdek\Service\Order($apiAccount, $apiSecure, $orderType);
-
 	}
 }

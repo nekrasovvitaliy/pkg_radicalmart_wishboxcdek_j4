@@ -31,24 +31,44 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	private array $products;
 
 	/**
-	 * @var integer $receiverCityCode Receiver city code
+	 * @var array $formData Form data
 	 *
 	 * @since 1.0.0
 	 */
-	private int $receiverCityCode;
+	private array $formData;
 
 	/**
-	 * @param   stdClass    $method            Method
-	 * @param   array       $products          Data
-	 * @param   integer     $receiverCityCode  Receiver city code
+	 * @param   stdClass    $method    Method
+	 * @param   array       $products  Data
+	 * @param   array       $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(stdClass $method, array $products, int $receiverCityCode)
+	public function __construct(stdClass $method, array $products, array $formData)
 	{
 		$this->method = $method;
 		$this->products = $products;
-		$this->receiverCityCode = $receiverCityCode;
+		$this->formData = $formData;
+	}
+
+	/**
+	 * @return stdClass
+	 *
+	 * @since 1.0.0
+	 */
+	public function getMethod(): stdClass
+	{
+		return $this->method;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	public function getProducts(): array
+	{
+		return $this->products;
 	}
 
 	/**
@@ -59,6 +79,16 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	public function getShippingMethodId(): int
 	{
 		return $this->method->id;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	public function getFormData(): array
+	{
+		return $this->formData;
 	}
 
 	/**
@@ -78,7 +108,11 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 */
 	public function getReceiverCityCode(): int
 	{
-		return $this->receiverCityCode;
+		$cityCode = (isset($this->formData['shipping']) && isset($this->formData['shipping']['cityCode']))
+			? $this->formData['shipping']['cityCode']
+			: 0;
+
+		return $cityCode;
 	}
 
 	/**

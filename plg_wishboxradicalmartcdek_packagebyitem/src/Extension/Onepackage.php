@@ -80,9 +80,6 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 		$delegate = $event->getArgument(1);
 
 		$totalWeight   = $delegate->getTotalWeight();
-		$packageWidth  = $delegate->getPackageWidth();
-		$packageHeight = $delegate->getPackageHeight();
-		$packageLength = $delegate->getPackageLength();
 
 		// Создаем данные посылки. Место
 		$package = (new PackageRequest)
@@ -142,9 +139,7 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 		$existingOrdersGetResponse = $event->getArgument(3);
 
 		$totalWeight   = $delegate->getTotalWeight();
-		$packageWidth  = $delegate->getPackageWidth();
-		$packageHeight = $delegate->getPackageHeight();
-		$packageLength = $delegate->getPackageLength();
+
 		$package = new \WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\PackageRequest;
 		$existingPackages = $existingOrdersGetResponse->getEntity()->getPackages();
 		$existingPackage   = $existingPackages[0];

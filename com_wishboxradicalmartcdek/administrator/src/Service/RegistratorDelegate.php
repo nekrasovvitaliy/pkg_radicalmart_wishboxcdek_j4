@@ -55,7 +55,16 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 			'orderShippingMethodParams' => $this->order->shippingMethods[$this->order->formData['shipping']['id']]->params,
 			default => null,
 		};
+	}
 
+	/**
+	 * @return stdClass
+	 *
+	 * @since 1.0.0
+	 */
+	public function getOrder(): stdClass
+	{
+		return $this->order;
 	}
 
 	/**
@@ -138,7 +147,19 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getTariffCode(): int
 	{
-		return $this->order->shipping->order->price['tariffCode'];
+		$tariffCode = 0;
+
+		if (isset($this->order->shipping->order->price['tariffCode']))
+		{
+			$tariffCode = (int) $this->order->shipping->order->price['tariffCode'];
+		}
+
+		if (!$tariffCode)
+		{
+			throw new Exception('Order ' . $this->order->number . ' has not got tariffCode');
+		}
+
+		return $tariffCode;
 	}
 
 	/**
@@ -257,26 +278,6 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 		}
 
 		return $totalWeight;
-	}
-
-	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	public function getPackageWidth(): int
-	{
-		return (int) $this->order->formData['shipping']['dimensions']['width'];
-	}
-
-	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	public function getPackageHeight(): int
-	{
-		return (int) $this->order->formData['shipping']['dimensions']['height'];
 	}
 
 	/**
@@ -523,6 +524,8 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return PackageRequest[]
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getOrdersPostPackages(): array
@@ -538,6 +541,8 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 
 	/**
 	 * @return PackageRequest[]
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */

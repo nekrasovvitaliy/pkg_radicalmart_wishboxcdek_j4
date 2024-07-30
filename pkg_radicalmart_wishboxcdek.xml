@@ -15,6 +15,7 @@
     </languages>
     <files>
         <file type="component" id="com_wishboxradicalmartcdek">com_wishboxradicalmartcdek.zip</file>
+        <file type="plugin" group="console" id="wishboxcdekorderregistrator">plg_console_wishboxradicalmartcdekorderregistrator.zip</file>
         <file type="plugin" group="radicalmart_shipping" id="wishboxcdek">plg_radicalmart_shipping_wishboxcdek.zip</file>
         <file type="plugin" group="radicalmart" id="wishboxcdek">plg_radicalmart_wishboxcdek.zip</file>
         <file type="plugin" group="radicalmart" id="wishboxcdekonepackage">plg_radicalmart_wishboxcdekonepackage.zip</file>

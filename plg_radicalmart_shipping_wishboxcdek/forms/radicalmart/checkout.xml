@@ -33,6 +33,7 @@
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
+				   allowed_cod="true"
 				   layout="joomla.form.field.list-fancy-select"
 			>
 				<option value="">JNONE</option>

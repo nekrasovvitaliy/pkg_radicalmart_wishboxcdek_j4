@@ -11,7 +11,6 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
 use Joomla\Event\SubscriberInterface;
-use Joomla\Registry\Registry;
 use stdClass;
 use function defined;
 
@@ -192,7 +191,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 			return;
 		}
 
-//		$orderService = new OrderService;
-//		$orderService->register($order);
+		//   $orderService = new OrderService;
+		//   $orderService->register($order);
 	}
 }

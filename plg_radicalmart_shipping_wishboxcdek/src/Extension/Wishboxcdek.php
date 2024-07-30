@@ -176,7 +176,8 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 		$price['base'] = RadicalMartPriceHelper::clean($price['base'], $code);
 
-		if ($context == 'com_radicalmart.checkout')
+		if ($context == 'com_radicalmart.checkout'
+			|| ($context == 'com_radicalmart.order' && isset($data['recalculate_price'])))
 		{
 			$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
 				? $formData['shipping']['cityCode']
@@ -187,7 +188,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				$calculatorDelegate = new CalculatorDelegate(
 					$method,
 					$products,
-					$cityCode
+					$formData
 				);
 				$calculator = new Calculator($calculatorDelegate);
 
@@ -210,12 +211,9 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				}
 				catch (Exception $e)
 				{
-					$app->enqueueMessage($e->getMessage(), 'error');
+					$method->disabled = true;
 				}
 			}
-		}
-		elseif ($context == 'com_radicalmart.order')
-		{
 		}
 
 		$price['base_string']   = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
@@ -226,8 +224,11 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 		// Set final price
 		$price['final']        = $price['base'];
-		$price['final_string'] = (empty($price['final'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
-			: RadicalMartPriceHelper::toString($price['final'], $code);
+
+		$price['final_string'] = (empty($price['final']))
+			? Text::_('COM_RADICALMART_PRICE_FREE')
+			: RadicalMartPriceHelper::toString($price['final'], $code) . (isset($tariff->name) ? ' (' . $tariff->name . ')' : '');
+
 		$price['final_seo']    = (empty($price['final'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
 			: RadicalMartPriceHelper::toString($price['final'], $code, 'seo');
 		$price['final_number'] = RadicalMartPriceHelper::toString($price['final'], $code, false);

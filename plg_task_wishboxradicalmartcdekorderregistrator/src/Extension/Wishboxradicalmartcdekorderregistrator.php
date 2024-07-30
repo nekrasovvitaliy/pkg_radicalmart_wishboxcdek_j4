@@ -131,7 +131,7 @@ final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements 
 	 *
 	 * @since 1.0.0
 	 */
-	public function getOrderIds(): array
+	protected function getOrderIds(): array
 	{
 		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 		$allowedStatusIds = [

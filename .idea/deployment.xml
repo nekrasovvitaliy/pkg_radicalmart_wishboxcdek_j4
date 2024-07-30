@@ -62,6 +62,10 @@
             <mapping deploy="plugins\task\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/language" web="/" />
             <mapping deploy="plugins\radicalmart\wishboxcdekonepackage" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekpackagemultiple" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple" web="/" />
+            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator" web="/" />
+            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/language" web="/" />
+            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/language" web="/" />
           </mappings>
         </serverdata>
       </paths>

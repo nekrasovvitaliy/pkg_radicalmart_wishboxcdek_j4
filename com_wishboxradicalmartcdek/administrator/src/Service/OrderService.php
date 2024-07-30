@@ -2,6 +2,8 @@
 /**
  * @copyright   (c) 2013-2024 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
+ *
+ * @noinspection PhpMultipleClassDeclarationsInspection
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
@@ -14,6 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
 use Joomla\Component\Wishboxcdek\Site\Service\Registrator;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Exception\OrderServiceException;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 use stdClass;
 use WishboxCdekSDK2\Exception\Api\ErrorException;
@@ -137,8 +140,64 @@ class OrderService
 		}
 		catch (Exception | Error $e)
 		{
-			echo $e;
-			die;
+			throw $e;
 		}
+	}
+
+
+	/**
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function registerAll(): void
+	{
+		$app = Factory::getApplication();
+		$orderIds = $this->getOrderIds();
+
+		$app->triggerEvent('onBeforeWishboxRadicalMarketCdekOrderServiceRegisterAll', [$orderIds]);
+
+		/** @var OrderModel $orderModel */
+		$orderModel = $app->bootComponent('com_radicalmart')
+			->getMVCFactory()
+			->createModel('order', 'Administrator', ['ignore_request' => true]);
+
+		foreach ($orderIds as $k => $orderId)
+		{
+			$order = $orderModel->getItem($orderId);
+			$this->register($order);
+
+			$app->triggerEvent('onAfterWishboxRadicalMarketCdekOrderServiceRegister', [$k, $order]);
+		}
+
+		$app->triggerEvent('onAfterWishboxRadicalMarketCdekOrderServiceRegisterAll', [$orderIds]);
+	}
+
+	/**
+	 * @return integer[]
+	 *
+	 * @since 1.0.0
+	 */
+	private function getOrderIds(): array
+	{
+		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
+		$allowedStatusIds = [
+			(int) $componentParams->get('ready_status_id', 0),
+			(int) $componentParams->get('error_status_id', 0),
+		];
+
+		/** @var DatabaseInterface $db */
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+
+		$query = $db->getQuery(true)
+			->select('id')
+			->from('#__radicalmart_orders')
+			->whereIn('status', $allowedStatusIds)
+			->where('state=1');
+		$db->setQuery($query);
+
+		return $db->loadColumn();
 	}
 }

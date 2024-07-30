@@ -15,10 +15,10 @@
         <folder>src</folder>
     </files>
     <languages>
-        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdek.ini</language>
-        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdek.sys.ini</language>
-        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdek.ini</language>
-        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdek.sys.ini</language>
+        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdekonepackage.ini</language>
+        <language tag="en-GB">language/en-GB/plg_radicalmart_wishboxcdekonepackage.sys.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdekonepackage.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_radicalmart_wishboxcdekonepackage.sys.ini</language>
     </languages>
     <config>
     </config>

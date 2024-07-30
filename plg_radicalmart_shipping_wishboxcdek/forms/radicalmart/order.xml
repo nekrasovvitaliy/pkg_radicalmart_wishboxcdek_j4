@@ -99,4 +99,29 @@
 			</fields>
 		</fields>
 	</fieldset>
+	<fieldset name="shipping_admin">
+		<fields name="shipping">
+			<field name="date" type="calendar"
+				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
+				   hint="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE_HINT"
+				   translateformat="true"
+				   showtime="false"
+				   filter="user_utc"/>
+			<field name="note" type="textarea"
+				   label="COM_RADICALMART_NOTE"/>
+			<fields name="price">
+				<field name="base" type="price"
+					   label="COM_RADICALMART_PRICE"
+					   currency="{currency_code}"
+					   class="clean-price"/>
+			</fields>
+			<field name="recalculate_price" type="list"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PRICE_RECALCULATE"
+				   default="0"
+				   onchange="window.RadicalMartOrder().displayOrderChangeNotice();">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+		</fields>
+	</fieldset>
 </form>
