@@ -6,10 +6,14 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
 
 /**
  * @method getTariffCode(): integer
  * @method getForm(): Form
+ * @method getFormData(): Form data
+ * @method getProducts(): array
+ * @method getShipping(): stdClass
  *
  * @since 1.0.0
  */
@@ -28,8 +32,7 @@ trait CheckoutOfficecodePreparerTrait
 		$isTariffToPoint = $this->isTariffToPoint();
 
 		if ($cityCode > 0
-			&& $isTariffToPoint
-		)
+			&& $isTariffToPoint)
 		{
 			$result = $this->getForm()->setFieldAttribute(
 				'officeCode',
@@ -49,6 +52,35 @@ trait CheckoutOfficecodePreparerTrait
 			{
 				throw new Exception('failed to removeField', 500);
 			}
+		}
+
+		$calculatorDelegate = new CalculatorDelegate(
+			$this->getShipping(),
+			$this->getProducts(),
+			$this->getFormData()
+		);
+
+		$packageRequests = $calculatorDelegate->getPackages();
+
+		$packageRequestWeights = 0;
+
+		foreach ($packageRequests as $packageRequest)
+		{
+			$packageRequestWeights[] = $packageRequest->getWeight();
+		}
+
+		$packageRequestMaxWeight = max($packageRequestWeights);
+
+		$result = $this->getForm()->setFieldAttribute(
+			'officeCode',
+			'weight',
+			$packageRequestMaxWeight,
+			$this->shippingFieldAttributeGroup
+		);
+
+		if (!$result)
+		{
+			throw new Exception('failed to set attribute', 500);
 		}
 	}
 }

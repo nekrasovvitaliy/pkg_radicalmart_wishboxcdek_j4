@@ -27,11 +27,18 @@ class CheckoutPreparer extends FormPreparer
 	protected stdClass $shipping;
 
 	/**
-	 * @var   integer  $cityCode  City code
+	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $cityCode;
+	protected array $formData;
+
+	/**
+	 * @var   array  $producs Products
+	 *
+	 * @since 1.0.0
+	 */
+	protected array $products;
 
 	/**
 	 * @var   integer  $tariffCode  Tariff code
@@ -50,18 +57,20 @@ class CheckoutPreparer extends FormPreparer
 	/**
 	 * @param   Form      $form      Form
 	 * @param   stdClass  $shipping  Shipping
-	 * @param   integer   $cityCode  City code
+	 * @param   array     $formData  Form data
+	 * @param   array     $products  Products
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, stdClass $shipping, int $cityCode)
+	public function __construct(Form $form, stdClass $shipping, array $formData, array $products)
 	{
 		parent::__construct($form);
 
 		$this->shipping = $shipping;
-		$this->cityCode = $cityCode;
+		$this->formData = $formData;
+		$this->products = $products;
 	}
 
 	/**
@@ -78,7 +87,7 @@ class CheckoutPreparer extends FormPreparer
 			return;
 		}
 
-		if (!$this->cityCode)
+		if (!$this->getCityCode())
 		{
 			$this->tariffCode = 0;
 		}
@@ -119,13 +128,49 @@ class CheckoutPreparer extends FormPreparer
 	}
 
 	/**
-	 * @return integer
+	 * @return stdClass
 	 *
 	 * @since 1.0.0
 	 */
+	protected function getShipping(): stdClass
+	{
+		return $this->shipping;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	protected function getFormData(): array
+	{
+		return $this->formData;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	protected function getProducts(): array
+	{
+		return $this->products;
+	}
+
+	/**
+	 * @return integer
+	 *
+	 * @since 1.0.0
+	 *
+	 * @noinspection PhpUnnecessaryLocalVariableInspection
+	 */
 	protected function getCityCode(): int
 	{
-		return $this->cityCode;
+		$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
+			? (int) $formData['shipping']['cityCode']
+			: 0;
+
+		return $cityCode;
 	}
 
 	/**
@@ -163,6 +208,8 @@ class CheckoutPreparer extends FormPreparer
 	protected function isTariffToPoint(): bool
 	{
 		$tariffMode = $this->shipping->params->get('tariffMode');
+
+		/** @noinspection PhpUnusedLocalVariableInspection */
 		list($from, $to) = explode('-', $tariffMode);
 
 		return $to == 'С';

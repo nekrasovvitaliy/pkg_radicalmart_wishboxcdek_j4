@@ -54,6 +54,43 @@
 			</field>
 
 			<field
+					name="shipping_markup"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_MARKUP_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="use"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_MARKUP_USE_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="ratio"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_MARKUP_RATIO_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="use:1"
+						/>
+						<field name="value"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SHIPPING_MARKUP_VALUE_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="use:1"
+						/>
+					</fieldset>
+				</form>
+			</field>
+
+			<field
 					name="deliveryRecipientCost"
 					type="subform"
 					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DELIVERY_RECIPIENT_COST_LABEL"
@@ -90,6 +127,65 @@
 						<field name="tariffValueRatio"
 							   type="number"
 							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_VALUE_RATIO_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="useTariffValue:1"
+						/>
+						<field name="tariff_value_markup"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_VALUE_MARKUP_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="useTariffValue:1"
+						/>
+					</fieldset>
+				</form>
+			</field>
+
+			<field
+					name="deliveryRecipientCost"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DELIVERY_RECIPIENT_COST_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="useDefaultValue"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_VALUE_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="defaultValue"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_VALUE_LABEL"
+							   showon="useDefaultValue:1"
+						/>
+						<field name="useTariffValue"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_TARIFF_VALUE_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="tariffValueRatio"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_VALUE_RATIO_LABEL"
+							   default="1"
+							   step="0.01"
+							   showon="useTariffValue:1"
+						/>
+						<field name="tariff_value_markup"
+							   type="number"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_VALUE_MARKUP_LABEL"
 							   default="1"
 							   step="0.01"
 							   showon="useTariffValue:1"

@@ -108,7 +108,9 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return $this->shipping->order->price['tariffCode'] ?? 0;
+		$tariffCode = $this->formData['shipping']['price']['tariffCode'] ?? 0;
+
+		return $tariffCode;
 	}
 
 	/**

@@ -67,6 +67,10 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	{
 		return [
 			'onContentPrepareForm' => 'onContentPrepareForm',
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages'
+			=> 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
+			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages' => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
 		];
 	}
 
@@ -98,9 +102,9 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 			while ($productQuantity)
 			{
-				if (!self::packAllToOrdersPostPackages($packages, $productQuantity, $product))
+				if (!self::packAllToOrdersPostPackages($packageRequests, $productQuantity, $product))
 				{
-					self::packMaxToOrdersPostPackages($packages, $productQuantity, $product);
+					self::packMaxToOrdersPostPackages($packageRequests, $productQuantity, $product);
 				}
 			}
 		}
@@ -129,6 +133,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		$delegate = $event->getArgument(1);
 
 		$apiClient = $this->getApiClient();
+		sleep(1);
 		$existingOrdersGetResponse = $apiClient->getOrderInfoByImNumber($delegate->getOrderNumber());
 		$existingPackages = $existingOrdersGetResponse->getEntity()->getPackages();
 		$existingPackageNumbers = [];
@@ -186,9 +191,9 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 			while ($productQuantity)
 			{
-				if (!self::packAll($packages, $productQuantity, $product))
+				if (!self::packAll($packageRequests, $productQuantity, $product))
 				{
-					self::packMax($packages, $productQuantity, $product);
+					self::packMax($packageRequests, $productQuantity, $product);
 				}
 			}
 		}
@@ -228,9 +233,9 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	}
 
 	/**
-	 * @param   OrdersPostPackageRequest[]  $packageRequests  Array of packages
-	 * @param   integer                     $productQuantity  Product quantity
-	 * @param   stdClass                    $product          Product
+	 * @param   TariffListPostPackageRequest[]  $packageRequests  Array of packages
+	 * @param   integer                         $productQuantity  Product quantity
+	 * @param   stdClass                        $product          Product
 	 *
 	 * @return boolean
 	 *
@@ -267,9 +272,9 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	}
 
 	/**
-	 * @param   OrdersPostPackageRequest[]  $packageRequests  Array of package requests
-	 * @param   integer                     $productQuantity  Product quantity
-	 * @param   stdClass                    $product          Product
+	 * @param   TariffListPostPackageRequest[]  $packageRequests  Array of package requests
+	 * @param   integer                         $productQuantity  Product quantity
+	 * @param   stdClass                        $product          Product
 	 *
 	 * @return void
 	 *
@@ -318,16 +323,18 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 				&& $productQuantity <= (int) $productPackageDimension['max_quantity'])
 			{
 				$weight = $productWeight * $productQuantity;
+				$packageNumber = (string) (count($packageRequests) + 1);
 
 				$packageRequest = (new OrdersPostPackageRequest)
+					->setNumber($packageNumber)
 					->setWeight($weight)
 					->setHeight($productPackageDimension['package_width'])
 					->setWidth($productPackageDimension['package_height'])
 					->setLength($productPackageDimension['package_length']);
 
 				$itemRequest = (new ItemRequest)
-					->setName($product->name)
-					->setWareKey($product->code)
+					->setName($product->title)
+					->setWareKey($product->id)
 					->setPayment((new MoneyRequest)->setValue(0))
 					->setCost(1)
 					->setWeight(1)
@@ -365,15 +372,18 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		$weight = $productWeight * $productQuantity;
 
+		$packageNumber = (string) (count($packageRequests) + 1);
+
 		$packageRequest = (new OrdersPostPackageRequest)
+			->setNumber($packageNumber)
 			->setWeight($weight)
 			->setHeight($maxProductPackageTypes['package_width'])
 			->setWidth($maxProductPackageTypes['package_height'])
 			->setLength($maxProductPackageTypes['package_length']);
 
 		$itemRequest = (new ItemRequest)
-			->setName($product->name)
-			->setWareKey($product->code)
+			->setName($product->title)
+			->setWareKey($product->id)
 			->setPayment((new MoneyRequest)->setValue(0))
 			->setCost(1)
 			->setWeight(1)
@@ -432,8 +442,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 					->setLength($productPackageDimension['package_length']);
 
 				$itemRequest = (new ItemRequest)
-					->setName($product->name)
-					->setWareKey($product->code)
+					->setName($product->title)
+					->setWareKey($product->id)
 					->setPayment((new MoneyRequest)->setValue(0))
 					->setCost(1)
 					->setWeight(1)
@@ -494,8 +504,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			->setLength($maxProductPackageTypes['package_length']);
 
 		$itemRequest = (new ItemRequest)
-			->setName($product->name)
-			->setWareKey($product->code)
+			->setName($product->title)
+			->setWareKey($product->id)
 			->setPayment((new MoneyRequest)->setValue(0))
 			->setCost(1)
 			->setWeight(1)
@@ -517,7 +527,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 */
 	public function getPackageDimensions(stdClass $product): array
 	{
-		return (array) $product->shipping->get('wishboxpackagemultiple_dimensions');
+		return (array) $product->shipping->get('wishboxcdekpackagemultiple_dimensions');
 	}
 
 	/**
@@ -538,7 +548,12 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 				$a = (array) $a;
 				$b = (array) $b;
 
-				return $b['max_quantity'] > $a['max_quantity'];
+				if ($b['max_quantity'] == $a['max_quantity'])
+				{
+					return 0;
+				}
+
+				return ($b['max_quantity'] > $a['max_quantity']) ? 1 : -1;
 			}
 		);
 

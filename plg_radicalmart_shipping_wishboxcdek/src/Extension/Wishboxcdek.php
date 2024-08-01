@@ -7,7 +7,6 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension;
 
 use Exception;
 use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
@@ -101,6 +100,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			'onRadicalMartBeforeOrderSave'              => 'onRadicalMartBeforeOrderSave',
 			'onRadicalMartGetOrderShipping'             => 'onRadicalMartGetOrderShipping',
 			'onRadicalMartLoadOrderMethodFormData'      => 'onRadicalMartLoadOrderMethodFormData',
+			'onRadicalMartExpressPrepareOrderMethodSaveData' => 'onRadicalMartExpressPrepareOrderMethodSaveData'
 		];
 	}
 
@@ -157,7 +157,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
-		$app = Factory::getApplication();
+		$data = (!empty($formData['shipping'])) ? $formData['shipping'] : [];
 
 		// Set price
 		if (!empty($formData['shipping']['price']))
@@ -177,7 +177,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		$price['base'] = RadicalMartPriceHelper::clean($price['base'], $code);
 
 		if ($context == 'com_radicalmart.checkout'
-			|| ($context == 'com_radicalmart.order' && isset($data['recalculate_price'])))
+			|| ($context == 'com_radicalmart.order' && isset($data['recalculate_price']) && $data['recalculate_price']))
 		{
 			$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
 				? $formData['shipping']['cityCode']
@@ -200,11 +200,17 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 					{
 						$shippingPayer = $method->params->get('shippingPayer', 'buyer');
 
-						if ($shippingPayer == 'buyer')
+						$priceBase = $tariff->shipping;
+
+						$shippingMarkupParams = $method->params->get('shipping_markup');
+
+						if ($shippingMarkupParams->use)
 						{
-							$price['base'] = $tariff->shipping;
+							$priceBase = $priceBase * (float) $shippingMarkupParams->ratio;
+							$priceBase = $priceBase + (float) $shippingMarkupParams->value;
 						}
 
+						$price['base'] = $priceBase;
 						$price['tariff']  = $tariff->shipping;
 						$price['tariffCode'] = (int) $tariff->code;
 					}
@@ -354,16 +360,13 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			$preparer = new CheckoutPreparer(
 				$form,
 				$shipping,
-				$receiverCityCode
+				$formData,
+				$products
 			);
 			$preparer->prepare();
 		}
 		elseif ($formName == 'com_radicalmart.order_site')
 		{
-			$receiverCityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
-				? (int) $formData['shipping']['cityCode']
-				: 0;
-
 			$preparer = new OrdersitePreparer($form, $shipping, $formData);
 			$preparer->prepare();
 		}
@@ -428,9 +431,14 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		bool $isNew
 	): void
 	{
-		if ($context == 'com_radicalmart.checkout')
+		// Set all order data to form data
+		foreach ((new Registry($method->order))->toArray() as $key => $value)
 		{
+			$data[$key] = $value;
 		}
+
+		// Cleanup actions
+		$data['recalculate_price'] = 0;
 	}
 
 	/**
@@ -602,5 +610,36 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	): void
 	{
 
+	}
+
+	/**
+	 * Prepare and clean RadicalMart & RadicalMart Express order save data.
+	 *
+	 * @param   string   $context   Context selector string.
+	 * @param   array   &$data      Method saved  data.
+	 * @param   object   $method    Order shipping method object.
+	 * @param   array    $formData  Order form data.
+	 * @param   array    $products  Order products data.
+	 * @param   array    $currency  Order currency data.
+	 * @param   bool     $isNew     Is new order.
+	 *
+	 * @return void
+	 *
+	 * @since 1.0.0
+	 */
+	public function onRadicalMartExpressPrepareOrderMethodSaveData(
+		string $context,
+		array &$data,
+		object
+		$method,
+		array $formData,
+		array $products,
+		array $currency,
+		bool $isNew
+	): void
+	{
+		// Cleanup data
+		unset($data['recalculate_price']);
+		unset($data['data']['recalculate_price']);
 	}
 }
