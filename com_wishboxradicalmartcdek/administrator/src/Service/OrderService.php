@@ -14,6 +14,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
+use Joomla\Component\Wishboxcdek\SIte\Exception\OrdersPatchRequestErrorsException;
 use Joomla\Component\Wishboxcdek\Site\Service\Registrator;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Exception\OrderServiceException;
 use Joomla\Database\DatabaseInterface;
@@ -133,7 +134,32 @@ class OrderService
 				);
 
 				$orderModel->updateStatus(
-					$e->getOrderId(),
+					$order->id,
+					$errorStatusId
+				);
+			}
+			catch (OrdersPatchRequestErrorsException $e)
+			{
+				$app->enqueueMessage(
+					Text::_(
+						'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
+					) . ': ' . $e->getMessage(),
+					CMSApplicationInterface::MSG_WARNING
+				);
+
+				$orderModel->addLog(
+					$order->id,
+					'delivery_service_registration_error',
+					[
+						'action_text' => Text::_(
+							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
+						),
+						'message' => $e->getMessage()
+					]
+				);
+
+				$orderModel->updateStatus(
+					$order->id,
 					$errorStatusId
 				);
 			}

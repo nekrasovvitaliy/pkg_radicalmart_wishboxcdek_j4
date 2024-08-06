@@ -132,7 +132,7 @@ class CheckoutPreparer extends FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected function getShipping(): stdClass
+	public function getShipping(): stdClass
 	{
 		return $this->shipping;
 	}
@@ -166,6 +166,7 @@ class CheckoutPreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
+		$formData = $this->getFormData();
 		$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
 			? (int) $formData['shipping']['cityCode']
 			: 0;

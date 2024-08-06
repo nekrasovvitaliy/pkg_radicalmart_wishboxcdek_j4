@@ -143,6 +143,8 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return integer
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getTariffCode(): int

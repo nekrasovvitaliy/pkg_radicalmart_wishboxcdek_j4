@@ -290,7 +290,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		$weight = $productWeight * $productQuantity;
 
-		$packageRequest = (new OrdersPostPackageRequest)
+		$packageRequest = (new TariffListPostPackageRequest)
 			->setWeight($weight)
 			->setHeight($maxProductPackageTypes['package_width'])
 			->setWidth($maxProductPackageTypes['package_height'])
@@ -485,7 +485,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		/** @var integer $productQuantity Product weight */
 		$productWeight = $product->shipping->get('weight');
 
-		$weight = $productWeight * $productQuantity;
+		$weight = $productWeight * $maxProductPackageTypes['max_quantity'];
 
 		$number = count($packageRequests) + 1;
 
@@ -508,7 +508,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			->setWareKey($product->id)
 			->setPayment((new MoneyRequest)->setValue(0))
 			->setCost(1)
-			->setWeight(1)
+			->setWeight($productWeight)
 			->setAmount($maxProductPackageTypes['max_quantity']);
 
 		$packageRequest->setItems([$itemRequest]);

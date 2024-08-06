@@ -45,6 +45,39 @@ trait CheckoutOfficecodePreparerTrait
 			{
 				throw new Exception('failed to set attribute', 500);
 			}
+
+			$calculatorDelegate = new CalculatorDelegate(
+				$this->getShipping(),
+				$this->getProducts(),
+				$this->getFormData()
+			);
+
+			$packageRequests = $calculatorDelegate->getPackages();
+
+			$packagesData = [];
+
+			foreach ($packageRequests as $packageRequest)
+			{
+				$packagesData[] = [
+					'weight'    => $packageRequest->getWeight() * 0.001,
+					'width'     => $packageRequest->getWidth(),
+					'height'    => $packageRequest->getHeight(),
+					'length'    => $packageRequest->getLength()
+				];
+			}
+
+			$packagesData = json_encode($packagesData);
+			$result = $this->getForm()->setFieldAttribute(
+				'officeCode',
+				'packages',
+				$packagesData,
+				$this->shippingFieldAttributeGroup
+			);
+
+			if (!$result)
+			{
+				throw new Exception('failed to set attribute', 500);
+			}
 		}
 		else
 		{
@@ -52,35 +85,6 @@ trait CheckoutOfficecodePreparerTrait
 			{
 				throw new Exception('failed to removeField', 500);
 			}
-		}
-
-		$calculatorDelegate = new CalculatorDelegate(
-			$this->getShipping(),
-			$this->getProducts(),
-			$this->getFormData()
-		);
-
-		$packageRequests = $calculatorDelegate->getPackages();
-
-		$packageRequestWeights = 0;
-
-		foreach ($packageRequests as $packageRequest)
-		{
-			$packageRequestWeights[] = $packageRequest->getWeight();
-		}
-
-		$packageRequestMaxWeight = max($packageRequestWeights);
-
-		$result = $this->getForm()->setFieldAttribute(
-			'officeCode',
-			'weight',
-			$packageRequestMaxWeight,
-			$this->shippingFieldAttributeGroup
-		);
-
-		if (!$result)
-		{
-			throw new Exception('failed to set attribute', 500);
 		}
 	}
 }

@@ -372,7 +372,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		}
 		elseif ($formName == 'com_radicalmart.order')
 		{
-			$preparer = new OrderPreparer($form, $shipping, $formData);
+			$preparer = new OrderPreparer($form, $shipping, $formData, $products);
 			$preparer->prepare();
 		}
 	}
@@ -616,7 +616,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * Prepare and clean RadicalMart & RadicalMart Express order save data.
 	 *
 	 * @param   string   $context   Context selector string.
-	 * @param   array   &$data      Method saved  data.
+	 * @param   array    $data      Method saved  data.
 	 * @param   object   $method    Order shipping method object.
 	 * @param   array    $formData  Order form data.
 	 * @param   array    $products  Order products data.

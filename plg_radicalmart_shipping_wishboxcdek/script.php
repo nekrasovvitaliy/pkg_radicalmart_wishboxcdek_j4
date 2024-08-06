@@ -175,7 +175,7 @@ return new class implements ServiceProviderInterface
 
 
 				/**
-				 * Method to parse through a layouts element of the installation manifest and take appropriate action.
+				 * Method to parse through a layouts' element of the installation manifest and take appropriate action.
 				 *
 				 * @param   SimpleXMLElement|null  $element    The XML node to process.
 				 * @param   Installer|null         $installer  Installer calling object.

@@ -65,6 +65,18 @@
                 <include name="wishboxcdekorderregistrator.xml" />
             </fileset>
         </zip>
+
+        <zip destfile="plg_radicalmart_wishboxcdekpackagemultiple/plg_radicalmart_wishboxcdekpackagemultiple.zip">
+            <fileset dir="./plg_radicalmart_wishboxcdekpackagemultiple">
+                <include name="forms/**" />
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="wishboxcdekpackagemultiple.xml" />
+            </fileset>
+        </zip>
+
         <zip destfile="plg_task_wishboxradicalmartcdekorderregistrator/plg_task_wishboxradicalmartcdekorderregistrator.zip">
             <fileset dir="./plg_task_wishboxradicalmartcdekorderregistrator">
                 <include name="language/**" />
@@ -94,6 +106,9 @@
             <fileset dir="./plg_radicalmart_wishboxcdekorderregistrator">
                 <include name="plg_radicalmart_wishboxcdekorderregistrator.zip" />
             </fileset>
+            <fileset dir="./plg_radicalmart_wishboxcdekpackagemultiple">
+                <include name="plg_radicalmart_wishboxcdekpackagemultiple.zip" />
+            </fileset>
             <fileset dir="./plg_task_wishboxradicalmartcdekorderregistrator">
                 <include name="plg_task_wishboxradicalmartcdekorderregistrator.zip" />
             </fileset>
@@ -122,6 +137,9 @@
             </fileset>
             <fileset dir=".">
                 <include name="plg_radicalmart_wishboxcdekorderregistrator/plg_radicalmart_wishboxcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdekpackagemultiple/plg_radicalmart_wishboxcdekpackagemultiple.zip" />
             </fileset>
             <fileset dir=".">
                 <include name="plg_task_wishboxradicalmartcdekorderregistrator/plg_task_wishboxradicalmartcdekorderregistrator.zip" />

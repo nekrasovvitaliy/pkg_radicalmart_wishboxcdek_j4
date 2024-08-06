@@ -31,6 +31,13 @@ class OrderPreparer extends FormPreparer
 	protected stdClass $shipping;
 
 	/**
+	 * @var   array  $products  Products
+	 *
+	 * @since 1.0.0
+	 */
+	protected array $products;
+
+	/**
 	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
@@ -48,18 +55,19 @@ class OrderPreparer extends FormPreparer
 	 * @param   Form      $form      Form
 	 * @param   stdClass  $shipping  Shipping
 	 * @param   array     $formData  Form data
+	 * @param   array     $products  Products
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, stdClass $shipping, array $formData)
+	public function __construct(Form $form, stdClass $shipping, array $formData, array $products)
 	{
 		parent::__construct($form);
 
 		$this->shipping = $shipping;
 		$this->formData = $formData;
-
+		$this->products = $products;
 	}
 	/**
 	 * @return void
@@ -126,5 +134,35 @@ class OrderPreparer extends FormPreparer
 		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
 
 		return $isTariffToPoint;
+	}
+
+	/**
+	 * @return stdClass
+	 *
+	 * @since 1.0.0
+	 */
+	public function getShipping(): stdClass
+	{
+		return $this->shipping;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	public function getFormData(): array
+	{
+		return $this->formData;
+	}
+
+	/**
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	public function getProducts(): array
+	{
+		return $this->products;
 	}
 }
