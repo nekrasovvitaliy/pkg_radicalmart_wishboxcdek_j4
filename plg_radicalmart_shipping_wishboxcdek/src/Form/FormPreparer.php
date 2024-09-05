@@ -8,13 +8,12 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\Component\RadicalMart\Administrator\Table\ShippingMethodTable;
 
 /**
  * @since 1.0.0
  */
-class FormPreparer
+abstract class FormPreparer
 {
 	/**
 	 * @var Form $form Form
@@ -22,13 +21,6 @@ class FormPreparer
 	 * @since 1.0.0
 	 */
 	protected Form $form;
-
-	/**
-	 * @var array|CMSObject $data Data
-	 *
-	 * @since 1.0.0
-	 */
-	protected mixed $data;
 
 	/**
 	 * @param   Form  $form  Form
@@ -79,16 +71,6 @@ class FormPreparer
 	}
 
 	/**
-	 * @return integer
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getShippingId(): int
-	{
-		return (int) $this->data->id;
-	}
-
-	/**
 	 * @return Form
 	 *
 	 * @since 1.0.0
@@ -97,4 +79,11 @@ class FormPreparer
 	{
 		return $this->form;
 	}
+
+	/**
+	 * @return integer
+	 *
+	 * @since 1.0.0
+	 */
+	abstract protected function getShippingId(): int;
 }

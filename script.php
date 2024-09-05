@@ -1,10 +1,6 @@
 <?php
 /**
- * @version     1.0.0
- * @package     Joomla.Plugin
- * @subpackage  plg_radicalmart_shipping_pishboxcdek
- * @author      Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @copyright   2023 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy<nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -12,10 +8,12 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Installer\InstallerScriptInterface;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Version;
 use Joomla\Database\DatabaseDriver;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
@@ -69,6 +67,24 @@ return new class implements ServiceProviderInterface
 				 * @since 1.0.0
 				 */
 				protected string $minimumPhp = '8.1';
+
+				/**
+				 * Minimum Wishbox library version required to install the extension.
+				 *
+				 * @var  string
+				 *
+				 * @since  1.0.0
+				 */
+				protected string $minimumWishbox = '1.0.0';
+
+				/**
+				 * Minimum Wishboxcdek library version required to install the extension.
+				 *
+				 * @var  string
+				 *
+				 * @since  1.0.0
+				 */
+				protected string $minimumWishboxcdek = '1.0.0';
 
 				/**
 				 * Constructor.
@@ -196,7 +212,63 @@ return new class implements ServiceProviderInterface
 						return false;
 					}
 
+					$wishboxLibraryVersion = $this->getWishboxLibraryVersion();
+
+					// Check Wishbox library version
+					if (!(version_compare($wishboxLibraryVersion, $this->minimumWishbox) >= 0))
+					{
+						$app->enqueueMessage(
+							Text::sprintf('PKG_JSHOPPING_WISHBOXLOCATION_ERROR_COMPATIBLE_WISHBOX_LIBRARY', $this->minimumWishbox),
+							'error'
+						);
+
+						return false;
+					}
+
+					$wishboxcdekLibraryVersion = $this->getWishboxcdekLibraryVersion();
+
+					// Check Wishbox library version
+					if (!(version_compare($wishboxcdekLibraryVersion, $this->minimumWishboxcdek) >= 0))
+					{
+						$app->enqueueMessage(
+							Text::sprintf('PKG_JSHOPPING_WISHBOXLOCATION_ERROR_COMPATIBLE_WISHBOXCDEK_LIBRARY', $this->minimumWishboxcdek),
+							'error'
+						);
+
+						return false;
+					}
+
 					return true;
+				}
+
+				/**
+				 * @return string
+				 *
+				 * @since 1.0.0
+				 */
+				protected function getWishboxLibraryVersion(): string
+				{
+					$extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
+					$extensionTable->load(['name' => 'lib_wishbox']);
+					/** @noinspection PhpUndefinedFieldInspection */
+					$manifestCache = new Registry($extensionTable->manifest_cache); // phpcs:ignore
+
+					return $manifestCache->get('version', '');
+				}
+
+				/**
+				 * @return string
+				 *
+				 * @since 1.0.0
+				 */
+				protected function getWishboxcdekLibraryVersion(): string
+				{
+					$extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
+					$extensionTable->load(['name' => 'lib_wishboxcdek']);
+					/** @noinspection PhpUndefinedFieldInspection */
+					$manifestCache = new Registry($extensionTable->manifest_cache); // phpcs:ignore
+
+					return $manifestCache->get('version', '');
 				}
 			}
 		);

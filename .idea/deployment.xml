@@ -66,6 +66,7 @@
             <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/language" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/language" web="/" />
+            <mapping deploy="layouts\plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts" web="/" />
           </mappings>
         </serverdata>
       </paths>

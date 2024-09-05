@@ -80,11 +80,20 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getSellerName(): string
 	{
-		return $this->orderShippingMethodParams->get('sellerName');
+		$sellerName = (string) $this->orderShippingMethodParams->get('sellerName');
+
+		if (empty($sellerName))
+		{
+			throw new Exception('Seller name in shipping method params must not be empty', 500);
+		}
+
+		return $sellerName;
 	}
 
 	/**

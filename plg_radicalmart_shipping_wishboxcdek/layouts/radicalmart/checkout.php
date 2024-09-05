@@ -28,11 +28,28 @@ extract($displayData);
 			<?php echo $form->renderField('officeCode', 'shipping'); ?>
         </div>
 	<?php endif; ?>
+
+    <div class="uk-width-1-1">
+		<?php echo $form->renderField('office_google_map', 'shipping'); ?>
+    </div>
+
+    <div class="uk-width-1-1">
+		<?php echo $form->renderField('office_yandex_map', 'shipping'); ?>
+    </div>
+
 	<?php if ($shipping->params->get('field_address', 1)): ?>
         <div class="uk-width-1-1">
 			<?php echo $form->renderField('address', 'shipping'); ?>
         </div>
 	<?php endif; ?>
+
+    <div class="uk-width-1-1">
+		<?php echo $form->renderField('tariffCode', 'shipping'); ?>
+    </div>
+
+    <div class="uk-width-1-1">
+		<?php echo $form->renderField('error_message', 'shipping'); ?>
+    </div>
 
 	<?php if ($shipping->params->get('field_country', 1)): ?>
 		<div class="uk-width-1-1"><?php echo $form->renderField('country', 'shipping'); ?></div>

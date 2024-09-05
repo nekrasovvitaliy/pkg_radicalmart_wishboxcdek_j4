@@ -31,18 +31,18 @@ class OrderPreparer extends FormPreparer
 	protected stdClass $shipping;
 
 	/**
-	 * @var   array  $products  Products
-	 *
-	 * @since 1.0.0
-	 */
-	protected array $products;
-
-	/**
 	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
 	protected array $formData;
+
+	/**
+	 * @var   stdClass[]  $products  Products
+	 *
+	 * @since 1.0.0
+	 */
+	protected array $products;
 
 	/**
 	 * @var string|null
@@ -116,9 +116,7 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		$tariffCode = $this->formData['shipping']['price']['tariffCode'] ?? 0;
-
-		return $tariffCode;
+		return $this->formData['shipping']['price']['tariffCode'] ?? 0;
 	}
 
 	/**

@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright 2013-2024 Nekrasov Vitaliy
- * @license GNU General Public License version 2 or later
+ * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license    GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 
 /**
@@ -16,26 +15,25 @@ use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 class ShippingmethodPreparer extends FormPreparer
 {
 	/**
-	 * @var   integer  $senderCityCode  Sender city code
+	 * @var object|array
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $senderCityCode;
+	protected object|array $data;
 
 	/**
-	 * @param   Form             $form  Form
-	 * @param   array|CMSObject  $data  Data
+	 * @param   Form          $form  Form
+	 * @param   array|object  $data  Data
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(Form $form, array|CMSObject $data)
+	public function __construct(Form $form, array|object $data)
 	{
 		parent::__construct($form);
 
 		$this->data = $data;
-		$this->senderCityCode = $this->getSenderCityCode();
 	}
 	/**
 	 * @return void
@@ -65,12 +63,12 @@ class ShippingmethodPreparer extends FormPreparer
 	{
 		if (is_object($this->data))
 		{
-			if ($this->senderCityCode)
+			if ($this->getSenderCityCode())
 			{
 				if (!$this->form->setFieldAttribute(
 					'senderOfficeCode',
 					'cityCode',
-					$this->senderCityCode,
+					$this->getSenderCityCode(),
 					'params'
 				))
 				{

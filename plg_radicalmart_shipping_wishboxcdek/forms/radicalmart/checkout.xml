@@ -39,6 +39,33 @@
 				<option value="">JNONE</option>
 			</field>
 
+
+
+			<field name="office_yandex_map"
+				   type="officeyandexmap"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   allowed_cod="true"
+			/>
+
+			<field name="tariffCode"
+				   type="tariff"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
+				   required="true"
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   hide_default="true"
+				   hide_none="true"
+				   onchange="RadicalMartCheckout().reloadForm(this);"
+				   prices_by_codes=""
+			/>
+
+			<field name="error_message"
+				   type="hidden"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ERROR_MESSAGE_LABEL"
+				   description=""
+				   class="alert alert-warning"
+			/>
+
 			<field name="address"
 				   type="textarea"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_ADDRESS_LABEL"

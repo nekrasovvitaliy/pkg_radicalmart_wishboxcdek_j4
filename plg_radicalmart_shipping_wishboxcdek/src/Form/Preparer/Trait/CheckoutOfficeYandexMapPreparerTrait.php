@@ -7,6 +7,7 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 
 /**
  * @method getTariffCode(): integer
@@ -17,7 +18,7 @@ use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDele
  *
  * @since 1.0.0
  */
-trait CheckoutOfficecodePreparerTrait
+trait CheckoutOfficeYandexMapPreparerTrait
 {
 	/**
 	 * @return void
@@ -26,7 +27,7 @@ trait CheckoutOfficecodePreparerTrait
 	 *
 	 * @since 1.0.0
 	 */
-	protected function prepareOfficeCodeField(): void
+	protected function prepareOfficeYandexMapField(): void
 	{
 		$cityCode = $this->getCityCode();
 
@@ -37,7 +38,7 @@ trait CheckoutOfficecodePreparerTrait
 			if ($isTariffToPoint)
 			{
 				$result = $this->getForm()->setFieldAttribute(
-					'officeCode',
+					'office_yandex_map',
 					'cityCode',
 					$this->getCityCode(),
 					$this->shippingFieldAttributeGroup
@@ -72,8 +73,8 @@ trait CheckoutOfficecodePreparerTrait
 
 					$packagesData = json_encode($packagesData);
 					$result       = $this->getForm()->setFieldAttribute(
-						'officeCode',
-						'packages',
+						'office_yandex_map',
+						'packages_data',
 						$packagesData,
 						$this->shippingFieldAttributeGroup
 					);
@@ -82,19 +83,34 @@ trait CheckoutOfficecodePreparerTrait
 					{
 						throw new Exception('failed to set attribute', 500);
 					}
-				}
-			}
-			else
-			{
-				if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
-				{
-					throw new Exception('failed to removeField', 500);
+
+					try
+					{
+						$shippingTariff = CalculatorService::getMinShippingTariff(
+							$this->getShipping(),
+							$this->getFormData(),
+							$this->getProducts()
+						);
+
+						if (!$this->getForm()->setFieldAttribute(
+							'office_yandex_map',
+							'shipping_tariff',
+							json_encode($shippingTariff->toArray()),
+							$this->shippingFieldAttributeGroup
+						))
+						{
+							throw new Exception('failed to set attribute', 500);
+						}
+					}
+					catch (Exception $e)
+					{
+					}
 				}
 			}
 		}
 		else
 		{
-			if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
+			if (!$this->getForm()->removeField('office_yandex_map', $this->shippingFieldAttributeGroup))
 			{
 				throw new Exception('failed to removeField', 500);
 			}

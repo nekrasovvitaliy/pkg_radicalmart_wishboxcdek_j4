@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
@@ -8,12 +8,9 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
-use Joomla\Registry\Registry;
-use stdClass;
 
 /**
  * @since 1.0.0
@@ -24,20 +21,20 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	use CheckoutAddressPreparerTrait;
 
 	/**
-	 * Shipping
-	 *
-	 * @var array|CMSObject|stdClass
+	 * @var object|array
 	 *
 	 * @since 1.0.0
 	 */
-	protected array|CMSObject|stdClass $shipping;
+	protected object|array $data;
 
 	/**
-	 * @var   integer  $cityCode  City code
+	 * Shipping
+	 *
+	 * @var object|array
 	 *
 	 * @since 1.0.0
 	 */
-	protected int $cityCode;
+	protected object|array $shipping;
 
 	/**
 	 * @var string|null
@@ -47,9 +44,9 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	protected ?string $shippingFieldAttributeGroup = null;
 
 	/**
-	 * @param   Form                      $form      Form
-	 * @param   array|CMSObject|Registry  $data      Data
-	 * @param   array|CMSObject|stdClass  $shipping  Tmp data
+	 * @param   Form          $form      Form
+	 * @param   object|array  $data      Data
+	 * @param   object|array  $shipping  Tmp data
 	 *
 	 * @throws Exception
 	 *
@@ -57,8 +54,8 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	 */
 	public function __construct(
 		Form $form,
-		array|CMSObject|Registry $data,
-		array|CMSObject|stdClass $shipping
+		object|array $data,
+		object|array $shipping
 	)
 	{
 		parent::__construct($form);

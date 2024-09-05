@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\Radicalmart\Wishboxcdek\Extension;
@@ -9,6 +9,8 @@ use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\RadicalMart\Site\Model\CheckoutModel;
+use Joomla\Database\DatabaseDriver;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
@@ -47,7 +49,7 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	{
 		return [
 			'onBeforeRender' => 'onBeforeRender',
-			'onRadicalMartGetOrderFormData' => 'onRadicalMartGetOrderFormData',
+			'onRadicalMartGetOrderFormData' => 'onGetOrderFormData'
 		];
 	}
 
@@ -76,18 +78,24 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onRadicalMartGetOrderFormData(string $context, array &$data): void
+	public function onGetOrderFormData(string $context, array &$data): void
 	{
 		if ($context == 'com_radicalmart.checkout')
 		{
-			if (isset($data['shipping']['id']))
+			if (!isset($data['shipping']))
 			{
-				$shippingId = $data['shipping']['id'];
+				$db = Factory::getContainer()->get(DatabaseDriver::class);
+				$query = $db->getQuery(true)
+					->select('id')
+					->from($db->qn('#__radicalmart_shipping_methods'))
+					->where($db->qn('default') . ' = 1')
+					->where($db->qn('language') . ' = "*"');
+				$db->setQuery($query);
+				$shippingId = (int) $db->loadResult();
 
 				if ($shippingId)
 				{
-					$customerShippingData = $this->getCustomerShippingData($shippingId);
-					$data['shipping'] = self::mergeCustomerData($data['shipping'], $customerShippingData);
+					$data['shipping'] = $this->getCustomerShippingData($shippingId);
 				}
 			}
 		}

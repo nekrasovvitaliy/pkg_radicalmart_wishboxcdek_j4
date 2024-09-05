@@ -96,6 +96,16 @@
 					   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 					   readonly="true"
 				/>
+				<field name="period_min"
+					   type="text"
+					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MIN_LABEL"
+					   readonly="true"
+				/>
+				<field name="period_max"
+					   type="text"
+					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MAX_LABEL"
+					   readonly="true"
+				/>
 			</fields>
 		</fields>
 	</fieldset>

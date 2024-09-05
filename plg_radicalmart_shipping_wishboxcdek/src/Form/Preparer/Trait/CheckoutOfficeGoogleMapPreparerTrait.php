@@ -17,7 +17,7 @@ use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDele
  *
  * @since 1.0.0
  */
-trait CheckoutOfficecodePreparerTrait
+trait CheckoutOfficeGoogleMapPreparerTrait
 {
 	/**
 	 * @return void
@@ -26,7 +26,7 @@ trait CheckoutOfficecodePreparerTrait
 	 *
 	 * @since 1.0.0
 	 */
-	protected function prepareOfficeCodeField(): void
+	protected function prepareOfficeGoogleMapField(): void
 	{
 		$cityCode = $this->getCityCode();
 
@@ -37,7 +37,7 @@ trait CheckoutOfficecodePreparerTrait
 			if ($isTariffToPoint)
 			{
 				$result = $this->getForm()->setFieldAttribute(
-					'officeCode',
+					'office_google_map',
 					'cityCode',
 					$this->getCityCode(),
 					$this->shippingFieldAttributeGroup
@@ -72,7 +72,7 @@ trait CheckoutOfficecodePreparerTrait
 
 					$packagesData = json_encode($packagesData);
 					$result       = $this->getForm()->setFieldAttribute(
-						'officeCode',
+						'office_google_map',
 						'packages',
 						$packagesData,
 						$this->shippingFieldAttributeGroup
@@ -84,17 +84,10 @@ trait CheckoutOfficecodePreparerTrait
 					}
 				}
 			}
-			else
-			{
-				if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
-				{
-					throw new Exception('failed to removeField', 500);
-				}
-			}
 		}
 		else
 		{
-			if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
+			if (!$this->getForm()->removeField('office_google_map', $this->shippingFieldAttributeGroup))
 			{
 				throw new Exception('failed to removeField', 500);
 			}

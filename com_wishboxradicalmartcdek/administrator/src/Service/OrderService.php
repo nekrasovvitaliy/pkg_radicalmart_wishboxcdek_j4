@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  *
  * @noinspection PhpMultipleClassDeclarationsInspection
@@ -154,6 +154,27 @@ class OrderService
 						'action_text' => Text::_(
 							'PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DELIVERY_SERVICE_REGISTRATION_ERROR_MESSAGE'
 						),
+						'message' => $e->getMessage()
+					]
+				);
+
+				$orderModel->updateStatus(
+					$order->id,
+					$errorStatusId
+				);
+			}
+			catch (Exception | Error $e)
+			{
+				$app->enqueueMessage(
+					$e->getMessage(),
+					CMSApplicationInterface::MSG_WARNING
+				);
+
+				$orderModel->addLog(
+					$order->id,
+					'delivery_service_registration_error',
+					[
+						'action_text' => 'Exception or Error',
 						'message' => $e->getMessage()
 					]
 				);

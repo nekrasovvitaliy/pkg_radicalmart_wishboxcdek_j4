@@ -95,7 +95,21 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		$products = $delegate->getOrder()->products;
 
-		foreach ($products as $product)
+		$productsById = [];
+
+		foreach ($products as $key => $product)
+		{
+			if (!isset($productsById[$product->id]))
+			{
+				$productsById[$product->id] = clone $product;
+			}
+			else
+			{
+				$productsById[$product->id]->order['quantity'] += $product->order['quantity'];
+			}
+		}
+
+		foreach ($productsById as $product)
 		{
 			/** @var int $productQuantity Product quantity */
 			$productQuantity = $product->order['quantity'];
@@ -145,7 +159,21 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		$products = $delegate->getOrder()->products;
 
-		foreach ($products as $product)
+		$productsById = [];
+
+		foreach ($products as $key => $product)
+		{
+			if (!isset($productsById[$product->id]))
+			{
+				$productsById[$product->id] = clone $product;
+			}
+			else
+			{
+				$productsById[$product->id]->order['quantity'] += $product->order['quantity'];
+			}
+		}
+
+		foreach ($productsById as $product)
 		{
 			/** @var integer $productQuantity Product quantity */
 			$productQuantity = $product->order['quantity'];
@@ -177,14 +205,28 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(Event $event): void
 	{
 		/** @var TariffListPostPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
+		$packageRequests = $event->getArgument('packages');
 
 		/** @var CalculatorDelegate $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getArgument('subject');
 
 		$products = $delegate->getProducts();
 
-		foreach ($products as $product)
+		$productsById = [];
+
+		foreach ($products as $key => $product)
+		{
+			if (!isset($productsById[$product->id]))
+			{
+				$productsById[$product->id] = clone $product;
+			}
+			else
+			{
+				$productsById[$product->id]->order['quantity'] += $product->order['quantity'];
+			}
+		}
+
+		foreach ($productsById as $product)
 		{
 			/** @var int $productQuantity Product quantity */
 			$productQuantity = $product->order['quantity'];
@@ -198,8 +240,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			}
 		}
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		$event->setArgument('packages', $packageRequests);
 	}
 
 	/**
@@ -223,8 +264,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		{
 			if (!$form->loadFile(JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/forms/product.xml'))
 			{
-				echo '111';
-				die;
+				throw new Exception('Failed load file', 500);
 			}
 		}
 
@@ -245,6 +285,13 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
+
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -253,7 +300,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			if ($productQuantity >= (int) $productPackageDimension['min_quantity']
 				&& $productQuantity <= (int) $productPackageDimension['max_quantity'])
 			{
-				$weight = $productWeight * $productQuantity;
+				$weight = $productWeightInGramm * $productQuantity;
 
 				$packageRequest = (new TariffListPostPackageRequest)
 					->setWeight($weight)
@@ -287,8 +334,15 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		/** @var int $productQuantity Product weight */
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
 
-		$weight = $productWeight * $productQuantity;
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
+
+		$weight = $productWeightInGramm * $maxProductPackageTypes['max_quantity'];
 
 		$packageRequest = (new TariffListPostPackageRequest)
 			->setWeight($weight)
@@ -314,6 +368,13 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
+
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -322,7 +383,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			if ($productQuantity >= (int) $productPackageDimension['min_quantity']
 				&& $productQuantity <= (int) $productPackageDimension['max_quantity'])
 			{
-				$weight = $productWeight * $productQuantity;
+				$weight = $productWeightInGramm * $productQuantity;
 				$packageNumber = (string) (count($packageRequests) + 1);
 
 				$packageRequest = (new OrdersPostPackageRequest)
@@ -369,8 +430,15 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		/** @var integer $productQuantity Product weight */
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
 
-		$weight = $productWeight * $productQuantity;
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
+
+		$weight = $productWeightInGramm * $maxProductPackageTypes['max_quantity'];
 
 		$packageNumber = (string) (count($packageRequests) + 1);
 
@@ -415,6 +483,13 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
+
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -423,7 +498,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			if ($productQuantity >= (int) $productPackageDimension['min_quantity']
 				&& $productQuantity <= (int) $productPackageDimension['max_quantity'])
 			{
-				$weight = $productWeight * $productQuantity;
+				$weight = $productWeightInGramm * $productQuantity;
 
 				$number = count($packageRequests) + 1;
 
@@ -484,8 +559,15 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		/** @var integer $productQuantity Product weight */
 		$productWeight = $product->shipping->get('weight');
+		$productWeightUnit = $product->shipping->get('weight_unit');
 
-		$weight = $productWeight * $maxProductPackageTypes['max_quantity'];
+		$productWeightInGramm = match ($productWeightUnit)
+		{
+			'kg' => $productWeight * 1000,
+			default => $productWeight,
+		};
+
+		$weight = $productWeightInGramm * $maxProductPackageTypes['max_quantity'];
 
 		$number = count($packageRequests) + 1;
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<extension type="plugin" group="wishboxcdek" method="upgrade">
+	<name>plg_wishboxcdek_jshopping</name>
+	<author>Nekrasov Vitaliy</author>
+	<creationDate>November 2024</creationDate>
+	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+	<version>1.0.0</version>
+	<description>PLG_WISHBOXCDEK_JSHOPPING_XML_DESCRIPTION</description>
+	<namespace path="src">Joomla\Plugin\Wishboxcdek\Jshopping</namespace>
+	<scriptfile>script.php</scriptfile>
+	<files>
+		<folder plugin="jshopping">services</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_wishboxcdek_jshopping.ini</language>
+		<language tag="en-GB">language/en-GB/plg_wishboxcdek_jshopping.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_wishboxcdek_jshopping.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_wishboxcdek_jshopping.sys.ini</language>
+	</languages>
+</extension>

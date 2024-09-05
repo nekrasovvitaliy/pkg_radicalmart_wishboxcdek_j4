@@ -1,17 +1,17 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license    GNU General Public License version 2 or later
+ * @copyright   2013-2024 Nekrasov Vitaliy
+ * @license     GNU General Public License version 2 or later
  */
+defined('_JEXEC') or die;
+
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\Wishboxcdek\Extension\Wishboxcdek;
-
-defined('_JEXEC') or die;
+use Joomla\Plugin\Wishboxcdek\Jshopping\Extension\Jshopping;
 
 return new class implements ServiceProviderInterface
 {
@@ -23,17 +23,16 @@ return new class implements ServiceProviderInterface
 	 * @return  void
 	 *
 	 * @since   1.0.0
-	 *
-	 * @noinspection PhpMissingReturnTypeInspection
 	 */
-	public function register(Container $container)
+	public function register(Container $container): void
 	{
 		$container->set(
 			PluginInterface::class,
-			function (Container $container) {
-				$plugin = new Wishboxcdek(
+			function (Container $container)
+			{
+				$plugin = new Jshopping(
 					$container->get(DispatcherInterface::class),
-					(array) PluginHelper::getPlugin('radicalmart', 'wishboxcdek')
+					(array) PluginHelper::getPlugin('wishboxcdek', 'jshopping')
 				);
 				$plugin->setApplication(Factory::getApplication());
 

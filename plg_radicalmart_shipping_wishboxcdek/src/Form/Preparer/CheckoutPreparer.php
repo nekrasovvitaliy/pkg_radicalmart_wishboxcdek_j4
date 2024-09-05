@@ -9,7 +9,11 @@ use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutErrorMessagePreparerTrait;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficeGoogleMapPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficeYandexMapPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
 use stdClass;
 
 /**
@@ -18,6 +22,10 @@ use stdClass;
 class CheckoutPreparer extends FormPreparer
 {
 	use CheckoutOfficecodePreparerTrait;
+	use CheckoutOfficeGoogleMapPreparerTrait;
+	use CheckoutOfficeYandexMapPreparerTrait;
+	use CheckoutTariffcodePreparerTrait;
+	use CheckoutErrorMessagePreparerTrait;
 
 	/**
 	 * @var stdClass  $shipping  Shipping
@@ -93,7 +101,10 @@ class CheckoutPreparer extends FormPreparer
 		}
 
 		$this->prepareOfficeCodeField();
+		$this->prepareOfficeYandexMapField();
 		$this->prepareAddressField();
+		$this->prepareTariffCodeField();
+		$this->prepareErrorMessageField();
 	}
 
 	/**
@@ -191,28 +202,13 @@ class CheckoutPreparer extends FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected function isTariffToPoint2(): bool
-	{
-		/** @noinspection PhpUnnecessaryLocalVariableInspection */
-		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
-
-		return $isTariffToPoint;
-	}
-
-	/**
-	 * @return boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
 	protected function isTariffToPoint(): bool
 	{
-		$tariffMode = $this->shipping->params->get('tariffMode');
+		$tariffCode = $this->getTariffCode();
 
-		/** @noinspection PhpUnusedLocalVariableInspection */
-		list($from, $to) = explode('-', $tariffMode);
+		/** @noinspection PhpUnnecessaryLocalVariableInspection */
+		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($tariffCode);
 
-		return $to == 'С';
+		return $isTariffToPoint;
 	}
 }

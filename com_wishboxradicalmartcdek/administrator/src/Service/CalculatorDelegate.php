@@ -6,6 +6,7 @@
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
 use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
 use stdClass;
@@ -39,16 +40,16 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 
 	/**
 	 * @param   stdClass    $method    Method
-	 * @param   array       $products  Data
 	 * @param   array       $formData  Form data
+	 * @param   array       $products  Data
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(stdClass $method, array $products, array $formData)
+	public function __construct(stdClass $method, array $formData, array $products)
 	{
 		$this->method = $method;
-		$this->products = $products;
 		$this->formData = $formData;
+		$this->products = $products;
 	}
 
 	/**
@@ -112,7 +113,7 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 			? $this->formData['shipping']['cityCode']
 			: 0;
 
-		return $cityCode;
+		return (int) $cityCode;
 	}
 
 	/**
@@ -166,7 +167,16 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 		$packages = [];
 
 		$app = Factory::getApplication();
-		$app->triggerEvent('onWishboxRadicalMartCdekCalculatorDelegateGetPackages', [&$packages, $this]);
+
+		$event = AbstractEvent::create(
+			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages',
+			[
+				'packages'  => &$packages,
+				'subject'   => $this,
+			]
+		);
+		$app->getDispatcher()->dispatch('onWishboxRadicalMartCdekCalculatorDelegateGetPackages', $event);
+		$packages = $event->getArgument('packages');
 
 		return $packages;
 	}
