@@ -7,6 +7,7 @@ namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
 use Joomla\CMS\Event\AbstractEvent;
+use Joomla\CMS\Event\GenericEvent;
 use Joomla\CMS\Factory;
 use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
 use stdClass;
@@ -168,6 +169,7 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 
 		$app = Factory::getApplication();
 
+		/** @var GenericEvent $event */
 		$event = AbstractEvent::create(
 			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages',
 			[

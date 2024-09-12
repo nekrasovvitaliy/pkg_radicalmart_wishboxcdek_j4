@@ -7,6 +7,7 @@ namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
 use Joomla\CMS\Factory;
+use Joomla\Component\Wishboxcdek\Administrator\Table\TariffTable;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 use Wishbox\ShippingService\ShippingTariff;
 
@@ -47,12 +48,17 @@ trait CheckoutTariffcodePreparerTrait
 				}
 				else
 				{
+					/** @var integer $tariffCode */
 					$tariffCode = $this->getShipping()->order->price['tariffCode'];
+
+					/** @var TariffTable $tariffTable */
 					$tariffTable = $app->bootComponent('com_wishboxcdek')
 						->getMVCFactory()
 						->createTable('Tariff', 'Administrator');
+
 					$tariffTable->load(['code' => $tariffCode]);
 
+					/** @var ShippingTariff[] $shippingTariffs */
 					$shippingTariffs = [
 						(new ShippingTariff((float) $this->getShipping()->order->price['tariff'], 0))
 							->setPeriodMin($this->getShipping()->order->price['period_min'])

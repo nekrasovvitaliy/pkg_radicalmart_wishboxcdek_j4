@@ -39,10 +39,8 @@
 				<option value="">JNONE</option>
 			</field>
 
-
-
 			<field name="office_yandex_map"
-				   type="officeyandexmap"
+				   type="OfficeYandexMap"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   allowed_cod="true"

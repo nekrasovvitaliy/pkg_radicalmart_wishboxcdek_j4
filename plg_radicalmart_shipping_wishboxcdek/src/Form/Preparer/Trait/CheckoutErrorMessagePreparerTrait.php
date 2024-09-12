@@ -6,6 +6,7 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
+use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 
 /**
@@ -34,9 +35,9 @@ trait CheckoutErrorMessagePreparerTrait
 
 		if ($cityCode > 0)
 		{
-			$isTariffToPoint = $this->isTariffToPoint();
+			$tariffCode = $this->getTariffCode();
 
-			if ($isTariffToPoint)
+			if ($tariffCode && WishboxcdekHelper::isTariffToPoint($tariffCode))
 			{
 				try
 				{

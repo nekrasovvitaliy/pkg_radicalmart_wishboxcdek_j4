@@ -417,7 +417,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * @return void
 	 *
 	 * @throws Exception
-	 * @since        1.0.0
+	 * @since 1.0.0
 	 *
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection

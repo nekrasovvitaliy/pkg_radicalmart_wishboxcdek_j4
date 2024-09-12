@@ -6,6 +6,7 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
+use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
 
 /**
@@ -32,9 +33,9 @@ trait CheckoutOfficecodePreparerTrait
 
 		if ($cityCode > 0)
 		{
-			$isTariffToPoint = $this->isTariffToPoint();
+			$tariffCode = $this->getTariffCode();
 
-			if ($isTariffToPoint)
+			if ($tariffCode && WishboxcdekHelper::isTariffToPoint($tariffCode))
 			{
 				$result = $this->getForm()->setFieldAttribute(
 					'officeCode',

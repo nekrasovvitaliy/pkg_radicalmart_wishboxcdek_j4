@@ -49,13 +49,6 @@ class CheckoutPreparer extends FormPreparer
 	protected array $products;
 
 	/**
-	 * @var   integer  $tariffCode  Tariff code
-	 *
-	 * @since 1.0.0
-	 */
-	protected int $tariffCode;
-
-	/**
 	 * @var string|null
 	 *
 	 * @since 1.0.0
@@ -93,11 +86,6 @@ class CheckoutPreparer extends FormPreparer
 		if (!$this->checkPlugin())
 		{
 			return;
-		}
-
-		if (!$this->getCityCode())
-		{
-			$this->tariffCode = 0;
 		}
 
 		$this->prepareOfficeCodeField();
