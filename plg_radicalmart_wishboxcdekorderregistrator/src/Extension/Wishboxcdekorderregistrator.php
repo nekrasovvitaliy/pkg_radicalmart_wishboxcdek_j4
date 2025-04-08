@@ -1,15 +1,15 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Extension;
 
 use Exception;
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
+use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use stdClass;
 use function defined;
@@ -33,15 +33,6 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 * @since  1.0.0
 	 */
 	protected $autoloadLanguage = true;
-
-	/**
-	 * Loads the application object.
-	 *
-	 * @var  CMSApplication
-	 *
-	 * @since  1.0.0
-	 */
-	protected $app = null;
 
 	/**
 	 * Enable on RadicalMart
@@ -73,6 +64,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	public static function getSubscribedEvents(): array
 	{
 		return [
+			'onBeforeRender'                            => 'onBeforeRender',
 			'onRadicalMartBeforeOrderSave'              => 'onRadicalMartBeforeOrderSave',
 			'onRadicalMartAfterOrderSave'               => 'onRadicalMartAfterOrderSave',
 			'onRadicalMartAfterChangeOrderStatus'       => 'onRadicalMartAfterChangeOrderStatus'
@@ -142,9 +134,9 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 
 		$allowedStatusIds = [
-			(int) $componentParams->get('ready_status_id', 0),
-			(int) $componentParams->get('error_status_id', 0),
-			(int) $componentParams->get('completed_status_id', 0),
+			(int) $componentParams->get('wishboxradicalmartcdekorderregistrator.ready_status_id', 0),
+			(int) $componentParams->get('wishboxradicalmartcdekorderregistrator.error_status_id', 0),
+			(int) $componentParams->get('wishboxradicalmartcdekorderregistrator.completed_status_id', 0),
 		];
 
 		if (!in_array($order->status->id, $allowedStatusIds))
@@ -186,12 +178,49 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 		}
 
 		// If you need to register the order in Cdek
-		if ($newStatus != (int) $this->params->get('ready_status_id', 0))
+		if ($newStatus != (int) $this->params->get('wishboxradicalmartcdekorderregistrator.ready_status_id', 0))
 		{
 			return;
 		}
 
 		//   $orderService = new OrderService;
 		//   $orderService->register($order);
+	}
+
+	/**
+	 * @param   Event  $event  Event
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 *
+	 * @noinspection PhpUnused
+	 * @noinspection PhpUnusedParameterInspection
+	 */
+	public function onBeforeRender(Event $event): void
+	{
+		$app = $this->getApplication();
+
+		if (!$app->isClient('administrator'))
+		{
+			return;
+		}
+
+		$option = $app->getInput()->getCmd('option', '');
+		$view = $app->getInput()->getCmd('view', '');
+
+		if ($option == 'com_radicalmart' && $view == 'orders')
+		{
+			/*
+			ToolBarHelper::custom(
+				'wishboxcdekorders.register',
+				'copy',
+				'copy_f2.png',
+				Text::_('PLG_RADICALMART_WISHBOXCDEK_REGISTER_IN_CDEK')
+			);
+			*/
+		}
 	}
 }

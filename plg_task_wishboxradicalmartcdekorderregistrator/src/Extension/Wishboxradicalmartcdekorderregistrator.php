@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator\Extension;
@@ -8,10 +8,9 @@ namespace Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator\Extension;
 use Error;
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
-use Joomla\Database\DatabaseInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Scheduler\Administrator\Event\ExecuteTaskEvent;
 use Joomla\Component\Scheduler\Administrator\Task\Status;
@@ -34,6 +33,7 @@ defined('_JEXEC') or die;
  */
 final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements SubscriberInterface
 {
+	use DatabaseAwareTrait;
 	use TaskPluginTrait;
 
 	/**
@@ -101,7 +101,7 @@ final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements 
 	{
 		try
 		{
-			$app = Factory::getApplication();
+			$app = $this->getApplication();
 			$orderIds = $this->getOrderIds();
 
 			/** @var OrderModel $orderModel */
@@ -135,14 +135,13 @@ final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements 
 	{
 		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 		$allowedStatusIds = [
-			(int) $componentParams->get('ready_status_id', 0),
-			(int) $componentParams->get('error_status_id', 0),
+			(int) $componentParams->get('wishboxradicalmartcdekorderregistrator.ready_status_id', 0),
+			(int) $componentParams->get('wishboxradicalmartcdekorderregistrator.error_status_id', 0),
 		];
 
-		/** @var DatabaseInterface $db */
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = $this->getDatabase();
 
-		$query = $db->getQuery(true)
+		$query = $db->createQuery()
 			->select('id')
 			->from('#__radicalmart_orders')
 			->whereIn('status', $allowedStatusIds)

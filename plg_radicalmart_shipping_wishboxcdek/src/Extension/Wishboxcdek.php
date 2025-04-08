@@ -1,19 +1,18 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension;
 
 use Exception;
-use Joomla\CMS\Application\CMSApplication;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Date\Date;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Helper\PriceHelper as RadicalMartPriceHelper;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
-use Joomla\Database\DatabaseInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\CheckoutPreparer;
@@ -34,6 +33,8 @@ defined('_JEXEC') or die;
  */
 class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 {
+	use DatabaseAwareTrait;
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -42,15 +43,6 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * @since  1.0.0
 	 */
 	protected $autoloadLanguage = true;
-
-	/**
-	 * Loads the application object.
-	 *
-	 * @var  CMSApplication
-	 *
-	 * @since  1.0.0
-	 */
-	protected $app = null;
 
 	/**
 	 * Enable on RadicalMart
@@ -152,6 +144,14 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	{
 		$data = (!empty($formData['shipping'])) ? $formData['shipping'] : [];
 
+		foreach ((new Registry($method->params->get('fields_default', [])))->toArray() as $item)
+		{
+			if (!empty($item['value']) && empty($data[$item['field']]))
+			{
+				$data[$item['field']] = $item['value'];
+			}
+		}
+
 		// Set price
 		if (!empty($formData['shipping']['price']))
 		{
@@ -182,13 +182,16 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 					if ($shippingTariff)
 					{
-						$shippingPayer = $method->params->get('shippingPayer', 'buyer');
+						$priceBase = 0;
 
-						$priceBase = $shippingTariff->shipping;
+						if ($method->params->get('includeShippingPriceInOrder', 0))
+						{
+							$priceBase = $shippingTariff->shipping;
+						}
 
 						$shippingMarkupParams = $method->params->get('shipping_markup');
 
-						if ($shippingMarkupParams->use)
+						if ($priceBase && $shippingMarkupParams->use)
 						{
 							$priceBase = $priceBase * (float) $shippingMarkupParams->ratio;
 							$priceBase = $priceBase + (float) $shippingMarkupParams->value;
@@ -199,23 +202,6 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 						$price['tariffCode'] = (int) $shippingTariff->code;
 						$price['period_min'] = (int) $shippingTariff->periodMin;
 						$price['period_max'] = (int) $shippingTariff->periodMax;
-
-						$price['base_string']   = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
-							: RadicalMartPriceHelper::toString($price['base'], $code);
-						$price['base_seo']      = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
-							: RadicalMartPriceHelper::toString($price['base'], $code, 'seo');
-						$price['base_number']   = RadicalMartPriceHelper::toString($price['base'], $code, false);
-
-						// Set final price
-						$price['final']        = $price['base'];
-
-						$price['final_string'] = (empty($price['final']))
-							? Text::_('COM_RADICALMART_PRICE_FREE')
-							: RadicalMartPriceHelper::toString($price['final'], $code);
-
-						$price['final_seo']    = (empty($price['final'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
-							: RadicalMartPriceHelper::toString($price['final'], $code, 'seo');
-						$price['final_number'] = RadicalMartPriceHelper::toString($price['final'], $code, false);
 					}
 				}
 				catch (Exception $e)
@@ -224,6 +210,24 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				}
 			}
 		}
+
+		$price['base_string']   = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
+			: RadicalMartPriceHelper::toString($price['base'], $code);
+		$price['base_seo']      = (empty($price['base'])) ? Text::_('COM_RADICALMART_PRICE_FREE')
+			: RadicalMartPriceHelper::toString($price['base'], $code, 'seo');
+		$price['base_number']   = RadicalMartPriceHelper::toString($price['base'], $code, false);
+
+		// Set final price
+		$price['final']         = $price['base'];
+
+		$price['final_string']  = empty($price['final'])
+			? Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PRICE_ACCORDING_TO_SHIPPING_SERVICE_TARIFFS')
+			: RadicalMartPriceHelper::toString($price['final'], $code);
+
+		$price['final_seo']     = (empty($price['final']))
+			? Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PRICE_ACCORDING_TO_SHIPPING_SERVICE_TARIFFS')
+			: RadicalMartPriceHelper::toString($price['final'], $code, 'seo');
+		$price['final_number']  = RadicalMartPriceHelper::toString($price['final'], $code, false);
 
 		// Set order
 		$method->order              = new stdClass;
@@ -238,6 +242,8 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		{
 			$method->layout = 'plugins.radicalmart_shipping.wishboxcdek.radicalmart.checkout';
 		}
+
+		$method->notification = $this->prepareMethodNotification($data);
 	}
 
 	/**
@@ -719,11 +725,11 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 */
 	protected function getCustomerShippingData(int $shippingId): array
 	{
-		$app = Factory::getApplication();
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$app = $this->getApplication();
+		$db = $this->getDatabase();
 		$user = $app->getIdentity();
 
-		$query = $db->getQuery(true)
+		$query = $db->createQuery()
 			->select(['c.id', 'c.contacts', 'c.shipping', 'c.payment', 'c.plugins'])
 			->from($db->qn('#__radicalmart_customers', 'c'))
 			->where($db->qn('c.id') . ' = :id')
@@ -740,5 +746,128 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		}
 
 		return [];
+	}
+
+	/**
+	 * Method to prepare shipping notification information.
+	 *
+	 * @param   array  $data  Shipping form data.
+	 *
+	 * @return array
+	 *
+	 * @since 1.0.0
+	 */
+	protected function prepareMethodNotification(array $data): array
+	{
+		$app = $this->getApplication();
+
+		$result = [];
+
+		if (empty($data))
+		{
+			return $result;
+		}
+
+		$addressString = $this->addressToString($data);
+
+		if (!empty($data['cityCode']))
+		{
+			$cityTable = $app->bootComponent('com_wishboxcdek')
+				->getMVCFactory()
+				->createTable('City', 'Administrator');
+			$cityTable->load(['code' => $data['cityCode']]);
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_CITY'] = $cityTable->cityname;
+		}
+
+		if (!empty($data['officeCode']))
+		{
+			$officeTable = $app->bootComponent('com_wishboxcdek')
+				->getMVCFactory()
+				->createTable('Office', 'Administrator');
+
+			$officeTable->load(['code' => $data['officeCode']]);
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_OFFICE_ADDRESS'] = $officeTable->address;
+		}
+
+		if (!empty($data['tariffCode']))
+		{
+			$tariffTable = $app->bootComponent('com_wishboxcdek')
+				->getMVCFactory()
+				->createTable('Tariff', 'Administrator');
+			$tariffTable->load(['code' => $data['tariffCode']]);
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_TARIFF'] = $tariffTable->name;
+		}
+
+		if (!empty($addressString))
+		{
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_ADDRESS'] = $addressString;
+		}
+
+		if (!empty($data['comment']))
+		{
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_COMMENT'] = $data['comment'];
+		}
+
+		if (!empty($data['date']))
+		{
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_DATE'] = (new Date($data['date']))->format(
+				Text::_('DATE_FORMAT_LC4')
+			);
+		}
+
+		if (!empty($data['note']))
+		{
+			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_NOTE'] = $data['note'];
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Method to convert address data to string.
+	 *
+	 * @param   array  $data  Address data
+	 *
+	 * @return string
+	 *
+	 * @since 3.0.0
+	 */
+	protected function addressToString(array $data = []): string
+	{
+		$address = [];
+
+		if (!empty($data['zip']))
+		{
+			$address[] = $data['zip'];
+		}
+
+		if (!empty($data['country']))
+		{
+			$address[] = $data['country'];
+		}
+
+		if (!empty($data['region']))
+		{
+			$address[] = $data['region'];
+		}
+
+		if (!empty($data['city']))
+		{
+			$address[] = $data['city'];
+		}
+
+		$mb = function_exists('mb_strtolower');
+
+		foreach (['street', 'house', 'building', 'entrance', 'floor', 'apartment'] as $key)
+		{
+			if (!empty($data[$key]))
+			{
+				$title     = Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_' . $key);
+				$title     = ($mb) ? mb_strtolower($title) : strtolower($title);
+				$address[] = $title . ' ' . $data[$key];
+			}
+		}
+
+		return (!empty($address)) ? implode(', ', $address) : '';
 	}
 }

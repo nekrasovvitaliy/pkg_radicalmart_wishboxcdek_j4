@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy<nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy<nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -218,7 +218,7 @@ return new class implements ServiceProviderInterface
 					if (!(version_compare($wishboxLibraryVersion, $this->minimumWishbox) >= 0))
 					{
 						$app->enqueueMessage(
-							Text::sprintf('PKG_JSHOPPING_WISHBOXLOCATION_ERROR_COMPATIBLE_WISHBOX_LIBRARY', $this->minimumWishbox),
+							Text::sprintf('PKG_RADICALMART_WISHBOXCDEK_ERROR_COMPATIBLE_WISHBOX_LIBRARY', $this->minimumWishbox),
 							'error'
 						);
 
@@ -231,7 +231,7 @@ return new class implements ServiceProviderInterface
 					if (!(version_compare($wishboxcdekLibraryVersion, $this->minimumWishboxcdek) >= 0))
 					{
 						$app->enqueueMessage(
-							Text::sprintf('PKG_JSHOPPING_WISHBOXLOCATION_ERROR_COMPATIBLE_WISHBOXCDEK_LIBRARY', $this->minimumWishboxcdek),
+							Text::sprintf('PKG_RADICALMART_WISHBOXCDEK_ERROR_COMPATIBLE_WISHBOXCDEK_LIBRARY', $this->minimumWishboxcdek),
 							'error'
 						);
 

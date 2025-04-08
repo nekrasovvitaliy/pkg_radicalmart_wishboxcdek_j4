@@ -92,7 +92,7 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	protected function getCityCode(): int
 	{
 		$app = Factory::getApplication();
-		$method = $app->input->getMethod();
+		$method = $app->getInput()->getMethod();
 
 		if ($method == 'GET')
 		{
@@ -109,12 +109,22 @@ class PersonalshippingmethodPreparer extends FormPreparer
 		}
 		else
 		{
-			$data = $app->input->post->get('jform');
+			$data = $app->getInput()->post->get('jform');
 
 			return isset($data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode'])
 				? (int) $data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode']
 				: 0;
 		}
+	}
+
+	/**
+	 * @return object|array
+	 *
+	 * @since 1.0.0
+	 */
+	protected function getShipping(): object|array
+	{
+		return $this->shipping;
 	}
 
 	/**

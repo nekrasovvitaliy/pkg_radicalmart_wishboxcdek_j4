@@ -77,6 +77,18 @@
 				   type="textarea"
 				   label="COM_RADICALMART_NOTE"
 			/>
+		</fields>
+	</fieldset>
+	<fieldset name="shipping_admin">
+		<fields name="shipping">
+			<field name="date" type="calendar"
+				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
+				   hint="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE_HINT"
+				   translateformat="true"
+				   showtime="false"
+				   filter="user_utc"/>
+			<field name="note" type="textarea"
+				   label="COM_RADICALMART_NOTE"/>
 			<fields name="price">
 				<field name="base"
 					   type="price"
@@ -100,30 +112,14 @@
 					   type="text"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MIN_LABEL"
 					   readonly="true"
+					   addonAfter="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_DAYS_LABEL"
 				/>
 				<field name="period_max"
 					   type="text"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MAX_LABEL"
 					   readonly="true"
+					   addonAfter="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_DAYS_LABEL"
 				/>
-			</fields>
-		</fields>
-	</fieldset>
-	<fieldset name="shipping_admin">
-		<fields name="shipping">
-			<field name="date" type="calendar"
-				   label="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE"
-				   hint="PLG_RADICALMART_SHIPPING_STANDARD_SHIPPING_DATE_HINT"
-				   translateformat="true"
-				   showtime="false"
-				   filter="user_utc"/>
-			<field name="note" type="textarea"
-				   label="COM_RADICALMART_NOTE"/>
-			<fields name="price">
-				<field name="base" type="price"
-					   label="COM_RADICALMART_PRICE"
-					   currency="{currency_code}"
-					   class="clean-price"/>
 			</fields>
 			<field name="recalculate_price" type="list"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PRICE_RECALCULATE"

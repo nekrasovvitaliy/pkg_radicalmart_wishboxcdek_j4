@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Plugin\Console\Wishboxradicalmartcdekorderregistrator\Extension;
@@ -12,13 +12,15 @@ use Joomla\CMS\Console\Loader\WritableLoaderInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\Order\AfterRegisterAllEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\Order\AfterRegisterEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\Order\BeforeRegisterAllEvent;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Plugin\Console\Wishboxradicalmartcdekorderregistrator\Console\RegisterOrdersCommand;
 use Psr\Container\ContainerInterface;
-use stdClass;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -41,21 +43,22 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	protected ?SymfonyStyle $symfonyStyle = null;
 
 	/**
-	 * @param   DispatcherInterface  $subject    The object to observe
-	 * @param   array                $config     An optional associative array of configuration settings.
-	 *                                           Recognized key values include 'name', 'group', 'params', 'language'
-	 *                                           (this list is not meant to be comprehensive).
+	 * @param   DispatcherInterface  $dispatcher  The object to observe
+	 * @param   array                $config      An optional associative array of configuration settings.
+	 *                                            Recognized key values include 'name', 'group', 'params', 'language'
+	 *                                            (this list is not meant to be comprehensive).
 	 *
 	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct(&$subject, $config = [])
+	public function __construct(DispatcherInterface &$dispatcher, array $config = [])
 	{
-		parent::__construct($subject, $config);
+		parent::__construct($dispatcher, $config);
 
 		/** @var ConsoleApplication $app */
-		$app = Factory::getApplication();
+		$app = $this->getApplication();
+
 		$consoleInput = $app->getConsoleInput();
 		$consoleOutput = $app->getConsoleOutput();
 		$this->symfonyStyle = new SymfonyStyle($consoleInput, $consoleOutput);
@@ -71,10 +74,10 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			ApplicationEvents::BEFORE_EXECUTE                           => 'registerCommands',
-			'onBeforeWishboxRadicalMarketCdekOrderServiceRegisterAll'   => 'onBeforeWishboxRadicalMarketCdekOrderServiceRegisterAll',
-			'onAfterWishboxRadicalMarketCdekOrderServiceRegister'       => 'onAfterWishboxRadicalMarketCdekOrderServiceRegister',
-			'onAfterWishboxRadicalMarketCdekOrderServiceRegisterAll'    => 'onAfterWishboxRadicalMarketCdekOrderServiceRegisterAll',
+			ApplicationEvents::BEFORE_EXECUTE                       => 'registerCommands',
+			'onWishboxRadicalMartCdekOrderServiceBeforeRegisterAll' => 'onWishboxRadicalMartCdekOrderServiceBeforeRegisterAll',
+			'onWishboxRadicalMartCdekOrderServiceAfterRegister'     => 'onWishboxRadicalMartCdekOrderServiceAfterRegister',
+			'onWishboxRadicalMartCdekOrderServiceAfterRegisterAll'  => 'onWishboxRadicalMartCdekOrderServiceAfterRegisterAll',
 		];
 	}
 
@@ -91,19 +94,23 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	public function registerCommands(Event  $event): void
 	{
 		Factory::getContainer()->share(
-			'wishboxradicalmartcdek.registerOrders',
-			function (ContainerInterface $container) {
+			RegisterOrdersCommand::class,
+			function (ContainerInterface $container)
+			{
 				return new RegisterOrdersCommand;
 			},
 			true
 		);
 
 		Factory::getContainer()->get(WritableLoaderInterface::class)
-			->add('wishboxradicalmartcdek:register-orders', 'wishboxradicalmartcdek.registerOrders');
+			->add(
+				RegisterOrdersCommand::getDefaultName(),
+				RegisterOrdersCommand::class
+			);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   BeforeRegisterAllEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -113,22 +120,15 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onBeforeWishboxRadicalMarketCdekOrderServiceRegisterAll(Event $event): void
+	public function onWishboxRadicalMartCdekOrderServiceBeforeRegisterAll(BeforeRegisterAllEvent $event): void
 	{
-		/** @var integer[] $orderIds */
-		$orderIds = $event->getArgument(0);
-
-		/** @var ConsoleApplication $app */
-		$app = Factory::getApplication();
+		$orderIds = $event->getOrderIds();
 
 		$this->symfonyStyle->progressStart(count($orderIds));
-
-		$event->setArgument(0, $orderIds);
 	}
 
-
 	/**
-	 * @param   Event  $event  Event
+	 * @param   AfterRegisterEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -137,23 +137,15 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	 * @since 1.0.0
 	 *
 	 * @noinspection PhpUnused
+	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onAfterWishboxRadicalMarketCdekOrderServiceRegister(Event $event): void
+	public function onWishboxRadicalMartCdekOrderServiceAfterRegister(AfterRegisterEvent $event): void
 	{
-		/** @var integer $k */
-		$k = $event->getArgument(0);
-
-		/** @var stdClass $order */
-		$order = $event->getArgument(1);
-
 		$this->symfonyStyle->progressAdvance();
-
-		$event->setArgument(0, $k);
-		$event->setArgument(1, $order);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   AfterRegisterAllEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -162,14 +154,10 @@ class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements Subscr
 	 * @since 1.0.0
 	 *
 	 * @noinspection PhpUnused
+	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onAfterWishboxRadicalMarketCdekOrderServiceRegisterAll(Event $event): void
+	public function onWishboxRadicalMartCdekOrderServiceAfterRegisterAll(AfterRegisterAllEvent $event): void
 	{
-		/** @var integer[] $orderIds */
-		$orderIds = $event->getArgument(0);
-
 		$this->symfonyStyle->progressFinish();
-
-		$event->setArgument(0, $orderIds);
 	}
 }

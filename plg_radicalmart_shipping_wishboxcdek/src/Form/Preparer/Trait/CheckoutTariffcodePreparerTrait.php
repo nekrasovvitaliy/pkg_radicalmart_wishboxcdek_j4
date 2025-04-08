@@ -33,8 +33,9 @@ trait CheckoutTariffcodePreparerTrait
 	{
 		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
+		$tariffCode = $this->getTariffCode();
 
-		if ($cityCode > 0)
+		if ($cityCode > 0 && $tariffCode)
 		{
 			try
 			{

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Plugin\Radicalmart\Wishboxcdekonepackage\Extension;
@@ -10,22 +10,21 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
 use Joomla\Component\Wishboxcdek\Site\Trait\ApiClientTrait;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\RegistratorDelegate;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\CalculatorDelegate\GetPackagesEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPatchPackagesEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPostPackagesEvent;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use stdClass;
+use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\MoneyRequest as OrdersPatchMoneyRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\PackageRequest as OrdersPatchPackageRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\Package\ItemRequest as OrdersPatchPackageItemRequest;
-use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\MoneyRequest;
+use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\MoneyRequest as OrdersPostMoneyRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\Package\ItemRequest as OrdersPostPackageItemRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\PackageRequest as OrdersPostPackageRequest;
-use WishboxCdekSDK2\Model\Request\Calculator\TarifflistPost\PackageRequest as TarifflistPostPackageRequest;
+use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest as TariffListPostPackageRequest;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
@@ -46,19 +45,6 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	 * @since 1.0.0
 	 */
 	protected $autoloadLanguage = true;
-
-	/**
-	 * @param   DispatcherInterface  $subject  The object to observe
-	 * @param   array                $config   An optional associative array of configuration settings.
-	 *                                           Recognized key values include 'name', 'group', 'params', 'language'
-	 *                                           (this list is not meant to be comprehensive).
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct(&$subject, $config = [])
-	{
-		parent::__construct($subject, $config);
-	}
 
 	/**
 	 * @return string[]
@@ -82,7 +68,7 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPostPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -92,13 +78,9 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(GetOrdersPostPackagesEvent $event): void
 	{
-		/** @var OrdersPostPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
-
-		/** @var RegistratorDelegateInterface $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getRegistratorDelegate();
 
 		$useDefaultPackageWeight = $delegate->order->shipping->params->get('wishboxcdekonepackageUseDefaultWeight');
 
@@ -137,26 +119,32 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 
 		foreach ($products as $product)
 		{
+			$payment = (new OrdersPostMoneyRequest)->setValue($product->payment);
+
+			if ($delegate->order->shipping->params->get('product_payment.use_product_payment'))
+			{
+				$vatRate = (int) $delegate->order->shipping->params->get('product_payment.product_payment_vat_rate');
+				$vatSum = $product->payment * (1 - (100 / (100 + $vatRate)));
+				$payment->setVatSum($vatSum)
+					->setVatRate($vatRate);
+			}
+
 			$items[] = (new OrdersPostPackageItemRequest)
 				->setName($product->name)
 				->setWareKey($product->code)
-				// Оплата за товар при получении, без НДС (за единицу товара)
-				->setPayment((new MoneyRequest)->setValue(0))
-				// Объявленная стоимость товара (за единицу товара)
-				->setCost(1)
-				->setWeight(1)
+				->setPayment($payment)
+				->setCost($product->cost)
+				->setWeight($product->weight)
 				->setAmount($product->quantity);
 		}
 
 		$package->setItems($items);
-		$packageRequests[] = $package;
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		$event->addResult($package);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPatchPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -166,20 +154,14 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(GetOrdersPatchPackagesEvent $event): void
 	{
-		/** @var OrdersPatchPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
-
-		/** @var RegistratorDelegate $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getRegistratorDelegate();
 
 		$apiClient = $this->getApiClient();
 		$existingOrdersGetResponse = $apiClient->getOrderInfoByImNumber($delegate->getOrderNumber());
 
-		$useDefaultPackageWeight = $delegate->order->shipping->params->get('wishboxcdekonepackageUseDefaultWeight');
-
-		if ($useDefaultPackageWeight)
+		if ($delegate->order->shipping->params->get('wishboxcdekonepackageUseDefaultWeight'))
 		{
 			$weight = $delegate->order->shipping->params->get('wishboxcdekonepackageDefaultWeight');
 		}
@@ -218,25 +200,32 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 
 		foreach ($products as $product)
 		{
+			$payment = (new OrdersPatchMoneyRequest)->setValue($product->payment);
+
+			if ($delegate->order->shipping->params->get('product_payment.use_product_payment', 0))
+			{
+				$vatRate = (int) $delegate->order->shipping->params->get('product_payment.product_payment_vat_rate');
+				$vatSum = $product->payment * (1 - (100 / (100 + $vatRate)));
+				$payment->setVatSum($vatSum)
+					->setVatRate($vatRate);
+			}
+
 			$items[] = (new OrdersPatchPackageItemRequest)
 				->setName($product->name)
 				->setWareKey($product->code)
-				->setPayment((new \WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\MoneyRequest)->setValue($product->payment))
-				->setCost(1)
-				->setWeight(1)
+				->setPayment($payment)
+				->setCost($product->cost)
+				->setWeight($product->weight)
 				->setAmount($product->quantity);
 		}
 
 		$package->setItems($items);
-		$packageRequests[] = $package;
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
-		$event->setArgument(2, $existingOrdersGetResponse);
+		$event->addResult($package);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -246,19 +235,13 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(Event $event): void
+	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(GetPackagesEvent $event): void
 	{
-		/** @var TarifflistPostPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
+		$delegate = $event->getCalculatorDelegate();
 
-		/** @var CalculatorDelegate $delegate */
-		$delegate = $event->getArgument(1);
-
-		$useDefaultPackageWeight = $delegate->method->params->get('wishboxcdekonepackageUseDefaultWeight');
-
-		if ($useDefaultPackageWeight)
+		if ($delegate->method->params->get('wishboxcdekonepackageUseDefaultWeight'))
 		{
-			$weight = $delegate->getMethod()->params->get('wishboxcdekonepackageDefaultWeight');
+			$weight = (int) $delegate->getMethod()->params->get('wishboxcdekonepackageDefaultWeight');
 		}
 		else
 		{
@@ -286,10 +269,8 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 			->setHeight($dimensions['height'])
 			->setWidth($dimensions['width'])
 			->setLength($dimensions['length']);
-		$packageRequests[] = $packageRequest;
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		$event->addResult($packageRequest);
 	}
 
 	/**

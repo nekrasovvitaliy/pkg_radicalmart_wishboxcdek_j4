@@ -68,6 +68,7 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	 * @since 1.0.0
 	 *
 	 * @noinspection PhpUnused
+	 * @noinspection PhpUnusedParameterInspection
 	 */
 	public function onBeforeRender(Event $event): void
 	{
@@ -78,8 +79,8 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 			return;
 		}
 
-		$option = $app->input->getCmd('option', '');
-		$view = $app->input->getCmd('view', '');
+		$option = $app->getInput()->getCmd('option', '');
+		$view = $app->getInput()->getCmd('view', '');
 
 		if ($option == 'com_radicalmart' && $view == 'orders')
 		{

@@ -31,7 +31,7 @@
                     name="wishboxcdekonepackageDefaultWeight"
                     type="number"
                     label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_WEIGHT_G_LABEL"
-                    showon="wishboxcdekonepackageUseDefaultPackageWeight:1"
+                    showon="wishboxcdekonepackageUseDefaultWeight:1"
             />
             <field
                     name="wishboxcdekonepackageDefaultDimensions"
@@ -46,16 +46,19 @@
                         <field name="width"
                                type="number"
                                label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_WIDTH_LABEL"
+                               min="0"
                         />
 
                         <field name="height"
                                type="number"
                                label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_HEIGHT_LABEL"
+                               min="0"
                         />
 
                         <field name="length"
                                type="number"
                                label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PACKAGE_LENGTH_LABEL"
+                               min="0"
                         />
                     </fieldset>
                 </form>

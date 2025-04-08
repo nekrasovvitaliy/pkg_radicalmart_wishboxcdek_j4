@@ -27,6 +27,16 @@
                 <include name="wishboxradicalmartcdekorderregistrator.xml" />
             </fileset>
         </zip>
+        <zip destfile="plg_content_wishboxradicalmartcdekorderstatusupdater/plg_content_wishboxradicalmartcdekorderstatusupdater.zip">
+            <fileset dir="./plg_content_wishboxradicalmartcdekorderstatusupdater">
+                <include name="forms/**" />
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="wishboxradicalmartcdekorderstatusupdater.xml" />
+            </fileset>
+        </zip>
         <zip destfile="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip">
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="forms/**" />
@@ -36,6 +46,16 @@
                 <include name="src/**" />
                 <include name="script.php" />
                 <include name="wishboxcdek.xml" />
+            </fileset>
+        </zip>
+        <zip destfile="plg_radicalmart_wishboxcdekorderstatusupdater/plg_radicalmart_wishboxcdekorderstatusupdater.zip">
+            <fileset dir="./plg_radicalmart_wishboxcdekorderstatusupdater">
+                <include name="forms/**" />
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="wishboxcdekorderstatusupdater.xml" />
             </fileset>
         </zip>
         <zip destfile="plg_radicalmart_wishboxcdek/plg_radicalmart_wishboxcdek.zip">
@@ -87,12 +107,25 @@
             </fileset>
         </zip>
 
+        <zip destfile="plg_wishboxcdek_radicalmartorderstatusupdater/plg_wishboxcdek_radicalmartorderstatusupdater.zip">
+            <fileset dir="./plg_wishboxcdek_radicalmartorderstatusupdater">
+                <include name="language/**" />
+                <include name="services/**" />
+                <include name="src/**" />
+                <include name="script.php" />
+                <include name="radicalmartorderstatusupdater.xml" />
+            </fileset>
+        </zip>
+
         <zip destfile="pkg_radicalmart_wishboxcdek_j4.zip">
             <fileset dir="./com_wishboxradicalmartcdek">
                 <include name="com_wishboxradicalmartcdek.zip" />
             </fileset>
             <fileset dir="./plg_console_wishboxradicalmartcdekorderregistrator">
                 <include name="plg_console_wishboxradicalmartcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir="./plg_content_wishboxradicalmartcdekorderstatusupdater">
+                <include name="plg_content_wishboxradicalmartcdekorderstatusupdater.zip" />
             </fileset>
             <fileset dir="./plg_radicalmart_shipping_wishboxcdek">
                 <include name="plg_radicalmart_shipping_wishboxcdek.zip" />
@@ -112,6 +145,9 @@
             <fileset dir="./plg_task_wishboxradicalmartcdekorderregistrator">
                 <include name="plg_task_wishboxradicalmartcdekorderregistrator.zip" />
             </fileset>
+            <fileset dir="./plg_wishboxcdek_radicalmartorderstatusupdater">
+                <include name="plg_wishboxcdek_radicalmartorderstatusupdater.zip" />
+            </fileset>
             <fileset dir=".">
                 <include name="language/**" />
                 <include name="script.php" />
@@ -127,6 +163,12 @@
                 <include name="plg_console_wishboxradicalmartcdekorderregistrator/plg_console_wishboxradicalmartcdekorderregistrator.zip" />
             </fileset>
             <fileset dir=".">
+                <include name="plg_content_wishboxradicalmartcdekorderregistrator/plg_content_wishboxradicalmartcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_content_wishboxradicalmartcdekorderstatusupdater/plg_content_wishboxradicalmartcdekorderstatusupdater.zip" />
+            </fileset>
+            <fileset dir=".">
                 <include name="plg_radicalmart_shipping_wishboxcdek/plg_radicalmart_shipping_wishboxcdek.zip" />
             </fileset>
             <fileset dir=".">
@@ -139,10 +181,16 @@
                 <include name="plg_radicalmart_wishboxcdekorderregistrator/plg_radicalmart_wishboxcdekorderregistrator.zip" />
             </fileset>
             <fileset dir=".">
+                <include name="plg_radicalmart_wishboxcdekorderstatusupdater/plg_radicalmart_wishboxcdekorderstatusupdater.zip" />
+            </fileset>
+            <fileset dir=".">
                 <include name="plg_radicalmart_wishboxcdekpackagemultiple/plg_radicalmart_wishboxcdekpackagemultiple.zip" />
             </fileset>
             <fileset dir=".">
                 <include name="plg_task_wishboxradicalmartcdekorderregistrator/plg_task_wishboxradicalmartcdekorderregistrator.zip" />
+            </fileset>
+            <fileset dir=".">
+                <include name="plg_wishboxcdek_radicalmartorderstatusupdater/plg_wishboxcdek_radicalmartorderstatusupdater.zip" />
             </fileset>
         </delete>
     </target>

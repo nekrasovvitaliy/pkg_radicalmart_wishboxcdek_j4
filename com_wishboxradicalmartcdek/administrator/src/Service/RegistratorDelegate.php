@@ -1,21 +1,27 @@
 <?php
 /**
- * @copyright   (с) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (с) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
+ *
+ * @noinspection PhpMultipleClassDeclarationsInspection
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Event\AbstractEvent;
 use Joomla\CMS\Factory;
 use Joomla\Component\RadicalMart\Administrator\Table\OrderTable;
 use Joomla\Component\Wishboxcdek\Site\Entity\ProductEntity;
 use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPostPackagesEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPatchPackagesEvent;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Exception\OrderServiceException;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
 use Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Exception\EmptyProductCodeException;
 use Joomla\Registry\Registry;
 use stdClass;
-use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest;
+use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\PackageRequest;
 
 /**
  * @property Registry|null $orderShippingMethodParams
@@ -53,7 +59,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 		return match ($name)
 		{
 			'orderShippingMethodParams' => $this->order->shippingMethods[$this->order->formData['shipping']['id']]->params,
-			default => null,
+			default                     => null,
 		};
 	}
 
@@ -222,21 +228,91 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return integer
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getSellerInn(): int
 	{
-		return (int) $this->orderShippingMethodParams->get('sellerInn');
+		$sellerInn = (int) $this->orderShippingMethodParams->get('sellerInn');
+
+		if (!in_array(strlen(((string) $sellerInn)), [10, 12]))
+		{
+			throw new Exception('Seller INN in shipping method params must contain 10 or 12 digits', 500);
+		}
+
+		return $sellerInn;
 	}
 
 	/**
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getSellerPhone(): string
 	{
-		return $this->orderShippingMethodParams->get('sellerPhone');
+		$sellerPhone = $this->orderShippingMethodParams->get('sellerPhone');
+
+		if (empty($sellerPhone))
+		{
+			throw new Exception('Seller phone in shipping method params must not be empty.', 500);
+		}
+
+		return $sellerPhone;
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function getSenderName(): string
+	{
+		$senderName = (string) $this->orderShippingMethodParams->get('senderName');
+
+		if (empty($senderName))
+		{
+			throw new Exception('Sender name in shipping method params must not be empty', 500);
+		}
+
+		return $senderName;
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function getSenderPhoneNumber(): string
+	{
+		$senderPhoneNumber = $this->orderShippingMethodParams->get('sender_phone_number', '');
+
+		if (empty($senderPhoneNumber))
+		{
+			throw new Exception('Sender phone number in shipping method params must not be empty.', 500);
+		}
+
+		return $senderPhoneNumber;
+	}
+
+	/**
+	 * @return string
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	public function getSenderPhoneAdditional(): string
+	{
+		$senderPhoneAdditional = $this->orderShippingMethodParams->get('sender_phone_additional', '');
+
+		return $senderPhoneAdditional;
 	}
 
 	/**
@@ -270,7 +346,11 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	}
 
 	/**
+	 * Returns total weight in grams
+	 *
 	 * @return integer
+	 *
+	 * @throws Exception
 	 *
 	 * @since 1.0.0
 	 */
@@ -285,7 +365,9 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 
 		foreach ($this->order->products as $product)
 		{
-			$totalWeight += (float) $product->shipping->get('weight', 0) * $product->order['quantity'];
+			$productWeight = (int) WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+
+			$totalWeight += $productWeight * $product->order['quantity'];
 		}
 
 		return $totalWeight;
@@ -318,13 +400,22 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 				$productCost = (float) $this->orderShippingMethodParams->get('defaultProductCost', 0);
 			}
 
+			$productPayment = 0;
+
+			$productPaymentParams = $this->orderShippingMethodParams->get('product_payment');
+
+			if ($productPaymentParams->use_product_payment) // phpcs:ignore
+			{
+				$productPayment = (float) $product->price['base'];
+			}
+
 			$productEntity = new ProductEntity(
 				$product->title,
 				$product->$cdekProductCodeSource,
 				(float) $product->price['base'],
-				0,
+				$productPayment,
 				$productCost,
-				(int) $product->shipping->get('weight', 0),
+				WishboxradicalmartcdekHelper::getProductWeight($product, 'g'),
 				(int) $product->order['quantity']
 			);
 
@@ -337,11 +428,20 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	/**
 	 * @return string
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getShipmentPoint(): string
 	{
-		return $this->orderShippingMethodParams->get('senderOfficeCode', '');
+		$senderOfficeCode = $this->orderShippingMethodParams->get('senderOfficeCode', '');
+
+		if ($senderOfficeCode == '-1')
+		{
+			throw new Exception('SenderOfficeCode is not set in shipping method params.', 500);
+		}
+
+		return $senderOfficeCode;
 	}
 
 	/**
@@ -377,7 +477,7 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 		/** @noinspection PhpUndefinedFieldInspection */
 		$registry = new Registry($orderTable->shipping);
 
-		$data     = $registry->get('data');
+		$data = $registry->get('data');
 
 		if (!isset($data->trackingNumber) || $data->trackingNumber != $trackingNumber)
 		{
@@ -541,13 +641,22 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getOrdersPostPackages(): array
 	{
-		/** @var PackageRequest[] $packages */
-		$packages = [];
-
 		$app = Factory::getApplication();
-		$app->triggerEvent('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages', [&$packages, $this]);
 
-		return $packages;
+		/** @var GetOrdersPostPackagesEvent $event */
+		$event = AbstractEvent::create(
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
+			[
+				'subject'       => $this,
+				'eventClass'    => GetOrdersPostPackagesEvent::class
+			]
+		);
+
+		/** @var GetOrdersPostPackagesEvent $event */
+		$eventResult = $app->getDispatcher()
+			->dispatch('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages', $event);
+
+		return $eventResult->getPackageRequests();
 	}
 
 	/**
@@ -559,12 +668,21 @@ class RegistratorDelegate implements RegistratorDelegateInterface
 	 */
 	public function getOrdersPatchPackages(): array
 	{
-		/** @var PackageRequest[] $packages */
-		$packages = [];
-
 		$app = Factory::getApplication();
-		$app->triggerEvent('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages', [&$packages, $this]);
 
-		return $packages;
+		/** @var GetOrdersPatchPackagesEvent $event */
+		$event = AbstractEvent::create(
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
+			[
+				'subject'       => $this,
+				'eventClass'    => GetOrdersPatchPackagesEvent::class
+			]
+		);
+
+		/** @var GetOrdersPatchPackagesEvent $event */
+		$eventResult = $app->getDispatcher()
+			->dispatch('onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages', $event);
+
+		return $eventResult->getPackageRequests();
 	}
 }

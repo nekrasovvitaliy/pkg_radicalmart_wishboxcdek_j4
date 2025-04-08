@@ -6,7 +6,6 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 
@@ -30,13 +29,14 @@ trait CheckoutOfficeYandexMapPreparerTrait
 	 */
 	protected function prepareOfficeYandexMapField(): void
 	{
+		$this->getForm()->removeField('office_yandex_map', $this->shippingFieldAttributeGroup);
+		return;
+
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0)
 		{
-			$tariffCode = $this->getTariffCode();
-
-			if ($tariffCode && WishboxcdekHelper::isTariffToPoint($tariffCode))
+			if ($cityCode > 0 && $this->isTariffModeToPoint())
 			{
 				$result = $this->getForm()->setFieldAttribute(
 					'office_yandex_map',
@@ -106,6 +106,13 @@ trait CheckoutOfficeYandexMapPreparerTrait
 					catch (Exception $e)
 					{
 					}
+				}
+			}
+			else
+			{
+				if (!$this->getForm()->removeField('office_yandex_map', $this->shippingFieldAttributeGroup))
+				{
+					throw new Exception('failed to removeField', 500);
 				}
 			}
 		}

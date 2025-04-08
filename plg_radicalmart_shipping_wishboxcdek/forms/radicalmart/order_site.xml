@@ -2,38 +2,28 @@
 <form addfieldprefix="Joomla\Component\RadicalMart\Site\Field">
 	<fieldset name="shipping" label="COM_RADICALMART_SHIPPING">
 		<fields name="shipping">
-			<field name="country" type="text"
+			<field name="country"
+				   type="text"
 				   label="COM_RADICALMART_COUNTRY"
-				   required="true"/>
-			<field name="city" type="text"
-				   label="COM_RADICALMART_CITY"
-				   required="true"/>
+				   required="true"
+			/>
 
+			<field name="city"
+				   type="text"
+				   label="COM_RADICALMART_CITY"
+				   required="true"
+			/>
 
 			<field name="cityCode"
-				   type="listajaxsearch"
+				   type="value_city"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
-				   required="true"
-				   remote-search="1"
-				   addfieldprefix="Wishbox\Field"
-				   minTermLength="3"
-				   url="index.php?option=com_wishboxcdek&amp;task=cities.searchAjax"
-				   onchange="RadicalMartCheckout().reloadForm(this);"
-				   query="SELECT fullname FROM #__wishboxcdek_cities WHERE code = "
-				   hide_default="true"
-				   hide_none="true"
-			>
-				<option value="7">Миасс</option>
-				<option value="17">Пушкино</option>
-			</field>
+				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+			/>
 
 			<field name="officeCode"
-				   type="office"
+				   type="value_office"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
-				   required="true"
-				   remote-search="1"
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-				   hide_default="true"
 			/>
 
 			<field name="address"
@@ -43,13 +33,9 @@
 			/>
 
 			<field name="tariffCode"
-				   type="tariff"
+				   type="value_tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
-				   required="true"
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-				   hide_default="true"
-				   hide_none="true"
-				   prices_by_codes=""
 			/>
 
 			<field name="trackingNumber"

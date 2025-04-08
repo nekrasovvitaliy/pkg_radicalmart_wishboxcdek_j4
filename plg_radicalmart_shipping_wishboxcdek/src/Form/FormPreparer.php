@@ -1,14 +1,17 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form;
 
 use Exception;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Extension\Component;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\Component\RadicalMart\Administrator\Table\ShippingMethodTable;
+use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 
 /**
  * @since 1.0.0
@@ -39,7 +42,29 @@ abstract class FormPreparer
 	 */
 	public function prepare(): void
 	{
+		$componentParams = ComponentHelper::getParams('com_wishboxradicsalmartcdek');
 
+		/** @noinspection PhpUndefinedFieldInspection */
+		if (!$this->getForm()->setFieldAttribute(
+			'officeCode',
+			'deliverypoint_type',
+			$componentParams->get('deliverypoint_type', 'ALL'),
+			$this->shippingFieldAttributeGroup
+		))
+		{
+			throw new Exception('Failed to set field attribute');
+		}
+
+		/** @noinspection PhpUndefinedFieldInspection */
+		if (!$this->getForm()->setFieldAttribute(
+			'officeCode',
+			'deliverypoint_allowed_cod',
+			$componentParams->get('offices_filter_deliverypoint_allowed_cod', '0'),
+			$this->shippingFieldAttributeGroup
+		))
+		{
+			throw new Exception('Failed to set field attribute');
+		}
 	}
 
 	/**
@@ -86,4 +111,39 @@ abstract class FormPreparer
 	 * @since 1.0.0
 	 */
 	abstract protected function getShippingId(): int;
+
+	/**
+	 *
+	 * @return boolean|null
+	 *
+	 * @since 1.0.0
+	 */
+	public function isTariffModeToPoint(): ?bool
+	{
+		if (method_exists($this, 'getTariffCode'))
+		{
+			$tariffCode = $this->getTariffCode();
+
+			if ($tariffCode)
+			{
+				return WishboxcdekHelper::isTariffToPoint($tariffCode);
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		if (method_exists($this, 'getShipping'))
+		{
+			$shipping = $this->getShipping();
+			$tariffMode = $shipping->params->get('tariffMode');
+			list($from, $to) = explode('-', $tariffMode);
+			$result = $to == 'С';
+
+			return $result;
+		}
+
+		return false;
+	}
 }

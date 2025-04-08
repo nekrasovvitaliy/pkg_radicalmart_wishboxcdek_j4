@@ -193,6 +193,46 @@
 					</fieldset>
 				</form>
 			</field>
+
+			<field
+					name="product_payment"
+					type="subform"
+					label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PRODUCT_PAYMENT_LABEL"
+					buttons="add,remove,move"
+					layout="joomla.form.field.subform.repeatable"
+			>
+				<form>
+					<fieldset>
+						<field name="use_product_payment"
+							   type="radio"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_PRODUCT_PAYMENT_LABEL"
+							   default="1"
+							   layout="joomla.form.field.radio.switcher"
+							   filter="integer"
+						>
+							<option value="0">JNO</option>
+							<option value="1">JYES</option>
+						</field>
+						<field name="product_payment_vat_rate"
+							   type="list"
+							   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_PRODUCT_PAYMENT_VAT_RATE_LABEL"
+							   default="null"
+							   showon="use_product_payment:1"
+							   hide_none="true"
+							   hide_default="true"
+						>
+							<option value="0">0</option>
+							<option value="5">5</option>
+							<option value="7">7</option>
+							<option value="10">10</option>
+							<option value="12">12</option>
+							<option value="20">20</option>
+							<option value="null">null</option>
+						</field>
+					</fieldset>
+				</form>
+			</field>
+
 			<field name="field_country" type="radio"
 				   label="COM_RADICALMART_COUNTRY"
 				   class="btn-group btn-group-yesno"
@@ -300,14 +340,39 @@
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_NAME_LABEL"
 			/>
+
+			<field name="sender_phone_number"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_PHONE_NUMBER_LABEL"
+				   maxlength="24"
+				   required="true"
+			/>
+
+			<field name="sender_phone_additional"
+				   type="textarea"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_PHONE_ADDITIONAL_LABEL"
+				   maxlength="255"
+			/>
+		</fields>
+	</fieldset>
+
+	<fieldset name="seller" label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELDSET_SELLER">
+		<fields name="params">
+			<field name="sellerName"
+				   type="text"
+				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_NAME_LABEL"
+			/>
+
 			<field name="sellerInn"
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_INN_LABEL"
 			/>
+
 			<field name="sellerPhone"
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_PHONE_LABEL"
 			/>
+
 			<field name="sellerOwnerShipFormCode"
 				   type="list"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_OWNER_SHIP_FORM_CODE_LABEL"
@@ -320,15 +385,6 @@
 				<option value="137">Общество с ограниченной ответственностью</option>
 				<option value="147">Публичное акционерное общество</option>
 			</field>
-		</fields>
-	</fieldset>
-
-	<fieldset name="seller" label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELDSET_SELLER">
-		<fields name="params">
-			<field name="sellerName"
-				   type="text"
-				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SELLER_NAME_LABEL"
-			/>
 		</fields>
 	</fieldset>
 </form>

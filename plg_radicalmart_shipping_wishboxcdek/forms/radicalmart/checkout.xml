@@ -2,9 +2,11 @@
 <form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
 	<fieldset name="shipping">
 		<fields name="shipping">
-			<field name="country" type="text"
+			<field name="country"
+				   type="text"
 				   label="COM_RADICALMART_COUNTRY"
-				   required="true"/>
+				   required="true"
+			/>
 
 			<field name="cityCode"
 				   type="listajaxsearch"
@@ -34,6 +36,7 @@
 				   hide_default="true"
 				   hide_none="true"
 				   allowed_cod="true"
+				   deliverypoint_type="ALL"
 				   layout="joomla.form.field.list-fancy-select"
 			>
 				<option value="">JNONE</option>

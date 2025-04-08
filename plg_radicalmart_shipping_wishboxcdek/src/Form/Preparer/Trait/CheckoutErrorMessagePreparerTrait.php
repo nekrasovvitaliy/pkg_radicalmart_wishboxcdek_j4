@@ -6,7 +6,8 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\Component\Wishboxcdek\Site\Exception\NoAvailableTariffsException;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 
 /**
@@ -35,41 +36,28 @@ trait CheckoutErrorMessagePreparerTrait
 
 		if ($cityCode > 0)
 		{
-			$tariffCode = $this->getTariffCode();
-
-			if ($tariffCode && WishboxcdekHelper::isTariffToPoint($tariffCode))
+			try
 			{
-				try
+				CalculatorService::getShippingTariffs(
+					$this->getShipping(),
+					$this->getFormData(),
+					$this->getProducts()
+				);
+			}
+			catch (Exception $e)
+			{
+				if ($e instanceof NoAvailableTariffsException)
 				{
-					CalculatorService::getShippingTariffs(
-						$this->getShipping(),
-						$this->getFormData(),
-						$this->getProducts()
+					$this->setMessage(
+						Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_NO_AVAILABLE_TARIFFS_MESSAGE'),
+						'alert alert-info'
 					);
 				}
-				catch (Exception $e)
+				else
 				{
-					/** @noinspection PhpUndefinedFieldInspection */
-					if (!$this->getForm()->setFieldAttribute(
-						'error_message',
-						'description',
-						$e->getMessage(),
-						$this->shippingFieldAttributeGroup
-					))
-					{
-						throw new Exception('Failed to set field attribute');
-					}
-
-					/** @noinspection PhpUndefinedFieldInspection */
-					if (!$this->getForm()->setFieldAttribute(
-						'error_message',
-						'type',
-						'note',
-						$this->shippingFieldAttributeGroup
-					))
-					{
-						throw new Exception('Failed to set field attribute');
-					}
+					$this->setMessage(
+						$e->getMessage()
+					);
 				}
 			}
 		}
@@ -79,6 +67,47 @@ trait CheckoutErrorMessagePreparerTrait
 			{
 				throw new Exception('failed to removeField', 500);
 			}
+		}
+	}
+
+	/**
+	 * @param   string  $message  Message
+	 *
+	 * @since 1.0.0
+	 */
+	private function setMessage(string $message, string $class="alert alert-warning"): void
+	{
+		/** @noinspection PhpUndefinedFieldInspection */
+		if (!$this->getForm()->setFieldAttribute(
+			'error_message',
+			'description',
+			$message,
+			$this->shippingFieldAttributeGroup
+		))
+		{
+			throw new Exception('Failed to set field attribute');
+		}
+
+		/** @noinspection PhpUndefinedFieldInspection */
+		if (!$this->getForm()->setFieldAttribute(
+			'error_message',
+			'type',
+			'note',
+			$this->shippingFieldAttributeGroup
+		))
+		{
+			throw new Exception('Failed to set field attribute');
+		}
+
+		/** @noinspection PhpUndefinedFieldInspection */
+		if (!$this->getForm()->setFieldAttribute(
+			'error_message',
+			'class',
+			$class,
+			$this->shippingFieldAttributeGroup
+		))
+		{
+			throw new Exception('Failed to set field attribute');
 		}
 	}
 }

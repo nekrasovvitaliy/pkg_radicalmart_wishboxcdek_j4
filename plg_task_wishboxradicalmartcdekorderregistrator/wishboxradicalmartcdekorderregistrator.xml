@@ -11,6 +11,12 @@
 		<folder plugin="wishboxradicalmartcdekorderregistrator">services</folder>
 		<folder>src</folder>
 	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/plg_task_wishboxradicalmartcdekorderregistrator.ini</language>
+		<language tag="en-GB">language/en-GB/plg_task_wishboxradicalmartcdekorderregistrator.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_task_wishboxradicalmartcdekorderregistrator.ini</language>
+		<language tag="ru-RU">language/ru-RU/plg_task_wishboxradicalmartcdekorderregistrator.sys.ini</language>
+	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">

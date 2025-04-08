@@ -10,6 +10,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
 use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
@@ -91,7 +92,6 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 
 		$products = $delegate->getProducts();
 
-		// Создаем товары
 		$items = [];
 
 		foreach ($products as $product)
@@ -99,13 +99,9 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 			$items[] = (new ItemRequest)
 				->setName($product->name)
 				->setWareKey($product->code)
-				// Оплата за товар при получении, без НДС (за единицу товара)
 				->setPayment((new MoneyRequest)->setValue($product->payment))
-				// Объявленная стоимость товара (за единицу товара)
 				->setCost($product->cost)
-				// Вес в граммах
 				->setWeight($product->weight)
-				// Количество
 				->setAmount($product->quantity);
 		}
 
@@ -213,17 +209,9 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 				for ($k = 0; $k < $product->order['quantity']; $k++)
 				{
 					$package = new PackageRequest;
-					$weight = floatval($product->shipping->get('weight'));
-					$weightUnit = $product->shipping->get('weight_unit');
+					$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
 
-					$weightInGrams = match ($weightUnit)
-					{
-						'g'     => $weight,
-						'kg'    => $weight * 1000,
-						default => throw new Exception('Weight must be in gramms or kilograms'),
-					};
-
-					$package->setWeight($weightInGrams);
+					$package->setWeight($productWeight);
 
 					if ($this->useDimensions())
 					{

@@ -58,7 +58,7 @@ class HtmlView extends BaseHtmlView
 	{
 		$app = Factory::getApplication();
 		$canDo = WishboxradicalmartcdekHelper::getActions();
-		$option = strtolower($app->input->get('option', ''));
+		$option = strtolower($app->getInput()->get('option', ''));
 		ToolbarHelper::title(Text::_(mb_strtoupper($option)), 'generic');
 
 		if ($canDo->get('core.admin'))

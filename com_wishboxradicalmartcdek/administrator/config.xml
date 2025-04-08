@@ -3,7 +3,6 @@
     <fieldset
 			label="COM_WISHBOXRADICALMARTCDEK"
 			name="wishboxcdek"
-			addfieldprefix="Joomla\Component\Wishboxradicalmartcdek\Administrator\Field"
 	>
 		<field
 				name="debug_mode"
@@ -15,26 +14,33 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="ready_status_id"
-			   type="Statuses"
-			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_READY_STATUS_LABEL"
-			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
-		/>
-		<field name="error_status_id"
-			   type="Statuses"
-			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_ERROR_STATUS_LABEL"
-			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
-		/>
-		<field name="completed_status_id"
-			   type="Statuses"
-			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_COMPLETED_STATUS_LABEL"
-			   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
-		/>
-		<field name="order_number_prefix"
-			   type="text"
-			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_ORDER_NUMBER_PREFIX_LABEL"
-		/>
     </fieldset>
+
+	<fieldset
+			label="COM_WISHBOXRADICALMARTCDEK_FIELDSET_OFFICES"
+			name="offices"
+	>
+		<field
+				name="offices_filter_deliverypoint_type"
+				type="list"
+				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_TYPE_LABEL"
+				default="ALL"
+		>
+			<option value="ALL">ALL</option>
+			<option value="PVZ">PVZ</option>
+			<option value="POSTAMAT">POSTAMAT</option>
+		</field>
+		<field
+				name="offices_filter_deliverypoint_allowed_cod"
+				type="list"
+				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_ALLOWED_COD_LABEL"
+				default="0"
+				layout="joomla.form.field.radio.switcher"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
 
     <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
         <field

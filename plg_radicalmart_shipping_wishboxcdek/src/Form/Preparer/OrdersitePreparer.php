@@ -150,19 +150,4 @@ class OrdersitePreparer extends FormPreparer
 	{
 		return $this->products;
 	}
-
-	/**
-	 * @return boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
-	protected function isTariffToPoint(): bool
-	{
-		/** @noinspection PhpUnnecessaryLocalVariableInspection */
-		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
-
-		return $isTariffToPoint;
-	}
 }

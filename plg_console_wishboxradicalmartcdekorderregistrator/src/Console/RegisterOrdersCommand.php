@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Plugin\Console\Wishboxradicalmartcdekorderregistrator\Console;
 
 use Exception;
 use Joomla\CMS\Application\CMSApplicationInterface;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
 use Joomla\Console\Command\AbstractCommand;
@@ -103,7 +102,7 @@ class RegisterOrdersCommand extends AbstractCommand
 	 */
 	protected function doExecute(InputInterface $input, OutputInterface $output): int
 	{
-		$app = Factory::getApplication();
+		$app = $this->getApplication();
 		$this->configureIO($input, $output);
 
 		if (!ini_set('memory_limit', '256000000'))

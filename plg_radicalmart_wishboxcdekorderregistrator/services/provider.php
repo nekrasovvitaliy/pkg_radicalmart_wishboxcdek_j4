@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Extension\PluginInterface;
@@ -26,12 +26,14 @@ return new class implements ServiceProviderInterface {
 	 */
 	public function register(Container $container): void
 	{
-		$container->set(PluginInterface::class,
-			function (Container $container) {
-				$plugin = PluginHelper::getPlugin('radicalmart', 'wishboxcdekorderregistrator');
-				$subject = $container->get(DispatcherInterface::class);
+		$container->set(
+			PluginInterface::class,
+			function (Container $container)
+			{
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekorderregistrator');
 
-				$plugin = new Wishboxcdekorderregistrator($subject, (array) $plugin);
+				$plugin = new Wishboxcdekorderregistrator($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;

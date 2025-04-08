@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
@@ -83,6 +83,8 @@ class CheckoutPreparer extends FormPreparer
 	 */
 	public function prepare(): void
 	{
+		parent::prepare();
+
 		if (!$this->checkPlugin())
 		{
 			return;
@@ -181,22 +183,5 @@ class CheckoutPreparer extends FormPreparer
 	protected function getTariffCode(): int
 	{
 		return $this->shipping->order->price['tariffCode'] ?? 0;
-	}
-
-	/**
-	 * @return boolean
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 */
-	protected function isTariffToPoint(): bool
-	{
-		$tariffCode = $this->getTariffCode();
-
-		/** @noinspection PhpUnnecessaryLocalVariableInspection */
-		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($tariffCode);
-
-		return $isTariffToPoint;
 	}
 }

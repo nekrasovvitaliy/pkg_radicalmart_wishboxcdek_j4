@@ -1,17 +1,15 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\Radicalmart\Wishboxcdek\Extension;
 
 use Exception;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\RadicalMart\Site\Model\CheckoutModel;
-use Joomla\Database\DatabaseDriver;
-use Joomla\Database\DatabaseInterface;
+use Joomla\CMS\User\UserFactoryAwareTrait;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Event\Event;
@@ -29,6 +27,9 @@ defined('_JEXEC') or die;
  */
 final class Wishboxcdek extends Plugin implements SubscriberInterface
 {
+	use DatabaseAwareTrait;
+	use UserFactoryAwareTrait;
+
 	/**
 	 * Autoload the language file.
 	 *
@@ -48,22 +49,8 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onBeforeRender' => 'onBeforeRender',
 			'onRadicalMartGetOrderFormData' => 'onGetOrderFormData'
 		];
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  The dispatcher
-	 * @param   array                $config      An optional associative array of configuration settings
-	 *
-	 * @since   1.0.0
-	 */
-	public function __construct(DispatcherInterface $dispatcher, array $config)
-	{
-		parent::__construct($dispatcher, $config);
 	}
 
 	/**
@@ -84,8 +71,8 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 		{
 			if (!isset($data['shipping']))
 			{
-				$db = Factory::getContainer()->get(DatabaseDriver::class);
-				$query = $db->getQuery(true)
+				$db = $this->getDatabase();
+				$query = $db->createQuery()
 					->select('id')
 					->from($db->qn('#__radicalmart_shipping_methods'))
 					->where($db->qn('default') . ' = 1')
@@ -98,41 +85,14 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 					$data['shipping'] = $this->getCustomerShippingData($shippingId);
 				}
 			}
-		}
-	}
 
-	/**
-	 * @param   Event  $event  Event
-	 *
-	 * @return void
-	 *
-	 * @throws Exception
-	 *
-	 * @since 1.0.0
-	 *
-	 * @noinspection PhpUnused
-	 * @noinspection PhpUnusedParameterInspection
-	 */
-	public function onBeforeRender(Event $event): void
-	{
-		$app = Factory::getApplication();
-
-		if (!$app->isClient('administrator'))
-		{
-			return;
-		}
-
-		$option = $app->input->getCmd('option', '');
-		$view = $app->input->getCmd('view', '');
-
-		if ($option == 'com_radicalmart' && $view == 'orders')
-		{
-			ToolBarHelper::custom(
-				'wishboxcdekorders.register',
-				'copy',
-				'copy_f2.png',
-				Text::_('PLG_RADICALMART_WISHBOXCDEK_REGISTER_IN_CDEK')
-			);
+			if (isset($data['shipping']) && count($data['shipping']) == 1 && isset($data['shipping']['id']))
+			{
+				$data['shipping'] = $this->mergeCustomerData(
+					$data['shipping'],
+					$this->getCustomerShippingData($data['shipping']['id'])
+				);
+			}
 		}
 	}
 
@@ -182,11 +142,11 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	 */
 	public function getCustomerShippingData(int $shippingId): array
 	{
-		$app = Factory::getApplication();
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$app = $this->getApplication();
+		$db = $this->getDatabase();
 		$user = $app->getIdentity();
 
-		$query = $db->getQuery(true)
+		$query = $db->createQuery()
 			->select(['c.id', 'c.contacts', 'c.shipping', 'c.payment', 'c.plugins'])
 			->from($db->qn('#__radicalmart_customers', 'c'))
 			->where($db->qn('c.id') . ' = :id')

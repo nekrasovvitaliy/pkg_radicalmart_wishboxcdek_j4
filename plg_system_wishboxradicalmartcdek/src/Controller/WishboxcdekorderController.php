@@ -8,6 +8,7 @@
 namespace Joomla\Component\RadicalMart\Administrator\Controller;
 
 use AntistressStore\CdekSDK2\Exceptions\CdekV2RequestException;
+use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Component\Wishboxcdek\Site\Service\Registrator;
@@ -25,12 +26,13 @@ class WishboxcdekorderController extends FormController
 	/**
 	 * @return void
 	 *
-	 * @throws CdekV2RequestException
+	 * @throws CdekV2RequestException|Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function register(): void
 	{
-		$app = Factory::getApplication();
+		$app = $this->app;
 
 		$cid = $this->input->getVar('cid', [], 'array');
 

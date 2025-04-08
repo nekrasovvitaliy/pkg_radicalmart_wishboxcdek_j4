@@ -6,7 +6,6 @@
 namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
 use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
 
 /**
@@ -31,65 +30,52 @@ trait CheckoutOfficecodePreparerTrait
 	{
 		$cityCode = $this->getCityCode();
 
-		if ($cityCode > 0)
+		if ($cityCode > 0 && $this->isTariffModeToPoint() === true)
 		{
-			$tariffCode = $this->getTariffCode();
+			$result = $this->getForm()->setFieldAttribute(
+				'officeCode',
+				'cityCode',
+				$this->getCityCode(),
+				$this->shippingFieldAttributeGroup
+			);
 
-			if ($tariffCode && WishboxcdekHelper::isTariffToPoint($tariffCode))
+			if (!$result)
 			{
-				$result = $this->getForm()->setFieldAttribute(
-					'officeCode',
-					'cityCode',
-					$this->getCityCode(),
-					$this->shippingFieldAttributeGroup
+				throw new Exception('failed to set attribute', 500);
+			}
+
+			if (method_exists($this, 'getProducts'))
+			{
+				$calculatorDelegate = new CalculatorDelegate(
+					$this->getShipping(),
+					$this->getFormData(),
+					$this->getProducts()
 				);
 
-				if (!$result)
+				$packageRequests = $calculatorDelegate->getPackages();
+
+				$packagesData = [];
+
+				foreach ($packageRequests as $packageRequest)
+				{
+					$packagesData[] = [
+						'weight' => $packageRequest->getWeight() * 0.001,
+						'width'  => $packageRequest->getWidth(),
+						'height' => $packageRequest->getHeight(),
+						'length' => $packageRequest->getLength()
+					];
+				}
+
+				$packagesData = json_encode($packagesData);
+
+				if (!$this->getForm()->setFieldAttribute(
+					'officeCode',
+					'packages',
+					$packagesData,
+					$this->shippingFieldAttributeGroup
+				))
 				{
 					throw new Exception('failed to set attribute', 500);
-				}
-
-				if (method_exists($this, 'getProducts'))
-				{
-					$calculatorDelegate = new CalculatorDelegate(
-						$this->getShipping(),
-						$this->getFormData(),
-						$this->getProducts()
-					);
-
-					$packageRequests = $calculatorDelegate->getPackages();
-
-					$packagesData = [];
-
-					foreach ($packageRequests as $packageRequest)
-					{
-						$packagesData[] = [
-							'weight' => $packageRequest->getWeight() * 0.001,
-							'width'  => $packageRequest->getWidth(),
-							'height' => $packageRequest->getHeight(),
-							'length' => $packageRequest->getLength()
-						];
-					}
-
-					$packagesData = json_encode($packagesData);
-					$result       = $this->getForm()->setFieldAttribute(
-						'officeCode',
-						'packages',
-						$packagesData,
-						$this->shippingFieldAttributeGroup
-					);
-
-					if (!$result)
-					{
-						throw new Exception('failed to set attribute', 500);
-					}
-				}
-			}
-			else
-			{
-				if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
-				{
-					throw new Exception('failed to removeField', 500);
 				}
 			}
 		}

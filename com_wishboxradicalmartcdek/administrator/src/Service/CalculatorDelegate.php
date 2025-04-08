@@ -1,15 +1,16 @@
 <?php
 /**
- * @copyright   (с) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (с) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Service;
 
 use Exception;
 use Joomla\CMS\Event\AbstractEvent;
-use Joomla\CMS\Event\GenericEvent;
 use Joomla\CMS\Factory;
 use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\CalculatorDelegate\GetPackagesEvent;
+use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
 use stdClass;
 use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest;
 
@@ -120,6 +121,8 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	/**
 	 * @return integer
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function getTotalWeight(): int
@@ -128,7 +131,8 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 
 		foreach ($this->products as $product)
 		{
-			$totalWeight += (float) $product->shipping->get('weight', 0) * $product->order['quantity'];
+			$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+			$totalWeight += $productWeight * $product->order['quantity'];
 		}
 
 		return $totalWeight;
@@ -147,7 +151,10 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 
 		if (!is_array($tariffCodes) || !count($tariffCodes))
 		{
-			throw new Exception('Shipping method "' . $this->method->title . '" doesn`t have any tariffs.', 500);
+			throw new Exception(
+				'Shipping method "' . $this->method->title . '" doesn`t have any tariffs.',
+				500
+			);
 		}
 
 		return $tariffCodes;
@@ -164,23 +171,21 @@ class CalculatorDelegate implements CalculatorDelegateInterface
 	 */
 	public function getPackages(): array
 	{
-		/** @var PackageRequest[] $packages */
-		$packages = [];
-
 		$app = Factory::getApplication();
 
-		/** @var GenericEvent $event */
+		/** @var GetPackagesEvent $event */
 		$event = AbstractEvent::create(
 			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages',
 			[
-				'packages'  => &$packages,
-				'subject'   => $this,
+				'subject'       => $this,
+				'eventClass'    => GetPackagesEvent::class
 			]
 		);
-		$app->getDispatcher()->dispatch('onWishboxRadicalMartCdekCalculatorDelegateGetPackages', $event);
-		$packages = $event->getArgument('packages');
 
-		return $packages;
+		/** @var GetPackagesEvent $event */
+		$eventResult = $app->getDispatcher()->dispatch($event->getName(), $event);
+
+		return $eventResult->getPackageRequests();
 	}
 
 	/**
