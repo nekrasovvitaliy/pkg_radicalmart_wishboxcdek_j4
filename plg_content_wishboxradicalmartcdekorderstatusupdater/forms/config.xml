@@ -5,56 +5,45 @@
             name="wishboxradicalmartcdekorderstatusupdater"
             addfieldprefix="Joomla\Component\Wishboxradicalmartcdek\Administrator\Field"
     >
-        <field
-                name="wishboxradicalmartcdekorderstatusupdater"
-                type="subform"
-                label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_ORDERSTATUSUPDATER_LABEL"
-                buttons="add,remove,move"
-                multiple="true"
-                min="0"
-                layout="joomla.form.field.subform.repeatable-table"
-                hiddenLabel="true"
-        >
-            <form>
-                <fieldset>
-                    <field
-                            name="statuses"
-                            type="subform"
-                            label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_STATUSES_LABEL"
-                            buttons="add,remove,move"
-                            multiple="true"
-                            min="0"
-                            layout="joomla.form.field.subform.repeatable-table"
-                            hiddenLabel="true"
-                    >
-                        <form>
-                            <fieldset>
-                                <field name="old_status_id"
-                                       type="Statuses"
-                                       label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_OLD_STATUS_LABEL"
-                                       required="true"
-                                       addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
-                                />
+        <fields name="wishboxradicalmartcdekorderstatusupdater">
 
-                                <field name="wishboxcdek_status_code"
-                                       type="WishboxCdekStatus"
-                                       label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_CDEK_STATUS_LABEL"
-                                       required="true"
-                                       addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
-                                />
+                <field
+                        name="statuses"
+                        type="subform"
+                        label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_STATUSES_LABEL"
+                        buttons="add,remove,move"
+                        multiple="true"
+                        min="0"
+                        layout="joomla.form.field.subform.repeatable-table"
+                        hiddenLabel="true"
+                >
+                    <form>
+                        <fieldset>
+                            <field name="old_status_id"
+                                   type="Statuses"
+                                   label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_OLD_STATUS_LABEL"
+                                   required="true"
+                                   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
+                            />
 
-                                <field name="new_status_id"
-                                       type="Statuses"
-                                       label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_NEW_STATUS_LABEL"
-                                       required="true"
-                                       addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
-                                />
+                            <field name="wishboxcdek_status_code"
+                                   type="WishboxCdekStatus"
+                                   label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_CDEK_STATUS_LABEL"
+                                   required="true"
+                                   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+                            />
 
-                            </fieldset>
-                        </form>
-                    </field>
-                </fieldset>
-            </form>
-        </field>
+                            <field name="new_status_id"
+                                   type="Statuses"
+                                   label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_NEW_STATUS_LABEL"
+                                   required="true"
+                                   addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field"
+                            />
+
+                        </fieldset>
+                    </form>
+                </field>
+
+        </fields>
     </fieldset>
 </form>

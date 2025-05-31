@@ -1,23 +1,22 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Joomla\Plugin\Wishboxradicalmartcdek\Onepackage\Extension;
+namespace Joomla\Plugin\WishboxRadicalMartCdek\OnePackage\Extension;
 
 use Exception;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Wishboxcdek\Site\Interface\CalculatorDelegateInterface;
-use Joomla\Component\Wishboxcdek\Site\Interface\RegistratorDelegateInterface;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
+use Joomla\Component\WishboxCdek\Site\Interface\RegistratorDelegateInterface;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Event\Model\CalculatorDelegate\GetPackagesEvent;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest as TariffListPostPackageRequest;
+use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\PackageRequest as OrdersPatchPackageRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\MoneyRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\Package\ItemRequest;
-use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\PackageRequest;
+use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\PackageRequest as OrdersPostPackageRequest;
 use WishboxCdekSDK2\Model\Response\Orders\OrdersGetResponse;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -27,23 +26,10 @@ defined('_JEXEC') or die;
 /**
  * @since 1.0.0
  */
-class Onepackage extends CMSPlugin implements SubscriberInterface
+final class OnePackage extends CMSPlugin implements SubscriberInterface
 {
 	use MVCFactoryAwareTrait;
 	use DatabaseAwareTrait;
-
-	/**
-	 * @param   DispatcherInterface  $subject  The object to observe
-	 * @param   array                $config   An optional associative array of configuration settings.
-	 *                                           Recognized key values include 'name', 'group', 'params', 'language'
-	 *                                           (this list is not meant to be comprehensive).
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct(&$subject, $config = [])
-	{
-		parent::__construct($subject, $config);
-	}
 
 	/**
 	 * @return string[]
@@ -55,14 +41,14 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onWishboxCdekOrdersPostRequestCreatorBeforeGetPackages'    => 'onWishboxCdekOrdersPostRequestCreatorBeforeGetPackages',
-			'onWishboxCdekOrdersPatchRequestCreatorBeforeGetPackages'   => 'onWishboxCdekOrdersPatchRequestCreatorBeforeGetPackages',
-			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'     => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages'  => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
+			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'             => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
 		];
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPostPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -72,18 +58,14 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxCdekOrdersPostRequestCreatorBeforeGetPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(GetOrdersPostPackagesEvent $event): void
 	{
-		/** @var PackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
-
 		/** @var RegistratorDelegateInterface $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getRegistratorDelegate();
 
 		$totalWeight   = $delegate->getTotalWeight();
 
-		// Создаем данные посылки. Место
-		$package = (new PackageRequest)
+		$packageRequest = (new OrdersPostPackageRequest)
 			->setNumber('1')
 			->setWeight($totalWeight)
 			->setHeight($packageHeight)
@@ -105,15 +87,12 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 				->setAmount($product->quantity);
 		}
 
-		$package->setItems($items);
-		$packageRequests = [$package];
-
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		$packageRequest->setItems($items);
+		$event->addResult($packageRequest);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPatchPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -123,24 +102,20 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxCdekOrdersPatchRequestCreatorBeforeGetPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(GetOrdersPatchPackagesEvent $event): void
 	{
-		/** @var PackageRequest[] $cityResponses */
-		$packageRequest = $event->getArgument(0);
-
-		/** @var RegistratorDelegateInterface $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getRegistratorDelegate();
 
 		/** @var OrdersGetResponse $existingOrdersGetResponse */
 		$existingOrdersGetResponse = $event->getArgument(3);
 
 		$totalWeight   = $delegate->getTotalWeight();
 
-		$package = new \WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\PackageRequest;
+		$packageRequest = new OrdersPatchPackageRequest;
 		$existingPackages = $existingOrdersGetResponse->getEntity()->getPackages();
 		$existingPackage   = $existingPackages[0];
 		$existingPackageId = $existingPackage->getPackageId();
-		$package->setPackageId($existingPackageId)
+		$packageRequest->setPackageId($existingPackageId)
 			->setNumber('1')
 			->setWeight($totalWeight)
 			->setHeight($packageHeight)
@@ -162,16 +137,12 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 				->setAmount($product->quantity);
 		}
 
-		$package->setItems($items);
-		$packageRequests = [$package];
-
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
-		$event->setArgument(3, $existingOrdersGetResponse);
+		$packageRequest->setItems($items);
+		$event->addResult($packageRequest);
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -181,52 +152,19 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(Event $event): void
+	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(GetPackagesEvent $event): void
 	{
-		/** @var PackageRequest[] $cityResponses */
-		$packageRequest = $event->getArgument(0);
-
-		/** @var CalculatorDelegateInterface $delegate */
-		$delegate = $event->getArgument(1);
+		$delegate = $event->getCalculatorDelegate();
 
 
 
-		if ($delegate->method->params->get('useTheOnlyOnePackage'))
-		{
-			$dimensions = $delegate->method->params->get('defaultDimensions');
+		$packageRequest = (new TariffListPostPackageRequest)
+			->setWeight($this->getTotalWeight())
+			->setLength((int) $dimensions->length)
+			->setWidth((int) $dimensions->width)
+			->setHeight((int) $dimensions->height);
 
-			$package = (new \WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest)
-				->setWeight($this->getTotalWeight())
-				->setLength((int) $dimensions->length)
-				->setWidth((int) $dimensions->width)
-				->setHeight((int) $dimensions->height);
-			$packages[] = $package;
-		}
-		else
-		{
-			foreach ($this->products as $product)
-			{
-				for ($k = 0; $k < $product->order['quantity']; $k++)
-				{
-					$package = new PackageRequest;
-					$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
-
-					$package->setWeight($productWeight);
-
-					if ($this->useDimensions())
-					{
-						$package->setWidth($product->shipping->get('width'))
-							->setHeight($product->shipping->get('height'))
-							->setLength($product->shipping->get('length'));
-					}
-
-					$packages[] = $package;
-				}
-			}
-		}
-
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		$event->setArgument(0, $packageRequest);
 	}
 
 	/**
@@ -236,7 +174,7 @@ class Onepackage extends CMSPlugin implements SubscriberInterface
 	 */
 	public function getPackageLength(): int
 	{
-		$dimensions = $this->method->params->get('defaultPackageDimensions');
+
 
 		return (int) $dimensions->length;
 	}

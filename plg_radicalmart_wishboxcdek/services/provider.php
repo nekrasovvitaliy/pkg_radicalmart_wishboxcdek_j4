@@ -10,7 +10,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\Wishboxcdek\Extension\Wishboxcdek;
+use Joomla\Plugin\Radicalmart\WishboxCdek\Extension\WishboxCdek;
 
 defined('_JEXEC') or die;
 
@@ -33,10 +33,10 @@ return new class implements ServiceProviderInterface
 			PluginInterface::class,
 			function (Container $container)
 			{
-				$plugin = new Wishboxcdek(
-					$container->get(DispatcherInterface::class),
-					(array) PluginHelper::getPlugin('radicalmart', 'wishboxcdek')
-				);
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdek');
+
+				$plugin = new WishboxCdek($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 				$plugin->setDatabase($container->get(DatabaseInterface::class));
 

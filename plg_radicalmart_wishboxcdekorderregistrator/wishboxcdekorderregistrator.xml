@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="plugin" group="radicalmart" method="upgrade">
+<extension type="plugin" group="radicalmart" method="upgrade">
 	<name>plg_radicalmart_wishboxcdekorderregistrator</name>
 	<author>Nekrasov Vitaliy</author>
 	<creationDate>December 2023</creationDate>
@@ -7,7 +7,7 @@
 	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
 	<version>1.0.0</version>
 	<description>PLG_RADICALMART_WISHBOXCDEKORDERREGISTRATOR_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator</namespace>
+	<namespace path="src">Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator</namespace>
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder plugin="wishboxcdekorderregistrator">services</folder>

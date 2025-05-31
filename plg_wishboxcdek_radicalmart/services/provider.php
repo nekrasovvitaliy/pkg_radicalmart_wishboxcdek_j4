@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 defined('_JEXEC') or die;
@@ -11,7 +11,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Wishboxcdek\Jshopping\Extension\Jshopping;
+use Joomla\Plugin\WishboxCdek\JShopping\Extension\Jshopping;
 
 return new class implements ServiceProviderInterface
 {
@@ -30,10 +30,10 @@ return new class implements ServiceProviderInterface
 			PluginInterface::class,
 			function (Container $container)
 			{
-				$plugin = new Jshopping(
-					$container->get(DispatcherInterface::class),
-					(array) PluginHelper::getPlugin('wishboxcdek', 'jshopping')
-				);
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('wishboxcdek', 'jshopping');
+
+				$plugin = new Jshopping($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;

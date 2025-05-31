@@ -9,7 +9,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension\Wishboxcdek;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Extension\WishboxCdek;
 
 defined('_JEXEC') or die;
 
@@ -33,7 +33,7 @@ return new class implements ServiceProviderInterface {
 				$dispatcher = $container->get(DispatcherInterface::class);
 				$config = (array) PluginHelper::getPlugin('radicalmart_shipping', 'wishboxcdek');
 
-				$plugin = new Wishboxcdek($dispatcher, $config);
+				$plugin = new WishboxCdek($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;

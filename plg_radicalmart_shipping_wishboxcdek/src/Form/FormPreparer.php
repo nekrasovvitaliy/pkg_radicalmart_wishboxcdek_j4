@@ -3,15 +3,14 @@
  * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Extension\Component;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\Component\RadicalMart\Administrator\Table\ShippingMethodTable;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
+use Joomla\Component\WishboxCdek\Site\Helper\WishboxCdekHelper;
 
 /**
  * @since 1.0.0
@@ -38,15 +37,16 @@ abstract class FormPreparer
 	/**
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function prepare(): void
 	{
-		$componentParams = ComponentHelper::getParams('com_wishboxradicsalmartcdek');
+		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 
-		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(
-			'officeCode',
+			'office_code',
 			'deliverypoint_type',
 			$componentParams->get('deliverypoint_type', 'ALL'),
 			$this->shippingFieldAttributeGroup
@@ -55,9 +55,8 @@ abstract class FormPreparer
 			throw new Exception('Failed to set field attribute');
 		}
 
-		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(
-			'officeCode',
+			'office_code',
 			'deliverypoint_allowed_cod',
 			$componentParams->get('offices_filter_deliverypoint_allowed_cod', '0'),
 			$this->shippingFieldAttributeGroup
@@ -116,6 +115,8 @@ abstract class FormPreparer
 	 *
 	 * @return boolean|null
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function isTariffModeToPoint(): ?bool
@@ -126,7 +127,7 @@ abstract class FormPreparer
 
 			if ($tariffCode)
 			{
-				return WishboxcdekHelper::isTariffToPoint($tariffCode);
+				return WishboxCdekHelper::isTariffToPoint($tariffCode);
 			}
 			else
 			{
@@ -137,11 +138,10 @@ abstract class FormPreparer
 		if (method_exists($this, 'getShipping'))
 		{
 			$shipping = $this->getShipping();
-			$tariffMode = $shipping->params->get('tariffMode');
-			list($from, $to) = explode('-', $tariffMode);
-			$result = $to == 'С';
+			$tariffMode = $shipping->params->get('tariff_mode');
+			list(, $to) = explode('-', $tariffMode);
 
-			return $result;
+			return $to == 'С';
 		}
 
 		return false;

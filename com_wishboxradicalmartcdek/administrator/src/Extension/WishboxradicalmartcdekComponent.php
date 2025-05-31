@@ -3,38 +3,32 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Extension;
+namespace Joomla\Component\WishboxRadicalMartCdek\Administrator\Extension;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\Html\Wishboxradicalmartcdek;
+use Joomla\Component\Content\Administrator\Service\HTML\AdministratorService;
 use Joomla\CMS\Association\AssociationServiceTrait;
-use Joomla\CMS\Categories\CategoryServiceTrait;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
 use Joomla\CMS\Component\Router\RouterServiceTrait;
 use Joomla\CMS\Extension\BootableExtensionInterface;
 use Joomla\CMS\Extension\MVCComponent;
 use Joomla\CMS\HTML\HTMLRegistryAwareTrait;
-use Joomla\CMS\Tag\TagServiceTrait;
 use Psr\Container\ContainerInterface;
 use function defined;
 
 /**
- * Component class for Wishboxradicalmartcdek
+ * Component class for WishboxRadicalMartCdek
  *
  * @since  1.0.0
  */
-class WishboxradicalmartcdekComponent extends MVCComponent implements RouterServiceInterface, BootableExtensionInterface
+class WishboxRadicalMartCdekComponent extends MVCComponent implements RouterServiceInterface, BootableExtensionInterface
 {
 	use AssociationServiceTrait;
 	use RouterServiceTrait;
 	use HTMLRegistryAwareTrait;
-	use CategoryServiceTrait, TagServiceTrait {
-		CategoryServiceTrait::getTableNameForSection insteadof TagServiceTrait;
-		CategoryServiceTrait::getStateColumnForSection insteadof TagServiceTrait;
-	}
 
 	/**
 	 * Booting the extension. This is the function to set up the environment of the extension like
@@ -53,6 +47,6 @@ class WishboxradicalmartcdekComponent extends MVCComponent implements RouterServ
 	 */
 	public function boot(ContainerInterface $container)
 	{
-		$this->getRegistry()->register('wishboxradicalmartcdek', new Wishboxradicalmartcdek);
+		$this->getRegistry()->register('wishboxradicalmartcdek', new AdministratorService);
 	}
 }

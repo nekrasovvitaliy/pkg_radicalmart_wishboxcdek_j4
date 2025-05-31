@@ -3,11 +3,11 @@
  * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
 
 /**
  * @since 1.0.0
@@ -15,7 +15,7 @@ use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
 class ShippingmethodPreparer extends FormPreparer
 {
 	/**
-	 * @var object|array
+	 * @var object|array Data
 	 *
 	 * @since 1.0.0
 	 */
@@ -66,8 +66,8 @@ class ShippingmethodPreparer extends FormPreparer
 			if ($this->getSenderCityCode())
 			{
 				if (!$this->form->setFieldAttribute(
-					'senderOfficeCode',
-					'cityCode',
+					'sender_office_code',
+					'city_code',
 					$this->getSenderCityCode(),
 					'params'
 				))
@@ -87,7 +87,7 @@ class ShippingmethodPreparer extends FormPreparer
 	 */
 	protected function getSenderCityCode(): int
 	{
-		return (int) $this->data->params['senderCityCode'];
+		return (int) $this->data->params['sender_city_code'];
 	}
 
 	/**

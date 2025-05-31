@@ -9,7 +9,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Content\WishboxRadicalMartCdekOrderStatusUpdater\Extension\Wishboxradicalmartcdekorderstatusupdater;
+use Joomla\Plugin\Content\WishboxRadicalMartCdekOrderStatusUpdater\Extension\WishboxRadicalMartCdekOrderStatusUpdater;
 
 defined('_JEXEC') or die;
 
@@ -33,7 +33,7 @@ return new class implements ServiceProviderInterface {
 				$dispatcher = $container->get(DispatcherInterface::class);
 				$config = (array) PluginHelper::getPlugin('content', 'wishboxradicalmartcdekorderstatusupdater');
 
-				$plugin = new Wishboxradicalmartcdekorderstatusupdater($dispatcher, $config);
+				$plugin = new WishboxRadicalMartCdekOrderStatusUpdater($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;

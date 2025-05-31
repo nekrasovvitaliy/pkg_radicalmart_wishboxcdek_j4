@@ -1,18 +1,19 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  *
  * @noinspection PhpUndefinedClassInspection
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use Joomla\Component\WishboxCdek\Site\Helper\WishboxCdekHelper;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\OrderTrackingNumberPreparerTrait;
 use stdClass;
 
 /**
@@ -22,6 +23,7 @@ class OrderPreparer extends FormPreparer
 {
 	use CheckoutOfficecodePreparerTrait;
 	use CheckoutAddressPreparerTrait;
+	use OrderTrackingNumberPreparerTrait;
 
 	/**
 	 * @var   stdClass  $shipping  Shipping
@@ -85,6 +87,7 @@ class OrderPreparer extends FormPreparer
 
 		$this->prepareOfficeCodeField();
 		$this->prepareAddressField();
+		$this->prepareTrackingNumber();
 	}
 
 	/**
@@ -96,7 +99,7 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
-		return (int) $this->formData['shipping']['cityCode'];
+		return (int) $this->formData['shipping']['city_code'];
 	}
 
 	/**
@@ -116,7 +119,7 @@ class OrderPreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return $this->formData['shipping']['price']['tariffCode'] ?? 0;
+		return $this->formData['shipping']['price']['tariff_code'] ?? 0;
 	}
 
 	/**
@@ -129,7 +132,7 @@ class OrderPreparer extends FormPreparer
 	protected function isTariffToPoint(): bool
 	{
 		/** @noinspection PhpUnnecessaryLocalVariableInspection */
-		$isTariffToPoint = WishboxcdekHelper::isTariffToPoint($this->getTariffCode());
+		$isTariffToPoint = WishboxCdekHelper::isTariffToPoint($this->getTariffCode());
 
 		return $isTariffToPoint;
 	}

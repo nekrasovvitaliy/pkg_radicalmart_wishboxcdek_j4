@@ -3,17 +3,17 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutErrorMessagePreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficeGoogleMapPreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficeYandexMapPreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
+use Joomla\Component\WishboxCdek\Site\Helper\WishboxCdekHelper;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutErrorMessagePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficeGoogleMapPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficeYandexMapPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
 use stdClass;
 
 /**
@@ -108,7 +108,7 @@ class CheckoutPreparer extends FormPreparer
 	{
 		if ($this->getCityCode() <= 0
 			|| $this->getTariffCode() <= 0
-			|| WishboxcdekHelper::isTariffToPoint($this->getTariffCode())
+			|| WishboxCdekHelper::isTariffToPoint($this->getTariffCode())
 		)
 		{
 			if (!$this->form->removeField('address', 'shipping'))
@@ -168,8 +168,8 @@ class CheckoutPreparer extends FormPreparer
 	protected function getCityCode(): int
 	{
 		$formData = $this->getFormData();
-		$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['cityCode']))
-			? (int) $formData['shipping']['cityCode']
+		$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['city_code']))
+			? (int) $formData['shipping']['city_code']
 			: 0;
 
 		return $cityCode;
@@ -182,6 +182,6 @@ class CheckoutPreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return $this->shipping->order->price['tariffCode'] ?? 0;
+		return $this->shipping->order->price['tariff_code'] ?? 0;
 	}
 }

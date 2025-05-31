@@ -10,7 +10,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator\Extension\Wishboxradicalmartcdekorderregistrator;
+use Joomla\Plugin\Task\WishboxRadicalMartCdekOrderRegistrator\Extension\WishboxRadicalMartCdekOrderRegistrator;
 
 defined('_JEXEC') or die;
 
@@ -33,10 +33,10 @@ return new class implements ServiceProviderInterface
 			PluginInterface::class,
 			function (Container $container)
 			{
-				$plugin = new Wishboxradicalmartcdekorderregistrator(
-					$container->get(DispatcherInterface::class),
-					(array) PluginHelper::getPlugin('task', 'wishboxradicalmartcdekorderregistrator')
-				);
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('task', 'wishboxradicalmartcdekorderregistrator');
+
+				$plugin = new WishboxRadicalMartCdekOrderRegistrator($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 				$plugin->setDatabase($container->get(DatabaseInterface::class));
 

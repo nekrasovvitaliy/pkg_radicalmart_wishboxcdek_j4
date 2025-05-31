@@ -1,18 +1,16 @@
 <?php
 /**
- * @copyright   2013-2024 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\Wishboxcdek\JShopping\Extension;
+namespace Joomla\Plugin\WishboxCdek\JShopping\Extension;
 
 use Exception;
-use Joomla\Component\Wishboxcdek\Site\Event\Model\Offices\GetDataForMapEvent;
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Component\WishboxCdek\Site\Event\Model\Offices\GetDataForMapEvent;
 use Joomla\Component\Jshopping\Site\Lib\JSFactory;
-use Joomla\Component\Jshopping\Site\Model\Wishbox\Shippingcalculator\CdekModel;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
-use Wishbox\JShoppingPlugin;
 use function defined;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -36,7 +34,7 @@ require_once JPATH_SITE . '/components/com_jshopping/bootstrap.php';
  *
  * @since 1.0.0
  */
-final class JShopping extends JShoppingPlugin implements SubscriberInterface
+final class JShopping extends CMSPlugin implements SubscriberInterface
 {
 	/**
 	 * @var string $addonAlias Addon alias
@@ -66,19 +64,6 @@ final class JShopping extends JShoppingPlugin implements SubscriberInterface
 		return [
 			'onBeforeWishboxCdekOfficesGetDataForMap'   => 'onBeforeWishboxCdekOfficesGetDataForMap'
 		];
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  The dispatcher
-	 * @param   array                $config      An optional associative array of configuration settings
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct(DispatcherInterface $dispatcher, array $config)
-	{
-		parent::__construct($dispatcher, $config);
 	}
 
 	/**

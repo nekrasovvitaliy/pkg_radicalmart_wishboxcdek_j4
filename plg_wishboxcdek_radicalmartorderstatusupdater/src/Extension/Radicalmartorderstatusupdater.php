@@ -1,24 +1,25 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  *
  * @noinspection PhpMultipleClassDeclarationsInspection
  */
-namespace Joomla\Plugin\Wishboxcdek\RadicalMartOrderStatusUpdater\Extension;
+namespace Joomla\Plugin\WishboxCdek\RadicalMartOrderStatusUpdater\Extension;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
-use Joomla\Component\Wishboxcdek\Administrator\Table\StatusTable;
-use Joomla\Component\Wishboxcdek\Administrator\Event\Model\OrderStatusUpdater\UpdateOrderStatusEvent;
-use Joomla\Component\Wishboxcdek\Site\Event\Model\OrderStatusUpdater\GetCdekNumbersEvent;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
+use Joomla\Component\WishboxCdek\Administrator\Table\StatusTable;
+use Joomla\Component\WishboxCdek\Site\Event\Model\OrderStatusUpdater\UpdateOrderStatusEvent;
+use Joomla\Component\WishboxCdek\Site\Event\Model\OrderStatusUpdater\GetCdekNumbersEvent;
+use Joomla\Component\WishboxCdek\Site\Event\Model\Webhook\HandleOrderStatusEvent;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Helper\WishboxRadicalMartCdekHelper;
+use Joomla\Database\DatabaseAwareInterface;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
-use WishboxCdekSDK2\Model\Response\Orders\OrdersGetResponse;
+use WishboxCdekSDK2\Event\AfterCalculateTariffListEvent;
 use function defined;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -30,7 +31,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInterface
+final class RadicalMartOrderStatusUpdater extends CMSPlugin implements DatabaseAwareInterface, SubscriberInterface
 {
 	use DatabaseAwareTrait;
 
@@ -48,7 +49,7 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 	 *
 	 * @return  array
 	 *
-	 * @since   1.2.0
+	 * @since   1.0.0
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -70,6 +71,15 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 	 */
 	public function onWishboxCdekOrderStatusUpdaterGetCdekNumbers(GetCdekNumbersEvent $event): void
 	{
+		$component = $event->getComponent();
+
+		if (!in_array($component, ['', 'radicalmart']))
+		{
+			return;
+		}
+
+		$orderIds = $event->getOrderIds();
+
 		$db = $this->getDatabase();
 
 		$subQuery = $db->createQuery()
@@ -82,16 +92,21 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 		$oldOrderStatusIds = $this->getOLdOrderStatusIds();
 
 		if (is_array($shippingMethodIds) && count($shippingMethodIds)
-			&& is_array($oldOrderStatusIds) && count($oldOrderStatusIds))
+			&& count($oldOrderStatusIds))
 		{
 			$query = $db->createQuery()
-				->select('JSON_UNQUOTE(JSON_EXTRACT(shipping, ' . $db->q('$.data.trackingNumber') . ')) AS trackingNumber')
+				->select('JSON_UNQUOTE(JSON_EXTRACT(shipping, ' . $db->q('$.data.tracking_number') . ')) AS trackingNumber')
 				->from($db->qn('#__radicalmart_orders'))
 				->where($db->qn('state') . ' = 1')
 				->whereIn($db->qn('status'), $oldOrderStatusIds)
 				->whereIn('JSON_EXTRACT(shipping, ' . $db->q('$.id') . ')', $shippingMethodIds)
-				->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.trackingNumber') . ')')
-				->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.trackingNumber') . ') <> ""');
+				->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.tracking_number') . ')')
+				->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.tracking_number') . ') <> ""');
+
+			if (count($orderIds))
+			{
+				$query->whereIn($db->qn('id'), $orderIds);
+			}
 
 			$db->setQuery($query);
 
@@ -108,7 +123,7 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   AfterCalculateTariffListEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -118,10 +133,9 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxCdekClientV2AfterGetOrderInfo(Event $event): void
+	public function onWishboxCdekClientV2AfterGetOrderInfo(AfterCalculateTariffListEvent $event): void
 	{
-		/** @var OrdersGetResponse $response */
-		$response = $event->getArgument('response');
+		$response = $event->getResponse();
 
 		$app = $this->getApplication();
 
@@ -164,17 +178,48 @@ class RadicalMartOrderStatusUpdater extends CMSPlugin implements SubscriberInter
 		$orderCdekStatuses = $event->getOrderCdekStatuses();
 		$lastOrderCdekStatus = $orderCdekStatuses[array_key_last($orderCdekStatuses)];
 
+		$this->updateOrderStatus($cdekNumber, $lastOrderCdekStatus->getCode());
+	}
+
+	/**
+	 * @param   HandleOrderStatusEvent  $event  Event
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 *
+	 * @noinspection PhpUnused
+	 */
+	public function onWishboxCdekWebhookHandleOrderStatus(HandleOrderStatusEvent $event): void
+	{
+		$data = $event->getData();
+
+		$this->updateOrderStatus($data['attributes']['cdek_number'], $data['attributes']['code']);
+	}
+
+	/**
+	 * @param   string  $cdekNumber               Cdek number
+	 * @param   string  $lastOrderCdekStatusCode  Code of the latest order status in Cdek
+	 *
+	 * @return void
+	 *
+	 * @throws Exception
+	 *
+	 * @since 1.0.0
+	 */
+	protected function updateOrderStatus(string $cdekNumber, string $lastOrderCdekStatusCode): void
+	{
 		$app = $this->getApplication();
 
 		$orderTable = $app->bootComponent('com_radicalmart')
 			->getMVCFactory()
 			->createTable('Order', 'Administrator');
 
-		$orderId = WishboxradicalmartcdekHelper::getOrderIdByCdekNumber($cdekNumber);
-
+		$orderId = WishboxRadicalMartCdekHelper::getOrderIdByCdekNumber($cdekNumber);
 		$orderTable->load($orderId);
-
-		$newOrderStatusId = $this->getNewOrderStatusId($orderTable->status, $lastOrderCdekStatus->getCode());
+		$newOrderStatusId = $this->getNewOrderStatusId($orderTable->status, $lastOrderCdekStatusCode);
 
 		if ($newOrderStatusId && $newOrderStatusId != $orderTable->status)
 		{

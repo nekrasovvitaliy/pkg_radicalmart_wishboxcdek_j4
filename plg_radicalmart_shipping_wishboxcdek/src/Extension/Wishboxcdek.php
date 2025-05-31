@@ -3,7 +3,7 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Extension;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Extension;
 
 use Exception;
 use Joomla\CMS\Date\Date;
@@ -11,15 +11,15 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Helper\PriceHelper as RadicalMartPriceHelper;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
 use Joomla\Event\SubscriberInterface;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\CheckoutPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrderPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\OrdersitePreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\PersonalshippingmethodPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\ShippingmethodPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\CheckoutPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\OrderPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\OrdersitePreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\PersonalshippingmethodPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\ShippingmethodPreparer;
 use Joomla\Registry\Registry;
 use stdClass;
 use function defined;
@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 /**
  * @since 1.0.0
  */
-class Wishboxcdek extends CMSPlugin implements SubscriberInterface
+final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 {
 	use DatabaseAwareTrait;
 
@@ -80,10 +80,10 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			'onRadicalMartGetOrderTotal'                => 'onGetOrderTotal',
 			'onRadicalMartGetOrderCustomerUpdateData'   => 'onGetOrderCustomerUpdateData',
 			'onRadicalMartGetCheckoutCustomerData'      => 'onGetCheckoutCustomerData',
-			'onRadicalMartGetCustomerMethodForm'        => 'onRadicalMartGetPersonalMethodForm',
-			'onRadicalMartGetPersonalMethodForm'        => 'onRadicalMartGetPersonalMethodForm',
+			'onRadicalMartGetCustomerMethodForm'        => 'onGetPersonalMethodForm',
+			'onRadicalMartGetPersonalMethodForm'        => 'onGetPersonalMethodForm',
 			'onRadicalMartPrepareMethodForm'            => 'onRadicalMartPrepareMethodForm',
-			'onRadicalMartBeforeOrderSave'              => 'onRadicalMartBeforeOrderSave',
+			'onRadicalMartBeforeOrderSave'              => 'onBeforeOrderSave',
 			'onRadicalMartGetOrderShipping'             => 'onRadicalMartGetOrderShipping',
 			'onRadicalMartLoadOrderMethodFormData'      => 'onRadicalMartLoadOrderMethodFormData',
 			'onRadicalMartPrepareOrderMethodSaveData'   => 'onPrepareOrderMethodSaveData'
@@ -133,6 +133,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * @since  1.0.0
 	 *
 	 * @noinspection PhpUnused
+	 * @noinspection PhpUnusedLocalVariableInspection
 	 */
 	public function onRadicalMartGetOrderShipping(
 		string $context,
@@ -142,6 +143,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
+		$app = $this->getApplication();
 		$data = (!empty($formData['shipping'])) ? $formData['shipping'] : [];
 
 		foreach ((new Registry($method->params->get('fields_default', [])))->toArray() as $item)
@@ -164,7 +166,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				: ['base' => 0];
 		}
 
-		// Set base price
+		// Set a base price
 		$code = $currency['code'];
 
 		$price['base'] = RadicalMartPriceHelper::clean($price['base'], $code);
@@ -173,18 +175,23 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			|| ($context == 'com_radicalmart.order' && isset($data['recalculate_price']) && $data['recalculate_price']))
 		{
 			if (isset($formData['shipping'])
-				&& isset($formData['shipping']['cityCode'])
-				&& !empty($formData['shipping']['cityCode']))
+				&& isset($formData['shipping']['city_code'])
+				&& !empty($formData['shipping']['city_code']))
 			{
 				try
 				{
-					$shippingTariff = CalculatorService::getShippingTariff($method, $formData, $products);
+					/** @var CalculatorModel $calculatorModel */
+					$calculatorModel = $app->bootComponent('com_wishboxradicalmartcdek')
+						->getMVCFactory()
+						->createModel('Calculator', 'Administrator');
+
+					$shippingTariff = $calculatorModel->getShippingTariff($method, $formData, $products);
 
 					if ($shippingTariff)
 					{
 						$priceBase = 0;
 
-						if ($method->params->get('includeShippingPriceInOrder', 0))
+						if ($method->params->get('include_shipping_price_in_order', 0))
 						{
 							$priceBase = $shippingTariff->shipping;
 						}
@@ -199,7 +206,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 						$price['base'] = $priceBase;
 						$price['tariff']  = $shippingTariff->shipping;
-						$price['tariffCode'] = (int) $shippingTariff->code;
+						$price['tariff_code'] = (int) $shippingTariff->code;
 						$price['period_min'] = (int) $shippingTariff->periodMin;
 						$price['period_max'] = (int) $shippingTariff->periodMax;
 					}
@@ -217,7 +224,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			: RadicalMartPriceHelper::toString($price['base'], $code, 'seo');
 		$price['base_number']   = RadicalMartPriceHelper::toString($price['base'], $code, false);
 
-		// Set final price
+		// Set the final price
 		$price['final']         = $price['base'];
 
 		$price['final_string']  = empty($price['final'])
@@ -320,7 +327,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			}
 		}
 
-		// Remove empty fields in site_order form
+		// Remove empty fields in the site_order form
 		if (str_contains($form->getName(), 'order_site'))
 		{
 			// Remove fields
@@ -337,7 +344,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 				'comment',
 				'date',
 				'note',
-				'trackingNumber'
+				'tracking_number'
 			];
 
 			foreach ($fields as $field)
@@ -349,7 +356,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			}
 		}
 
-		// Set default price
+		// Set the default price
 		if (!empty($shipping->order->price['base']))
 		{
 			$form->setFieldAttribute(
@@ -423,6 +430,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * @return void
 	 *
 	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 *
 	 * @noinspection PhpUnused
@@ -438,6 +446,8 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 		bool $isNew
 	): void
 	{
+		$app = $this->getApplication();
+
 		// Set all order data to form data
 		foreach ((new Registry($method->order))->toArray() as $key => $value)
 		{
@@ -448,17 +458,22 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 			|| ($context == 'com_radicalmart.order' && isset($data['recalculate_price']) && $data['recalculate_price']))
 		{
 			if (isset($formData['shipping'])
-				&& isset($formData['shipping']['cityCode'])
-				&& !empty($formData['shipping']['cityCode']))
+				&& isset($formData['shipping']['city_code'])
+				&& !empty($formData['shipping']['city_code']))
 			{
 				try
 				{
-					$shippingTariff = CalculatorService::getShippingTariff($method, $formData, $products);
+					/** @var CalculatorModel $calculatorModel */
+					$calculatorModel = $app->bootComponent('com_wishboxradicalmartcdek')
+						->getMVCFactory()
+						->createModel('Calculator', 'Administrator');
+
+					$shippingTariff = $calculatorModel->getShippingTariff($method, $formData, $products);
 
 					if ($shippingTariff)
 					{
-						$tariffCode         = $shippingTariff->getCode();
-						$data['tariffCode'] = $tariffCode;
+						$tariffCode          = $shippingTariff->getCode();
+						$data['tariff_code'] = $tariffCode;
 					}
 				}
 				catch (Exception $e)
@@ -593,7 +608,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartGetPersonalMethodForm(
+	public function onGetPersonalMethodForm(
 		string $context,
 		Form $form,
 		object|array $data,
@@ -631,7 +646,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartBeforeOrderSave(
+	public function onBeforeOrderSave(
 		string $context,
 		array &$data,
 		array $formData,
@@ -770,31 +785,31 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 
 		$addressString = $this->addressToString($data);
 
-		if (!empty($data['cityCode']))
+		if (!empty($data['city_code']))
 		{
 			$cityTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('City', 'Administrator');
-			$cityTable->load(['code' => $data['cityCode']]);
+			$cityTable->load(['code' => $data['city_code']]);
 			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_CITY'] = $cityTable->cityname;
 		}
 
-		if (!empty($data['officeCode']))
+		if (!empty($data['office_code']))
 		{
 			$officeTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('Office', 'Administrator');
 
-			$officeTable->load(['code' => $data['officeCode']]);
+			$officeTable->load(['code' => $data['office_code']]);
 			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_OFFICE_ADDRESS'] = $officeTable->address;
 		}
 
-		if (!empty($data['tariffCode']))
+		if (!empty($data['tariff_code']))
 		{
 			$tariffTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('Tariff', 'Administrator');
-			$tariffTable->load(['code' => $data['tariffCode']]);
+			$tariffTable->load(['code' => $data['tariff_code']]);
 			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_TARIFF'] = $tariffTable->name;
 		}
 
@@ -830,7 +845,7 @@ class Wishboxcdek extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @return string
 	 *
-	 * @since 3.0.0
+	 * @since 1.0.0
 	 */
 	protected function addressToString(array $data = []): string
 	{

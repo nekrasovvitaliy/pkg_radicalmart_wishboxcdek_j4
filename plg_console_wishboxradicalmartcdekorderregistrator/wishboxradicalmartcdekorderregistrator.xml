@@ -7,7 +7,7 @@
     <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
     <version>1.0.0</version>
     <description>PLG_CONSOLE_WISHBOXRADICALMARTCDEKORDERREGISTRATOR_XML_DESCRIPTION</description>
-    <namespace path="src">Joomla\Plugin\Console\Wishboxradicalmartcdekorderregistrator</namespace>
+    <namespace path="src">Joomla\Plugin\Console\WishboxRadicalMartCdekOrderRegistrator</namespace>
     <scriptfile>script.php</scriptfile>
     <files>
         <folder plugin="wishboxradicalmartcdekorderregistrator">services</folder>

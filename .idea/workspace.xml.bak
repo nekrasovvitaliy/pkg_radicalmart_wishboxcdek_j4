@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5d9e9749-ba97-4594-a78c-65524bb0970d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/babel.config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/plg_radicalmart_wishboxcdekorderstatusupdater.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/plg_radicalmart_wishboxcdekorderstatusupdater/es6/script.es6" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build/webpack.config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/media/joomla.asset.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/media/js/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/media/js/script.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/language/en-GB/com_wishboxradicalmartcdek.ini" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/language/en-GB/com_wishboxradicalmartcdek.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/language/ru-RU/com_wishboxradicalmartcdek.ini" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/language/ru-RU/com_wishboxradicalmartcdek.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Controller/DisplayController.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Controller/DisplayController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/CalculatorDelegate/GetPackagesEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/CalculatorDelegate/GetPackagesEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/AfterRegisterEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/AfterRegisterEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/BeforeRegisterAllEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/BeforeRegisterAllEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/RegisterAllEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/Order/RegisterAllEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/RegistratorDelegate/GetOrdersPatchPackagesEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/RegistratorDelegate/GetOrdersPatchPackagesEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/RegistratorDelegate/GetOrdersPostPackagesEvent.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Event/Service/RegistratorDelegate/GetOrdersPostPackagesEvent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Exception/OrderServiceException.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Exception/OrderServiceException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Service/Html/Wishboxradicalmartcdek.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Service/Html/Wishboxradicalmartcdek.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Service/RegistratorDelegate.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/Service/RegistratorDelegate.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/View/Dashboard/HtmlView.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/src/View/Dashboard/HtmlView.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/tmpl/dashboard/default.php" beforeDir="false" afterPath="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/tmpl/dashboard/default.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg_radicalmart_wishboxcdek_j4.zip" beforeDir="false" afterPath="$PROJECT_DIR$/pkg_radicalmart_wishboxcdek_j4.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/src/Extension/Wishboxradicalmartcdekorderregistrator.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/src/Extension/Wishboxradicalmartcdekorderregistrator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/forms/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/forms/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/src/Extension/Wishboxradicalmartcdekorderregistrator.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/src/Extension/Wishboxradicalmartcdekorderregistrator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/forms/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/forms/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/src/Extension/Wishboxradicalmartcdekorderstatusupdater.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/src/Extension/Wishboxradicalmartcdekorderstatusupdater.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts/radicalmart/checkout.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts/radicalmart/checkout.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts/radicalmart/personal.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts/radicalmart/personal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Exception/EmptyProductCodeException.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Exception/EmptyProductCodeException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Extension/Wishboxcdek.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Extension/Wishboxcdek.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/FormPreparer.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/FormPreparer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/OrderPreparer.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/OrderPreparer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/OrdersitePreparer.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/OrdersitePreparer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/PersonalshippingmethodPreparer.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/PersonalshippingmethodPreparer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/ShippingmethodPreparer.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/ShippingmethodPreparer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutAddressPreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutAddressPreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutErrorMessagePreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutErrorMessagePreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficeGoogleMapPreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficeGoogleMapPreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficeYandexMapPreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficeYandexMapPreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficecodePreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutOfficecodePreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutTariffcodePreparerTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src/Form/Preparer/Trait/CheckoutTariffcodePreparerTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdek/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdek/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdek/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdek/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/src/Extension/Wishboxcdekonepackage.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/src/Extension/Wishboxcdekonepackage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/src/Exception/EmptyProductCodeException.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/src/Exception/EmptyProductCodeException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/src/Extension/Wishboxcdekorderregistrator.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/src/Extension/Wishboxcdekorderregistrator.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/en-GB/plg_radicalmart_wishboxcdekorderstatusupdater.ini" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/en-GB/plg_radicalmart_wishboxcdekorderstatusupdater.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/ru-RU/plg_radicalmart_wishboxcdekorderstatusupdater.ini" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/ru-RU/plg_radicalmart_wishboxcdekorderstatusupdater.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/ru-RU/plg_radicalmart_wishboxcdekorderstatusupdater.sys.ini" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/language/ru-RU/plg_radicalmart_wishboxcdekorderstatusupdater.sys.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/src/Extension/Wishboxcdekorderstatusupdater.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/src/Extension/Wishboxcdekorderstatusupdater.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/wishboxcdekorderstatusupdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/wishboxcdekorderstatusupdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/src/Extension/Wishboxcdekpackagemultiple.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple/src/Extension/Wishboxcdekpackagemultiple.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_system_wishboxradicalmartcdek/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_system_wishboxradicalmartcdek/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_system_wishboxradicalmartcdek/src/Extension/Wishboxcdek.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_system_wishboxradicalmartcdek/src/Extension/Wishboxcdek.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/src/Extension/Jshopping.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/src/Extension/Jshopping.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/src/Helper/ShippingTariffHelper.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmart/src/Helper/ShippingTariffHelper.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/script.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/script.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/src/Extension/Radicalmartorderstatusupdater.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/src/Extension/Radicalmartorderstatusupdater.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxradicalmartcdek_packagebyitem/services/provider.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxradicalmartcdek_packagebyitem/services/provider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plg_wishboxradicalmartcdek_packagebyitem/src/Extension/Onepackage.php" beforeDir="false" afterPath="$PROJECT_DIR$/plg_wishboxradicalmartcdek_packagebyitem/src/Extension/Onepackage.php" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+    <execution />
+  </component>
+  <component name="DrupalConfiguration">
+    <drupalPath />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="SCHEME" value="Project" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JoomlaConfiguration" enabled="true">
+    <joomlaConfigPath>C:\OpenServer\domains\joomla503.test1.ru\configuration.php</joomlaConfigPath>
+    <joomlaPath>C:\OpenServer\domains\joomla503.test1.ru</joomlaPath>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpDebugGeneral" ignore_connections_through_unregistered_servers="false" listening_started="true" xdebug_force_break_when_no_path_mapping="false" xdebug_force_break_when_outside_project="false" />
+  <component name="PhpServers">
+    <servers>
+      <server host="joomla503.test1.ru" id="9b9e2ad9-cf8e-4c61-917b-b689ed46b344" name="joomla503.test1.ru" use_path_mappings="true">
+        <path_mappings>
+          <mapping local-root="C:/OpenServer/domains/joomla503.test1.ru" remote-root="C:/OpenServer/domains/joomla503.test1.ru" />
+          <mapping local-root="C:/OpenServer/domains/joomla503.test1.ru/administrator/index.php" remote-root="C:/OpenServer/domains/joomla503.test1.ru/administrator/index.php" />
+          <mapping local-root="C:/OpenServer/domains/joomla503.test1.ru/index.php" remote-root="C:/OpenServer/domains/joomla503.test1.ru/index.php" />
+          <mapping local-root="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator" remote-root="C:/OpenServer/domains/joomla503.test1.ru/administrator/components/com_wishboxradicalmartcdek" />
+          <mapping local-root="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart/wishboxcdekorderregistrator" />
+          <mapping local-root="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/content/wishboxradicalmartcdekorderregistrator" />
+          <mapping local-root="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/src" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart_shipping/wishboxcdek/src" />
+          <mapping local-root="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart/wishboxcdekonepackage" />
+          <mapping local-root="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/src" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart/wishboxcdekonepackage/src" />
+          <mapping local-root="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart/wishboxcdekorderregistrator" />
+          <mapping local-root="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/radicalmart/wishboxcdekorderstatusupdater" />
+          <mapping local-root="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater" remote-root="C:/OpenServer/domains/joomla503.test1.ru/plugins/wishboxcdek/radicalmartorderstatusupdater" />
+        </path_mappings>
+      </server>
+    </servers>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP">
+    <include_path>
+      <path value="C:/OpenServer/domains/joomla503.test1.ru" />
+    </include_path>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2a5BuiApRtQtXmaxArEPWL1hNhD" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "JavaScript Debug.Form.php.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
+    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
+    "WebServerToolWindowPanel.toolwindow.show.date": "false",
+    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
+    "WebServerToolWindowPanel.toolwindow.show.size": "false",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/GitHub/pkg_wishboxcdek_j4",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "php.override.implement.member.chooser.php.doc": "COPY_ALWAYS",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "settings.php.debug.servers",
+    "two.files.diff.last.used.file": "D:/GitHub/pkg_radicalmart_wishboxcdek_j4/plg_radicalmart_shipping_wishboxcdek/language/ru-RU/plg_radicalmart_shipping_wishboxcdek.ini",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PS-241.17011.119" />
+        <option value="bundled-php-predefined-ba97393d7c68-48a1a656d44e-com.jetbrains.php.sharedIndexes-PS-241.17011.119" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5d9e9749-ba97-4594-a78c-65524bb0970d" name="Changes" comment="" />
+      <created>1703598784124</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1703598784124</updated>
+      <workItem from="1703598785129" duration="1458000" />
+      <workItem from="1703622014739" duration="1686000" />
+      <workItem from="1703623838488" duration="2275000" />
+      <workItem from="1703664045568" duration="3811000" />
+      <workItem from="1703675895785" duration="768000" />
+      <workItem from="1703676791039" duration="32000" />
+      <workItem from="1703676848232" duration="11000" />
+      <workItem from="1703676999313" duration="1087000" />
+      <workItem from="1703679960845" duration="122000" />
+      <workItem from="1703680172509" duration="1896000" />
+      <workItem from="1703701672137" duration="83000" />
+      <workItem from="1703701815914" duration="165000" />
+      <workItem from="1703702195942" duration="70000" />
+      <workItem from="1703702307869" duration="591000" />
+      <workItem from="1703703014850" duration="215000" />
+      <workItem from="1703703365013" duration="3309000" />
+      <workItem from="1703711054332" duration="967000" />
+      <workItem from="1703712627049" duration="1843000" />
+      <workItem from="1703749810071" duration="1485000" />
+      <workItem from="1703753390083" duration="234000" />
+      <workItem from="1703753674121" duration="1754000" />
+      <workItem from="1703785491916" duration="233000" />
+      <workItem from="1703785818087" duration="43000" />
+      <workItem from="1703788697887" duration="1120000" />
+      <workItem from="1703792831763" duration="683000" />
+      <workItem from="1703832901884" duration="7172000" />
+      <workItem from="1703842941890" duration="119000" />
+      <workItem from="1703844524561" duration="355000" />
+      <workItem from="1703845043431" duration="477000" />
+      <workItem from="1703845640400" duration="2975000" />
+      <workItem from="1703848724919" duration="1721000" />
+      <workItem from="1703850760821" duration="6080000" />
+      <workItem from="1703866053618" duration="215000" />
+      <workItem from="1703866314887" duration="2866000" />
+      <workItem from="1703966190276" duration="582000" />
+      <workItem from="1703966950800" duration="112000" />
+      <workItem from="1703970519888" duration="914000" />
+      <workItem from="1704092527665" duration="2176000" />
+      <workItem from="1704100701988" duration="212000" />
+      <workItem from="1704101002453" duration="712000" />
+      <workItem from="1704130830494" duration="5757000" />
+      <workItem from="1704191737500" duration="16000" />
+      <workItem from="1704208985369" duration="30445000" />
+      <workItem from="1704282463084" duration="9248000" />
+      <workItem from="1704395207698" duration="7915000" />
+      <workItem from="1704479368893" duration="288000" />
+      <workItem from="1704620277410" duration="1547000" />
+      <workItem from="1704632665995" duration="1655000" />
+      <workItem from="1704639050787" duration="584000" />
+      <workItem from="1704640087593" duration="15000" />
+      <workItem from="1704640767055" duration="5609000" />
+      <workItem from="1704646587754" duration="13297000" />
+      <workItem from="1704664969379" duration="1488000" />
+      <workItem from="1704666530963" duration="3422000" />
+      <workItem from="1704702400840" duration="7825000" />
+      <workItem from="1704740977617" duration="409000" />
+      <workItem from="1704741794296" duration="2564000" />
+      <workItem from="1704747326445" duration="689000" />
+      <workItem from="1704750969616" duration="393000" />
+      <workItem from="1704751515037" duration="320000" />
+      <workItem from="1704795839215" duration="4061000" />
+      <workItem from="1704801187593" duration="317000" />
+      <workItem from="1704811788774" duration="1619000" />
+      <workItem from="1704813454071" duration="6450000" />
+      <workItem from="1704830358238" duration="20011000" />
+      <workItem from="1704890344961" duration="16000" />
+      <workItem from="1704894248520" duration="465000" />
+      <workItem from="1704894760692" duration="320000" />
+      <workItem from="1704911569289" duration="486000" />
+      <workItem from="1704912217405" duration="4516000" />
+      <workItem from="1704924696112" duration="1817000" />
+      <workItem from="1704926707410" duration="369000" />
+      <workItem from="1704927357426" duration="1371000" />
+      <workItem from="1704966681932" duration="4088000" />
+      <workItem from="1704972488897" duration="1798000" />
+      <workItem from="1704976490498" duration="246000" />
+      <workItem from="1704976903557" duration="612000" />
+      <workItem from="1705002062867" duration="1129000" />
+      <workItem from="1705008025958" duration="287000" />
+      <workItem from="1705008846906" duration="1000000" />
+      <workItem from="1705010069387" duration="2883000" />
+      <workItem from="1705049915111" duration="994000" />
+      <workItem from="1705054945261" duration="898000" />
+      <workItem from="1705056168997" duration="66000" />
+      <workItem from="1705086028948" duration="1530000" />
+      <workItem from="1705140340430" duration="893000" />
+      <workItem from="1705145107389" duration="1506000" />
+      <workItem from="1705397413992" duration="5152000" />
+      <workItem from="1705402854524" duration="115000" />
+      <workItem from="1705403085314" duration="1251000" />
+      <workItem from="1706370191276" duration="50000" />
+      <workItem from="1707411294227" duration="458000" />
+      <workItem from="1707412941305" duration="2449000" />
+      <workItem from="1707417319991" duration="12986000" />
+      <workItem from="1707488606368" duration="614000" />
+      <workItem from="1707490096702" duration="2887000" />
+      <workItem from="1707503762646" duration="5959000" />
+      <workItem from="1707510226524" duration="2567000" />
+      <workItem from="1707514536752" duration="161000" />
+      <workItem from="1707515370393" duration="1020000" />
+      <workItem from="1707559904669" duration="19267000" />
+      <workItem from="1707725661190" duration="1400000" />
+      <workItem from="1707737029821" duration="9063000" />
+      <workItem from="1707751994621" duration="3615000" />
+      <workItem from="1707771763642" duration="904000" />
+      <workItem from="1707818328524" duration="2782000" />
+      <workItem from="1708202460822" duration="5504000" />
+      <workItem from="1708211397616" duration="405000" />
+      <workItem from="1708248020660" duration="10378000" />
+      <workItem from="1708262632005" duration="55610000" />
+      <workItem from="1708431651766" duration="4312000" />
+      <workItem from="1708436979795" duration="8601000" />
+      <workItem from="1708448191665" duration="965000" />
+      <workItem from="1708456906940" duration="7308000" />
+      <workItem from="1708506334142" duration="3128000" />
+      <workItem from="1708706827464" duration="2995000" />
+      <workItem from="1708710480491" duration="676000" />
+      <workItem from="1708711485015" duration="11221000" />
+      <workItem from="1708725867932" duration="908000" />
+      <workItem from="1708936529362" duration="636000" />
+      <workItem from="1708947691383" duration="17983000" />
+      <workItem from="1709031841998" duration="410000" />
+      <workItem from="1709039976069" duration="2867000" />
+      <workItem from="1709043261728" duration="731000" />
+      <workItem from="1709044695754" duration="187000" />
+      <workItem from="1709062930076" duration="5213000" />
+      <workItem from="1709068918488" duration="4906000" />
+      <workItem from="1709744007558" duration="490000" />
+      <workItem from="1709908706458" duration="1627000" />
+      <workItem from="1709929030365" duration="26978000" />
+      <workItem from="1710068627076" duration="408000" />
+      <workItem from="1710155689887" duration="17060000" />
+      <workItem from="1710234391078" duration="693000" />
+      <workItem from="1710249068766" duration="311000" />
+      <workItem from="1710267072473" duration="6412000" />
+      <workItem from="1710280365331" duration="562000" />
+      <workItem from="1710281059365" duration="568000" />
+      <workItem from="1710319754238" duration="1847000" />
+      <workItem from="1710322731798" duration="2187000" />
+      <workItem from="1711084475986" duration="44245000" />
+      <workItem from="1711392976394" duration="5175000" />
+      <workItem from="1714226508837" duration="1265000" />
+      <workItem from="1714230173258" duration="13961000" />
+      <workItem from="1715782036833" duration="867000" />
+      <workItem from="1715959763754" duration="6872000" />
+      <workItem from="1716371704410" duration="624000" />
+      <workItem from="1717571260234" duration="675000" />
+      <workItem from="1717572189801" duration="604000" />
+      <workItem from="1719564283362" duration="2908000" />
+      <workItem from="1719643940785" duration="2132000" />
+      <workItem from="1719647264435" duration="6653000" />
+      <workItem from="1719731197159" duration="1925000" />
+      <workItem from="1719741454124" duration="3130000" />
+      <workItem from="1719745429691" duration="428000" />
+      <workItem from="1719746042168" duration="545000" />
+      <workItem from="1719747051970" duration="3496000" />
+      <workItem from="1719808305256" duration="3119000" />
+      <workItem from="1719905350164" duration="3543000" />
+      <workItem from="1719928191117" duration="160000" />
+      <workItem from="1719937555544" duration="753000" />
+      <workItem from="1720276899697" duration="217000" />
+      <workItem from="1720277356992" duration="280000" />
+      <workItem from="1720279169031" duration="1321000" />
+      <workItem from="1720283268399" duration="1345000" />
+      <workItem from="1720443401285" duration="220000" />
+      <workItem from="1720446177814" duration="1610000" />
+      <workItem from="1720448742357" duration="410000" />
+      <workItem from="1720594169570" duration="711000" />
+      <workItem from="1720699508206" duration="1078000" />
+      <workItem from="1721140589882" duration="1174000" />
+      <workItem from="1721193653381" duration="1915000" />
+      <workItem from="1721197879609" duration="129000" />
+      <workItem from="1721201257151" duration="2046000" />
+      <workItem from="1721227126978" duration="336000" />
+      <workItem from="1721229006910" duration="856000" />
+      <workItem from="1721231195695" duration="547000" />
+      <workItem from="1721282789929" duration="722000" />
+      <workItem from="1721289111328" duration="2351000" />
+      <workItem from="1721293236395" duration="9208000" />
+      <workItem from="1721303001370" duration="1801000" />
+      <workItem from="1721306677831" duration="8937000" />
+      <workItem from="1721316899966" duration="18135000" />
+      <workItem from="1721390469412" duration="4339000" />
+      <workItem from="1721402197320" duration="139000" />
+      <workItem from="1721409952721" duration="10923000" />
+      <workItem from="1721552136292" duration="98000" />
+      <workItem from="1721801340653" duration="12117000" />
+      <workItem from="1721828526557" duration="6084000" />
+      <workItem from="1721844186980" duration="14757000" />
+      <workItem from="1721898878168" duration="13600000" />
+      <workItem from="1721919807601" duration="2204000" />
+      <workItem from="1721983504649" duration="1034000" />
+      <workItem from="1722255582930" duration="1058000" />
+      <workItem from="1722256762354" duration="2418000" />
+      <workItem from="1722318901552" duration="772000" />
+      <workItem from="1722321954723" duration="3082000" />
+      <workItem from="1722342855094" duration="9571000" />
+      <workItem from="1722352751175" duration="8381000" />
+      <workItem from="1722416355619" duration="1455000" />
+      <workItem from="1722419200859" duration="1992000" />
+      <workItem from="1722422106526" duration="1832000" />
+      <workItem from="1722425276217" duration="5397000" />
+      <workItem from="1722445285553" duration="1586000" />
+      <workItem from="1722504353278" duration="4496000" />
+      <workItem from="1722511882135" duration="1266000" />
+      <workItem from="1722513712721" duration="533000" />
+      <workItem from="1722518041158" duration="1037000" />
+      <workItem from="1722520913798" duration="335000" />
+      <workItem from="1722529338747" duration="907000" />
+      <workItem from="1722530508248" duration="19000" />
+      <workItem from="1722533990027" duration="1345000" />
+      <workItem from="1722581890652" duration="436000" />
+      <workItem from="1722682160226" duration="563000" />
+      <workItem from="1722684382935" duration="798000" />
+      <workItem from="1722926661955" duration="2527000" />
+      <workItem from="1722932637597" duration="879000" />
+      <workItem from="1722936789334" duration="1279000" />
+      <workItem from="1722944149951" duration="998000" />
+      <workItem from="1723112248763" duration="2985000" />
+      <workItem from="1723128275414" duration="6905000" />
+      <workItem from="1723283520173" duration="9668000" />
+      <workItem from="1723296541858" duration="228000" />
+      <workItem from="1723296795516" duration="721000" />
+      <workItem from="1723297833695" duration="3709000" />
+      <workItem from="1723303694355" duration="284000" />
+      <workItem from="1723304517649" duration="75000" />
+      <workItem from="1723304668345" duration="65000" />
+      <workItem from="1723306500298" duration="5835000" />
+      <workItem from="1723360946134" duration="2679000" />
+      <workItem from="1723368811131" duration="3628000" />
+      <workItem from="1723373591694" duration="578000" />
+      <workItem from="1723374757554" duration="120000" />
+      <workItem from="1723376251016" duration="7243000" />
+      <workItem from="1723389463938" duration="66000" />
+      <workItem from="1723390537116" duration="284000" />
+      <workItem from="1723391380727" duration="888000" />
+      <workItem from="1723441622662" duration="3088000" />
+      <workItem from="1723460469951" duration="3295000" />
+      <workItem from="1723482043363" duration="552000" />
+      <workItem from="1723983738242" duration="3900000" />
+      <workItem from="1723990141142" duration="2546000" />
+      <workItem from="1723993797987" duration="6965000" />
+      <workItem from="1724003317244" duration="18000" />
+      <workItem from="1724003943080" duration="145000" />
+      <workItem from="1724004911597" duration="125000" />
+      <workItem from="1724046810888" duration="8863000" />
+      <workItem from="1724075937849" duration="2974000" />
+      <workItem from="1724079758445" duration="7267000" />
+      <workItem from="1724095105751" duration="113000" />
+      <workItem from="1724096258694" duration="2406000" />
+      <workItem from="1724141895910" duration="4060000" />
+      <workItem from="1724147380436" duration="5153000" />
+      <workItem from="1724175766079" duration="13306000" />
+      <workItem from="1724418704667" duration="1301000" />
+      <workItem from="1724423814755" duration="285000" />
+      <workItem from="1724430264247" duration="1750000" />
+      <workItem from="1724483922958" duration="405000" />
+      <workItem from="1724512302438" duration="3008000" />
+      <workItem from="1724748797873" duration="1280000" />
+      <workItem from="1725087780845" duration="733000" />
+      <workItem from="1725089277017" duration="737000" />
+      <workItem from="1725091595417" duration="226000" />
+      <workItem from="1725091916206" duration="65000" />
+      <workItem from="1725094368853" duration="542000" />
+      <workItem from="1725097507473" duration="130000" />
+      <workItem from="1725100429396" duration="171000" />
+      <workItem from="1725116704353" duration="319000" />
+      <workItem from="1725164337537" duration="166000" />
+      <workItem from="1725211791567" duration="697000" />
+      <workItem from="1725260290299" duration="3884000" />
+      <workItem from="1725275016739" duration="14430000" />
+      <workItem from="1725540511604" duration="6684000" />
+      <workItem from="1725552366573" duration="828000" />
+      <workItem from="1725554035776" duration="4741000" />
+      <workItem from="1725865586473" duration="4134000" />
+      <workItem from="1725887158994" duration="697000" />
+      <workItem from="1725900130062" duration="77000" />
+      <workItem from="1725901230654" duration="679000" />
+      <workItem from="1726147742560" duration="4574000" />
+      <workItem from="1726155362868" duration="3471000" />
+      <workItem from="1726160980526" duration="1431000" />
+      <workItem from="1726212790508" duration="7441000" />
+      <workItem from="1726228956417" duration="531000" />
+      <workItem from="1726231300352" duration="1692000" />
+      <workItem from="1726236606421" duration="161000" />
+      <workItem from="1726241309652" duration="749000" />
+      <workItem from="1726491162234" duration="1218000" />
+      <workItem from="1727183389507" duration="2967000" />
+      <workItem from="1728312034324" duration="3328000" />
+      <workItem from="1729238907703" duration="5430000" />
+      <workItem from="1729349158934" duration="2446000" />
+      <workItem from="1729356417356" duration="5933000" />
+      <workItem from="1729368965860" duration="1256000" />
+      <workItem from="1729423044801" duration="1368000" />
+      <workItem from="1729444507752" duration="1219000" />
+      <workItem from="1729691681843" duration="798000" />
+      <workItem from="1729692533253" duration="7325000" />
+      <workItem from="1729749522335" duration="3188000" />
+      <workItem from="1729853674908" duration="1426000" />
+      <workItem from="1729855280778" duration="909000" />
+      <workItem from="1729857432089" duration="74000" />
+      <workItem from="1729859623186" duration="578000" />
+      <workItem from="1729860367433" duration="3356000" />
+      <workItem from="1729865099632" duration="369000" />
+      <workItem from="1729866598077" duration="520000" />
+      <workItem from="1729867210472" duration="2552000" />
+      <workItem from="1729948147377" duration="1659000" />
+      <workItem from="1729959463736" duration="1110000" />
+      <workItem from="1730010791355" duration="20712000" />
+      <workItem from="1730092454119" duration="155000" />
+      <workItem from="1730097790751" duration="244000" />
+      <workItem from="1730123355992" duration="10593000" />
+      <workItem from="1730995657851" duration="6788000" />
+      <workItem from="1731088421729" duration="1651000" />
+      <workItem from="1731422199977" duration="1676000" />
+      <workItem from="1731576355644" duration="98000" />
+      <workItem from="1731602548072" duration="395000" />
+      <workItem from="1731603368131" duration="142000" />
+      <workItem from="1731603623134" duration="564000" />
+      <workItem from="1731663417393" duration="4782000" />
+      <workItem from="1731679533974" duration="4628000" />
+      <workItem from="1731687047142" duration="1659000" />
+      <workItem from="1731690137458" duration="515000" />
+      <workItem from="1731692194742" duration="3513000" />
+      <workItem from="1732019498513" duration="489000" />
+      <workItem from="1732020163013" duration="9143000" />
+      <workItem from="1732031252953" duration="95000" />
+      <workItem from="1732034750595" duration="2406000" />
+      <workItem from="1732208094723" duration="1413000" />
+      <workItem from="1732265943240" duration="81000" />
+      <workItem from="1732266296856" duration="2024000" />
+      <workItem from="1732273572268" duration="2168000" />
+      <workItem from="1732280483867" duration="3209000" />
+      <workItem from="1732286239594" duration="3113000" />
+      <workItem from="1732295606867" duration="624000" />
+      <workItem from="1732733703578" duration="6438000" />
+      <workItem from="1733044852157" duration="3687000" />
+      <workItem from="1733060975220" duration="2759000" />
+      <workItem from="1733572396199" duration="53000" />
+      <workItem from="1733753732729" duration="3006000" />
+      <workItem from="1734364321736" duration="2589000" />
+      <workItem from="1739203744703" duration="4167000" />
+      <workItem from="1739288962149" duration="6752000" />
+      <workItem from="1739359698361" duration="2537000" />
+      <workItem from="1740567704179" duration="86000" />
+      <workItem from="1740578481576" duration="699000" />
+      <workItem from="1740644765435" duration="4975000" />
+      <workItem from="1740657806692" duration="1211000" />
+      <workItem from="1740666258539" duration="2040000" />
+      <workItem from="1741605119091" duration="1807000" />
+      <workItem from="1741712618677" duration="702000" />
+      <workItem from="1741769768465" duration="350000" />
+      <workItem from="1741770199669" duration="6413000" />
+      <workItem from="1741957476503" duration="849000" />
+      <workItem from="1741976466620" duration="41000" />
+      <workItem from="1741979540912" duration="332000" />
+      <workItem from="1742128902397" duration="972000" />
+      <workItem from="1742288730714" duration="3740000" />
+      <workItem from="1742305758888" duration="2758000" />
+      <workItem from="1742317200861" duration="941000" />
+      <workItem from="1742382319032" duration="2460000" />
+      <workItem from="1742391414637" duration="3000000" />
+      <workItem from="1742403516535" duration="220000" />
+      <workItem from="1742407064510" duration="1383000" />
+      <workItem from="1742632649940" duration="7024000" />
+      <workItem from="1742905699085" duration="3194000" />
+      <workItem from="1742910615172" duration="1199000" />
+      <workItem from="1742911926568" duration="245000" />
+      <workItem from="1742914356745" duration="3074000" />
+      <workItem from="1743152943278" duration="497000" />
+      <workItem from="1743162152854" duration="629000" />
+      <workItem from="1743499989800" duration="2603000" />
+      <workItem from="1743514914040" duration="791000" />
+      <workItem from="1743601337968" duration="946000" />
+      <workItem from="1744032269325" duration="10687000" />
+      <workItem from="1744050482021" duration="998000" />
+      <workItem from="1744051825365" duration="5902000" />
+      <workItem from="1744106564486" duration="11877000" />
+      <workItem from="1744129515791" duration="1461000" />
+      <workItem from="1744190208653" duration="15241000" />
+      <workItem from="1744216658514" duration="291000" />
+      <workItem from="1744278574413" duration="3373000" />
+      <workItem from="1744305607512" duration="16727000" />
+      <workItem from="1744375742521" duration="1177000" />
+      <workItem from="1744389487886" duration="2174000" />
+      <workItem from="1744395213388" duration="1078000" />
+      <workItem from="1744399794084" duration="499000" />
+      <workItem from="1744400395031" duration="493000" />
+      <workItem from="1744401031559" duration="2817000" />
+      <workItem from="1744533177234" duration="25798000" />
+      <workItem from="1744637016931" duration="107000" />
+      <workItem from="1744637726459" duration="670000" />
+      <workItem from="1744648793613" duration="1206000" />
+      <workItem from="1744708536702" duration="965000" />
+      <workItem from="1744887049433" duration="7724000" />
+      <workItem from="1744910656806" duration="1572000" />
+      <workItem from="1744981139236" duration="2452000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WordPressConfiguration">
+    <wordpressPath />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagesmultiple/src/Extension/Wishboxcdekpackagesmultiple.php</url>
+          <line>264</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://C:/OpenServer/domains/joomla440.test1.ru/administrator/components/com_radicalmart/src/Model/OrderModel.php</url>
+          <line>742</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/plg_content_wishboxradicalmartorderstatusupdater/services/provider.php</url>
+          <line>29</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://C:/OpenServer/domains/joomla503.test1.ru/administrator/components/com_wishboxcdek/src/Controller/OrdersController.php</url>
+          <line>40</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="index.php">
+        <watch expression="$this" />
+        <watch expression="$componentParams" />
+        <watch expression="$items" />
+        <watch expression="$items" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

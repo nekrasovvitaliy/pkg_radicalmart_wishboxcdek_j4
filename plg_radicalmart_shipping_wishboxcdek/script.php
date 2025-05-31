@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -32,7 +32,8 @@ return new class implements ServiceProviderInterface
 	{
 		$container->set(
 			InstallerScriptInterface::class,
-			new class ($container->get(AdministratorApplication::class)) implements InstallerScriptInterface {
+			new class ($container->get(AdministratorApplication::class)) implements InstallerScriptInterface
+			{
 				/**
 				 * The application object
 				 *
@@ -61,7 +62,7 @@ return new class implements ServiceProviderInterface
 				public function __construct(AdministratorApplication $app)
 				{
 					$this->app = $app;
-					$this->db  = Factory::getContainer()->get('DatabaseDriver');
+					$this->db  = Factory::getContainer()->get(DatabaseDriver::class);
 				}
 
 				/**
@@ -182,7 +183,7 @@ return new class implements ServiceProviderInterface
 				 *
 				 * @return  boolean  True on success.
 				 *
-				 * @since  __DEPLOY_VERSION__
+				 * @since  1.0.0
 				 */
 				public function parseLayouts(SimpleXMLElement $element = null, Installer $installer = null): bool
 				{
@@ -234,13 +235,13 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Method to parse through a layouts element of the installation manifest and remove the files that were installed.
+				 * Method to parse through a layout's element of the installation manifest and remove the files that were installed.
 				 *
 				 * @param   SimpleXMLElement|null  $element  The XML node to process.
 				 *
 				 * @return  boolean  True on success.
 				 *
-				 * @since  __DEPLOY_VERSION__
+				 * @since 1.0.0
 				 */
 				protected function removeLayouts(SimpleXMLElement $element = null): bool
 				{

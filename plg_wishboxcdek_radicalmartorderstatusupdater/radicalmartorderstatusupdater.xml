@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="plugin" group="radicalmart" method="upgrade">
+<extension type="plugin" group="wishboxcdek" method="upgrade">
 	<name>plg_wishboxcdek_radicalmartorderstatusupdater</name>
 	<author>Nekrasov Vitaliy</author>
 	<creationDate>Oktober 2023</creationDate>

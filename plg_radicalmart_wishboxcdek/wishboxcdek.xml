@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.8.1" type="plugin" method="upgrade" group="radicalmart">
+<extension type="plugin" method="upgrade" group="radicalmart">
 	<name>plg_radicalmart_wishboxcdek</name>
 	<creationDate>December 2023</creationDate>
 	<version>1.0.0</version>
@@ -7,7 +7,7 @@
 	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
 	<license>GNU General Public License version 2 or later</license>
 	<description>PLG_RADICALMART_WISHBOXCDEK_XML_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\Radicalmart\Wishboxcdek</namespace>
+	<namespace path="src">Joomla\Plugin\Radicalmart\WishboxCdek</namespace>
 	<files>
 		<folder plugin="wishboxcdek">services</folder>
 		<folder>src</folder>

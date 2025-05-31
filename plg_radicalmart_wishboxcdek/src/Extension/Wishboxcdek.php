@@ -3,16 +3,12 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\Radicalmart\Wishboxcdek\Extension;
+namespace Joomla\Plugin\Radicalmart\WishboxCdek\Extension;
 
 use Exception;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\User\UserFactoryAwareTrait;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
-use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 use Wishbox\Plugin;
@@ -25,7 +21,7 @@ defined('_JEXEC') or die;
 /**
  * @since 1.0.0
  */
-final class Wishboxcdek extends Plugin implements SubscriberInterface
+final class WishboxCdek extends Plugin implements SubscriberInterface
 {
 	use DatabaseAwareTrait;
 	use UserFactoryAwareTrait;
@@ -93,6 +89,22 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 					$this->getCustomerShippingData($data['shipping']['id'])
 				);
 			}
+
+			if (isset($data['shipping']) && count($data['shipping']) == 2 && isset($data['shipping']['id']) && $data['shipping']['city_code'] == '')
+			{
+				$data['shipping'] = $this->mergeCustomerData(
+					$data['shipping'],
+					$this->getCustomerShippingData($data['shipping']['id'])
+				);
+			}
+
+			if (isset($data['shipping']) && count($data['shipping']) == 2 && isset($data['shipping']['id']) && isset($data['shipping']['office_code']) && $data['shipping']['office_code'] == '')
+			{
+				$data['shipping'] = $this->mergeCustomerData(
+					$data['shipping'],
+					$this->getCustomerShippingData($data['shipping']['id'])
+				);
+			}
 		}
 	}
 
@@ -140,7 +152,7 @@ final class Wishboxcdek extends Plugin implements SubscriberInterface
 	 *
 	 * @since 1.0.0
 	 */
-	public function getCustomerShippingData(int $shippingId): array
+	protected function getCustomerShippingData(int $shippingId): array
 	{
 		$app = $this->getApplication();
 		$db = $this->getDatabase();

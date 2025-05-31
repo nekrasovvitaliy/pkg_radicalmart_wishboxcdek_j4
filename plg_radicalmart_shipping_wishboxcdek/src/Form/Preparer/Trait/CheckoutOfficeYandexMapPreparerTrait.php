@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel;
 
 /**
  * @method getTariffCode(): integer
@@ -30,6 +29,7 @@ trait CheckoutOfficeYandexMapPreparerTrait
 	protected function prepareOfficeYandexMapField(): void
 	{
 		$this->getForm()->removeField('office_yandex_map', $this->shippingFieldAttributeGroup);
+
 		return;
 
 		$cityCode = $this->getCityCode();
@@ -40,7 +40,7 @@ trait CheckoutOfficeYandexMapPreparerTrait
 			{
 				$result = $this->getForm()->setFieldAttribute(
 					'office_yandex_map',
-					'cityCode',
+					'city_code',
 					$this->getCityCode(),
 					$this->shippingFieldAttributeGroup
 				);
@@ -52,13 +52,15 @@ trait CheckoutOfficeYandexMapPreparerTrait
 
 				if (method_exists($this, 'getProducts'))
 				{
-					$calculatorDelegate = new CalculatorDelegate(
-						$this->getShipping(),
-						$this->getFormData(),
-						$this->getProducts()
-					);
+					$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
+						->getMVCFactory()
+						->createModel('CalculatorDelegate', 'Administrator');
 
-					$packageRequests = $calculatorDelegate->getPackages();
+					$calculatorDelegateModel->setMethod($this->getShipping())
+						->setFormData($this->getFormData())
+						->setProducts($this->getProducts());
+
+					$packageRequests = $calculatorDelegateModel->getPackages();
 
 					$packagesData = [];
 
@@ -87,7 +89,12 @@ trait CheckoutOfficeYandexMapPreparerTrait
 
 					try
 					{
-						$shippingTariff = CalculatorService::getMinShippingTariff(
+						/** @var CalculatorModel $calculatorModel */
+						$calculatorModel = $app->bootComponent('com_wishboxcdek')
+							->getMVCFactory()
+							->createModel('Calculator', 'Site');
+
+						$calculatorModel->getShippingTariffs(
 							$this->getShipping(),
 							$this->getFormData(),
 							$this->getProducts()

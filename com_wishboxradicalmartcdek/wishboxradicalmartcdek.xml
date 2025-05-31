@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="4.4.2" method="upgrade">
+<extension type="component" method="upgrade">
     <name>com_wishboxradicalmartcdek</name>
     <creationDate>February 2024</creationDate>
     <author>Nekrasov Vitaliy</author>
     <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
     <version>1.0.0</version>
     <description>COM_WISHBOXRADICALMARTCDEK_XML_DESCRIPTION</description>
-    <namespace path="src">Joomla\Component\Wishboxradicalmartcdek</namespace>
+    <namespace path="src">Joomla\Component\WishboxRadicalMartCdek</namespace>
     <administration>
         <menu img="class:bookmark">com_wishboxradicalmartcdek</menu>
         <files folder="administrator">

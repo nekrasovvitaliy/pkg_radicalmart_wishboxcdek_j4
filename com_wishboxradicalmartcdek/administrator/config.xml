@@ -1,57 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset
-			label="COM_WISHBOXRADICALMARTCDEK"
-			name="wishboxcdek"
-	>
-		<field
-				name="debug_mode"
-				type="radio"
-				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DEBUG_MODE_LABEL"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-		>
+    <fieldset label="COM_WISHBOXRADICALMARTCDEK" name="wishboxcdek">
+		<field name="debug_mode" type="radio"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_DEBUG_MODE_LABEL"
+			   default="0"
+			   layout="joomla.form.field.radio.switcher">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+		<field name="tracking_number_readonly_attribute" type="radio"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_TRACKING_NUMBER_READONLY_ATTRIBUTE_LABEL"
+			   default="1"
+			   layout="joomla.form.field.radio.switcher">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
     </fieldset>
 
-	<fieldset
-			label="COM_WISHBOXRADICALMARTCDEK_FIELDSET_OFFICES"
-			name="offices"
-	>
-		<field
-				name="offices_filter_deliverypoint_type"
-				type="list"
-				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_TYPE_LABEL"
-				default="ALL"
-		>
+	<fieldset label="COM_WISHBOXRADICALMARTCDEK_FIELDSET_OFFICES" name="offices">
+		<field name="offices_filter_deliverypoint_type" type="list"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_TYPE_LABEL"
+			   default="ALL">
 			<option value="ALL">ALL</option>
 			<option value="PVZ">PVZ</option>
 			<option value="POSTAMAT">POSTAMAT</option>
 		</field>
-		<field
-				name="offices_filter_deliverypoint_allowed_cod"
-				type="list"
-				label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_ALLOWED_COD_LABEL"
-				default="0"
-				layout="joomla.form.field.radio.switcher"
-		>
+
+		<field name="offices_filter_deliverypoint_allowed_cod" type="list"
+			   label="COM_WISHBOXRADICALMARTCDEK_FIELD_DELIVERYPOINT_ALLOWED_COD_LABEL"
+			   default="0"
+			   layout="joomla.form.field.radio.switcher">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
 
     <fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
-        <field
-			name="rules"
-			type="rules"
-			component="com_wishboxradicalmartcdek"
-			class="inputbox"
-			filter="rules"
-			validate="rules"
-			label="JCONFIG_PERMISSIONS_LABEL"
-			section="component"
+        <field name="rules" type="rules"
+			   component="com_wishboxradicalmartcdek"
+			   class="inputbox"
+			   filter="rules"
+			   validate="rules"
+			   label="JCONFIG_PERMISSIONS_LABEL"
+			   section="component"
 		/>
 	</fieldset>
 </config>

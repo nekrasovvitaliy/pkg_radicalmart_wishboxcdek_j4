@@ -1,17 +1,16 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Form\Form;
-use Joomla\Component\Wishboxcdek\Site\Helper\WishboxcdekHelper;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
 use stdClass;
 
 /**
@@ -98,7 +97,7 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
-		return (int) $this->formData['shipping']['cityCode'];
+		return (int) $this->formData['shipping']['city_code'];
 	}
 
 	/**
@@ -108,7 +107,7 @@ class OrdersitePreparer extends FormPreparer
 	 */
 	protected function getTariffCode(): int
 	{
-		return $this->shipping->order->price['tariffCode'] ?? 0;
+		return $this->shipping->order->price['tariff_code'] ?? 0;
 	}
 
 	/**

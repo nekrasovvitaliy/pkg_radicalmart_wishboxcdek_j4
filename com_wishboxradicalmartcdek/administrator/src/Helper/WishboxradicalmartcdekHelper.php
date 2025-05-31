@@ -3,7 +3,7 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper;
+namespace Joomla\Component\WishboxRadicalMartCdek\Administrator\Helper;
 
 use Exception;
 use Joomla\CMS\Factory;
@@ -16,11 +16,11 @@ defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Wishboxradicalmartcdek helper.
+ * WishboxRadicalMartCdek helper.
  *
  * @since  1.0.0
  */
-class WishboxradicalmartcdekHelper
+class WishboxRadicalMartCdekHelper
 {
 	/**
 	 * Gets a list of the actions that can be performed.
@@ -64,7 +64,7 @@ class WishboxradicalmartcdekHelper
 		$query = $db->createQuery()
 			->select($db->qn('id'))
 			->from($db->qn('#__radicalmart_orders'))
-			->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.trackingNumber') . ') = ' . $db->q($cdekNumber));
+			->where('JSON_EXTRACT(shipping, ' . $db->q('$.data.tracking_number') . ') = ' . $db->q($cdekNumber));
 
 		$db->setQuery($query);
 

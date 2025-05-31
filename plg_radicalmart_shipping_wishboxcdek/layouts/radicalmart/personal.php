@@ -1,8 +1,11 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
+
+use Joomla\CMS\Form\Form;
+
 defined('_JEXEC') or die;
 
 extract($displayData);
@@ -11,11 +14,11 @@ extract($displayData);
  * Layout variables
  * -----------------
  *
- * @var  \Joomla\CMS\Form\Form $form      Form object.
- * @var  object                $item      Customer object.
- * @var  object                $shipping  Checkout shipping method object.
- * @var  array                 $fieldsets Checkout shipping method object.
- * @var  string                $group     Fields group target.
+ * @var  Form       $form       Form object.
+ * @var  object     $item       Customer object.
+ * @var  object     $shipping   Checkout shipping method object.
+ * @var  array      $fieldsets  Checkout shipping method object.
+ * @var  string     $group      Fields group target.
  *
  */
 

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "plg_radicalmart_wishboxcdekorderstatusupdater",
+  "version": "1.0.0",
+  "description": "plg_radicalmart_wishboxcdekorderstatusupdater",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "type": "script",
+      "name": "plg_radicalmart_wishboxcdekorderstatusupdater.script",
+      "uri": "plg_radicalmart_wishboxcdekorderstatusupdater/script.min.js",
+      "importmap": false,
+      "version": "1.0.0"
+    }
+  ]
+}

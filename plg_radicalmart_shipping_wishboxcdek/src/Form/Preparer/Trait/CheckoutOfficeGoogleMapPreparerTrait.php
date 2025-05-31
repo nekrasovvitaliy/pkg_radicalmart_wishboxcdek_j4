@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
+use Joomla\CMS\Factory;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorDelegateModel;
 
 /**
  * @method getTariffCode(): integer
@@ -28,6 +29,7 @@ trait CheckoutOfficeGoogleMapPreparerTrait
 	 */
 	protected function prepareOfficeGoogleMapField(): void
 	{
+		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0)
@@ -38,7 +40,7 @@ trait CheckoutOfficeGoogleMapPreparerTrait
 			{
 				$result = $this->getForm()->setFieldAttribute(
 					'office_google_map',
-					'cityCode',
+					'city_code',
 					$this->getCityCode(),
 					$this->shippingFieldAttributeGroup
 				);
@@ -50,13 +52,16 @@ trait CheckoutOfficeGoogleMapPreparerTrait
 
 				if (method_exists($this, 'getProducts'))
 				{
-					$calculatorDelegate = new CalculatorDelegate(
-						$this->getShipping(),
-						$this->getFormData(),
-						$this->getProducts()
-					);
+					/** @var CalculatorDelegateModel $calculatorDelegateModel */
+					$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
+						->getMVCFactory()
+						->createModel('CalculatorDelegate', 'Administrator');
 
-					$packageRequests = $calculatorDelegate->getPackages();
+					$calculatorDelegateModel->setMethod($this->getShipping());
+					$calculatorDelegateModel->setFormData($this->getFormData());
+					$calculatorDelegateModel->setProducts($this->getProducts());
+
+					$packageRequests = $calculatorDelegateModel->getPackages();
 
 					$packagesData = [];
 

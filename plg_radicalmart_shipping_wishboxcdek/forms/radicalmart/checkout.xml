@@ -8,7 +8,7 @@
 				   required="true"
 			/>
 
-			<field name="cityCode"
+			<field name="city_code"
 				   type="listajaxsearch"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
 				   required="true"
@@ -27,7 +27,7 @@
 				<option value="286">Благовещенск, городской округ Благовещенск, Амурская область</option>
 			</field>
 
-			<field name="officeCode"
+			<field name="office_code"
 				   type="office"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 				   required="true"
@@ -35,7 +35,7 @@
 				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
-				   allowed_cod="true"
+				   allowed_cod="false"
 				   deliverypoint_type="ALL"
 				   layout="joomla.form.field.list-fancy-select"
 			>
@@ -49,7 +49,7 @@
 				   allowed_cod="true"
 			/>
 
-			<field name="tariffCode"
+			<field name="tariff_code"
 				   type="tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
 				   required="true"

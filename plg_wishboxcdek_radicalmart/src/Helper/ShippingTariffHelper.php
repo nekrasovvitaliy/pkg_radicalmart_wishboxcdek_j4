@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright  2013-2024 Nekrasov Vitaliy
+ * @copyright  2013-2025 Nekrasov Vitaliy
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\Wishboxcdek\JShopping\Helper;
+namespace Joomla\Plugin\WishboxCdek\JShopping\Helper;
 
 use Exception;
 use Joomla\Component\Jshopping\Site\Lib\JSFactory;
-use Joomla\Component\Jshopping\Site\Model\Wishbox\Shippingcalculator\CdekModel;
 use Wishbox\ShippingService\ShippingTariff;
 use function defined;
 

@@ -6,7 +6,7 @@
 		<field name="city" type="text"
 			   label="COM_RADICALMART_CITY"/>
 
-		<field name="cityCode"
+		<field name="city_code"
 			   type="listajaxsearch"
 			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
 			   required="true"
@@ -21,7 +21,7 @@
 			<option value="17">Пушкино</option>
 		</field>
 
-		<field name="officeCode"
+		<field name="office_code"
 			   type="office"
 			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 			   required="true"

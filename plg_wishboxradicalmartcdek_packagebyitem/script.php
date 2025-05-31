@@ -59,7 +59,7 @@ return new class implements ServiceProviderInterface
 				public function __construct(AdministratorApplication $app)
 				{
 					$this->app = $app;
-					$this->db  = Factory::getContainer()->get('DatabaseDriver');
+					$this->db  = Factory::getContainer()->get(DatabaseDriver::class);
 				}
 
 				/**

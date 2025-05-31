@@ -1,16 +1,16 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 
 use Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\FormPreparer;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
-use Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutAddressPreparerTrait;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
 
 /**
  * @since 1.0.0
@@ -98,21 +98,21 @@ class PersonalshippingmethodPreparer extends FormPreparer
 		{
 			if (is_array($this->data))
 			{
-				return isset($this->data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode'])
-					? (int) $this->data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode']
+				return isset($this->data['shipping']['shipping_method_' . $this->getShippingId()]['city_code'])
+					? (int) $this->data['shipping']['shipping_method_' . $this->getShippingId()]['city_code']
 					: 0;
 			}
 
-			return isset($this->data->shipping['shipping_method_' . $this->getShippingId()]['cityCode'])
-				? (int) $this->data->shipping['shipping_method_' . $this->getShippingId()]['cityCode']
+			return isset($this->data->shipping['shipping_method_' . $this->getShippingId()]['city_code'])
+				? (int) $this->data->shipping['shipping_method_' . $this->getShippingId()]['city_code']
 				: 0;
 		}
 		else
 		{
 			$data = $app->getInput()->post->get('jform');
 
-			return isset($data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode'])
-				? (int) $data['shipping']['shipping_method_' . $this->getShippingId()]['cityCode']
+			return isset($data['shipping']['shipping_method_' . $this->getShippingId()]['city_code'])
+				? (int) $data['shipping']['shipping_method_' . $this->getShippingId()]['city_code']
 				: 0;
 		}
 	}
@@ -146,7 +146,7 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	 */
 	protected function isTariffToPoint(): bool
 	{
-		$tariffMode = $this->shipping->params->get('tariffMode', '');
+		$tariffMode = $this->shipping->params->get('tariff_mode', '');
 
 		return in_array($tariffMode, ['С-С', 'Д-С']);
 	}

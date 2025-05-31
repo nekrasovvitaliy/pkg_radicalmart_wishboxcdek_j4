@@ -6,7 +6,6 @@
 namespace Joomla\Plugin\Content\WishboxRadicalMartCdekOrderStatusUpdater\Extension;
 
 use Exception;
-use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Event\Model\PrepareFormEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\SubscriberInterface;
@@ -21,7 +20,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-class Wishboxradicalmartcdekorderstatusupdater extends CMSPlugin implements SubscriberInterface
+final class WishboxRadicalMartCdekOrderStatusUpdater extends CMSPlugin implements SubscriberInterface
 {
 	/**
 	 * Load the language file on instantiation.
@@ -37,7 +36,7 @@ class Wishboxradicalmartcdekorderstatusupdater extends CMSPlugin implements Subs
 	 *
 	 * @return  array
 	 *
-	 * @since   1.2.0
+	 * @since   1.0.0
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -68,10 +67,17 @@ class Wishboxradicalmartcdekorderstatusupdater extends CMSPlugin implements Subs
 
 		if ($formName == 'com_config.component' && $component == 'com_wishboxradicalmartcdek')
 		{
-			if (!$form->loadFile(JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/forms/config.xml'))
+			$formFilePath = JPATH_SITE . '/plugins/' . $this->_type . '/' . $this->_name . '/forms/config.xml';
+
+			if (!$form->loadFile($formFilePath))
 			{
-				throw new Exception(__LINE__ . 'Failed load file', 500);
+				throw new Exception(
+					__FILE__ . ':' . __LINE__
+					. ' Failed load file ' . $formFilePath,
+					500
+				);
 			}
 		}
+
 	}
 }

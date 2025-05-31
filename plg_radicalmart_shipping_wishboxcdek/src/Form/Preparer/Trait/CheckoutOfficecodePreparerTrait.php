@@ -1,12 +1,12 @@
 <?php
 /**
- * @copyright  (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
+use Joomla\CMS\Factory;
 
 /**
  * @method getTariffCode(): integer
@@ -28,13 +28,14 @@ trait CheckoutOfficecodePreparerTrait
 	 */
 	protected function prepareOfficeCodeField(): void
 	{
+		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0 && $this->isTariffModeToPoint() === true)
 		{
 			$result = $this->getForm()->setFieldAttribute(
-				'officeCode',
-				'cityCode',
+				'office_code',
+				'city_code',
 				$this->getCityCode(),
 				$this->shippingFieldAttributeGroup
 			);
@@ -46,13 +47,15 @@ trait CheckoutOfficecodePreparerTrait
 
 			if (method_exists($this, 'getProducts'))
 			{
-				$calculatorDelegate = new CalculatorDelegate(
-					$this->getShipping(),
-					$this->getFormData(),
-					$this->getProducts()
-				);
+				$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
+					->getMVCFactory()
+					->createModel('CalculatorDelegate', 'Administrator');
 
-				$packageRequests = $calculatorDelegate->getPackages();
+				$calculatorDelegateModel->setMethod($this->getShipping())
+					->setFormData($this->getFormData())
+					->setProducts($this->getProducts());
+
+				$packageRequests = $calculatorDelegateModel->getPackages();
 
 				$packagesData = [];
 
@@ -69,7 +72,7 @@ trait CheckoutOfficecodePreparerTrait
 				$packagesData = json_encode($packagesData);
 
 				if (!$this->getForm()->setFieldAttribute(
-					'officeCode',
+					'office_code',
 					'packages',
 					$packagesData,
 					$this->shippingFieldAttributeGroup
@@ -81,7 +84,7 @@ trait CheckoutOfficecodePreparerTrait
 		}
 		else
 		{
-			if (!$this->getForm()->removeField('officeCode', $this->shippingFieldAttributeGroup))
+			if (!$this->getForm()->removeField('office_code', $this->shippingFieldAttributeGroup))
 			{
 				throw new Exception('failed to removeField', 500);
 			}

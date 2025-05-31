@@ -3,20 +3,19 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\Task\Wishboxradicalmartcdekorderregistrator\Extension;
+namespace Joomla\Plugin\Task\WishboxRadicalMartCdekOrderRegistrator\Extension;
 
 use Error;
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\RadicalMart\Administrator\Model\OrderModel;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\Scheduler\Administrator\Event\ExecuteTaskEvent;
 use Joomla\Component\Scheduler\Administrator\Task\Status;
 use Joomla\Component\Scheduler\Administrator\Traits\TaskPluginTrait;
-use Joomla\Event\DispatcherInterface;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Administrator\Model\OrdersModel;
 use function defined;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -31,7 +30,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements SubscriberInterface
+final class WishboxRadicalMartCdekOrderRegistrator extends CMSPlugin implements SubscriberInterface
 {
 	use DatabaseAwareTrait;
 	use TaskPluginTrait;
@@ -73,19 +72,6 @@ final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements 
 	}
 
 	/**
-	 * Constructor.
-	 *
-	 * @param   DispatcherInterface  $dispatcher  The dispatcher
-	 * @param   array                $config      An optional associative array of configuration settings
-	 *
-	 * @since   1.0.0
-	 */
-	public function __construct(DispatcherInterface $dispatcher, array $config)
-	{
-		parent::__construct($dispatcher, $config);
-	}
-
-	/**
 	 * @param   ExecuteTaskEvent  $event Event
 	 *
 	 * @return integer
@@ -109,11 +95,15 @@ final class Wishboxradicalmartcdekorderregistrator extends CMSPlugin implements 
 				->getMVCFactory()
 				->createModel('order', 'Administrator', ['ignore_request' => true]);
 
+			/** @var OrdersModel $ordersModel */
+			$ordersModel = $app->bootPlugin('wishboxcdekorderregistrator', 'radicalmart')
+				->getMVCFactory()
+				->createModel('Orders', 'Administrator');
+
 			foreach ($orderIds as $orderId)
 			{
 				$order = $orderModel->getItem($orderId);
-				$orderService = new OrderService;
-				$orderService->register($order);
+				$ordersModel->register($order);
 			}
 		}
 		catch (Exception | Error $e)

@@ -1,23 +1,24 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Joomla\Plugin\Radicalmart\Wishboxcdekpackagemultiple\Extension;
+namespace Joomla\Plugin\Radicalmart\WishboxCdekPackageMultiple\Extension;
 
 use Exception;
-use Joomla\CMS\Form\Form;
+use Joomla\CMS\Event\Model\PrepareFormEvent;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Wishboxcdek\Site\Trait\ApiClientTrait;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorDelegate;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\RegistratorDelegate;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Event\Model\CalculatorDelegate\GetPackagesEvent;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Helper\WishboxRadicalMartCdekHelper;
 use Joomla\Database\DatabaseAwareTrait;
-use Joomla\Event\DispatcherInterface;
-use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Administrator\Model\RegistratorDelegateModel;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Event\Model\RegistratorDelegate\GetOrdersPatchPackagesEvent;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Event\Model\RegistratorDelegate\GetOrdersPostPackagesEvent;
 use stdClass;
+use WishboxCdekSDK2\Factory\CdekClientV2FactoryAwareInterface;
+use WishboxCdekSDK2\Factory\CdekClientV2FactoryAwareTrait;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\MoneyRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\Package\ItemRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPost\PackageRequest as OrdersPostPackageRequest;
@@ -31,11 +32,11 @@ defined('_JEXEC') or die;
 /**
  * @since 1.0.0
  */
-class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterface
+final class WishboxCdekPackageMultiple extends CMSPlugin implements SubscriberInterface, CdekClientV2FactoryAwareInterface
 {
 	use MVCFactoryAwareTrait;
 	use DatabaseAwareTrait;
-	use ApiClientTrait;
+	use CdekClientV2FactoryAwareTrait;
 
 	/**
 	 * @var boolean
@@ -43,21 +44,6 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 * @since 1.0.0
 	 */
 	protected $autoloadLanguage = true;
-
-	/**
-	 * @param   DispatcherInterface  $subject  The object to observe
-	 * @param   array                $config   An optional associative array of configuration settings.
-	 *                                           Recognized key values include 'name', 'group', 'params', 'language'
-	 *                                           (this list is not meant to be comprehensive).
-	 *
-	 * @since 1.0.0
-	 *
-	 * @noinspection PhpMissingParamTypeInspection
-	 */
-	public function __construct(&$subject, $config = [])
-	{
-		parent::__construct($subject, $config);
-	}
 
 	/**
 	 * @return string[]
@@ -70,15 +56,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	{
 		return [
 			'onContentPrepareForm' => 'onContentPrepareForm',
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages'
-			=> 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
-			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages' => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages'  => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
+			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'             => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
 		];
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPostPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -88,19 +73,17 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(GetOrdersPostPackagesEvent $event): void
 	{
-		/** @var OrdersPostPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
+		$delegate = $event->getRegistratorDelegate();
 
-		/** @var RegistratorDelegate $delegate */
-		$delegate = $event->getArgument(1);
+		/** @var OrdersPostPackageRequest[] $packageRequests */
+		$packageRequests = [];
 
 		$products = $delegate->getOrder()->products;
-
 		$productsById = [];
 
-		foreach ($products as $key => $product)
+		foreach ($products as $product)
 		{
 			if (!isset($productsById[$product->id]))
 			{
@@ -114,7 +97,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		foreach ($productsById as $product)
 		{
-			/** @var int $productQuantity Product quantity */
+			/** @var integer $productQuantity Product quantity */
 			$productQuantity = $product->order['quantity'];
 
 			while ($productQuantity)
@@ -126,12 +109,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			}
 		}
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		foreach ($packageRequests as $packageRequest)
+		{
+			$event->addResult($packageRequest);
+		}
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetOrdersPatchPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -141,15 +126,15 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(Event $event): void
+	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(GetOrdersPatchPackagesEvent $event): void
 	{
 		/** @var OrdersPatchPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument(0);
+		$packageRequests = [];
 
-		/** @var RegistratorDelegate $delegate */
-		$delegate = $event->getArgument(1);
+		/** @var RegistratorDelegateModel $delegate */
+		$delegate = $event->getRegistratorDelegate();
 
-		$apiClient = $this->getApiClient();
+		$apiClient = $this->getCdekClientV2Factory()->getDefaultClient();
 		sleep(1);
 		$existingOrdersGetResponse = $apiClient->getOrderInfoByImNumber($delegate->getOrderNumber());
 		$existingPackages = $existingOrdersGetResponse->getEntity()->getPackages();
@@ -164,7 +149,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 
 		$productsById = [];
 
-		foreach ($products as $key => $product)
+		foreach ($products as $product)
 		{
 			if (!isset($productsById[$product->id]))
 			{
@@ -190,12 +175,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			}
 		}
 
-		$event->setArgument(0, $packageRequests);
-		$event->setArgument(1, $delegate);
+		foreach ($packageRequests as $packageRequest)
+		{
+			$event->addResult($packageRequest);
+		}
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   GetPackagesEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -205,19 +192,17 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(Event $event): void
+	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(GetPackagesEvent $event): void
 	{
-		/** @var TariffListPostPackageRequest[] $packageRequests */
-		$packageRequests = $event->getArgument('packages');
+		$delegate = $event->getCalculatorDelegate();
 
-		/** @var CalculatorDelegate $delegate */
-		$delegate = $event->getArgument('subject');
+		/** @var TariffListPostPackageRequest[] $packageRequests */
+		$packageRequests = [];
 
 		$products = $delegate->getProducts();
-
 		$productsById = [];
 
-		foreach ($products as $key => $product)
+		foreach ($products as $product)
 		{
 			if (!isset($productsById[$product->id]))
 			{
@@ -243,11 +228,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 			}
 		}
 
-		$event->setArgument('packages', $packageRequests);
+		foreach ($packageRequests as $packageRequest)
+		{
+			$event->addResult($packageRequest);
+		}
 	}
 
 	/**
-	 * @param   Event  $event  Event
+	 * @param   PrepareFormEvent  $event  Event
 	 *
 	 * @return void
 	 *
@@ -255,13 +243,9 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @since 1.0.0
 	 */
-	public function onContentPrepareForm(Event $event): void
+	public function onContentPrepareForm(PrepareFormEvent $event): void
 	{
-		/** @var Form $form */
-		$form = $event->getArgument(0);
-
-		/** @var array $data */
-		$data = $event->getArgument(1);
+		$form = $event->getForm();
 
 		$formName = $form->getName();
 
@@ -272,9 +256,6 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 				throw new Exception('Failed load file', 500);
 			}
 		}
-
-		$event->setArgument(0, $form);
-		$event->setArgument(1, $data);
 	}
 
 	/**
@@ -284,12 +265,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	private function packAll(array &$packageRequests, int &$productQuantity, stdClass $product): bool
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -323,6 +306,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function packMax(array &$packageRequests, int &$productQuantity, stdClass $product): void
@@ -330,7 +315,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		/** @var array $productPackageTypes Product package types */
 		$maxProductPackageTypes = self::getMaxPackageDimension($product);
 
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 
 		$weight = $productWeight * $maxProductPackageTypes['max_quantity'];
 
@@ -352,12 +337,14 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	private function packAllToOrdersPostPackages(array &$packageRequests, int &$productQuantity, stdClass $product): bool
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -404,6 +391,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function packMaxToOrdersPostPackages(array &$packageRequests, int &$productQuantity, stdClass $product): void
@@ -411,7 +400,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		/** @var array $productPackageTypes Product package types */
 		$maxProductPackageTypes = self::getMaxPackageDimension($product);
 
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 
 		$weight = $productWeight * $maxProductPackageTypes['max_quantity'];
 
@@ -447,6 +436,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return boolean
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	private function packAllToOrdersPatchPackages(
@@ -457,7 +448,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	): bool
 	{
 		$productPackageDimensions = self::getPackageDimensions($product);
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 
 		foreach ($productPackageDimensions as $productPackageDimension)
 		{
@@ -513,6 +504,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 *
 	 * @return void
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
 	public function packMaxToOrdersPatchPackages(
@@ -525,10 +518,8 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 		/** @var array $productPackageTypes Product package types */
 		$maxProductPackageTypes = self::getMaxPackageDimension($product);
 
-		$productWeight = WishboxradicalmartcdekHelper::getProductWeight($product, 'g');
-
+		$productWeight = WishboxRadicalMartCdekHelper::getProductWeight($product, 'g');
 		$weight = $productWeight * $maxProductPackageTypes['max_quantity'];
-
 		$number = count($packageRequests) + 1;
 
 		while (in_array((string) $number, $existingPackageNumbers))
@@ -569,7 +560,7 @@ class Wishboxcdekpackagemultiple extends CMSPlugin implements SubscriberInterfac
 	 */
 	public function getPackageDimensions(stdClass $product): array
 	{
-		return (array) $product->shipping->get('wishboxcdekpackagemultiple_dimensions');
+		return (array) $product->shipping->get('wishboxcdekpackagemultiple.dimensions');
 	}
 
 	/**

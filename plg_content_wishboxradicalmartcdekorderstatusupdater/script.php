@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -55,7 +55,7 @@ return new class implements ServiceProviderInterface
 				public function __construct(AdministratorApplication $app)
 				{
 					$this->app = $app;
-					$this->db  = Factory::getContainer()->get('DatabaseDriver');
+					$this->db  = Factory::getContainer()->get(DatabaseDriver::class);
 				}
 
 				/**

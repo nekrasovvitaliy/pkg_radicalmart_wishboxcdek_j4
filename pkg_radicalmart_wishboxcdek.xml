@@ -15,7 +15,7 @@
     </languages>
     <files>
         <file type="component" id="com_wishboxradicalmartcdek">com_wishboxradicalmartcdek.zip</file>
-        <file type="plugin" group="console" id="wishboxcdekorderregistrator">plg_console_wishboxradicalmartcdekorderregistrator.zip</file>
+        <file type="plugin" group="console" id="wishboxradicalmartcdekorderregistrator">plg_console_wishboxradicalmartcdekorderregistrator.zip</file>
         <file type="plugin" group="content" id="wishboxradicalmartcdekorderregistrator">plg_content_wishboxradicalmartcdekorderregistrator.zip</file>
         <file type="plugin" group="content" id="wishboxradicalmartcdekorderstatusupdater">plg_content_wishboxradicalmartcdekorderstatusupdater.zip</file>
         <file type="plugin" group="radicalmart_shipping" id="wishboxcdek">plg_radicalmart_shipping_wishboxcdek.zip</file>
@@ -25,6 +25,6 @@
         <file type="plugin" group="radicalmart" id="wishboxcdekorderstatusupdater">plg_radicalmart_wishboxcdekorderstatusupdater.zip</file>
         <file type="plugin" group="radicalmart" id="wishboxcdekpackagemultiple">plg_radicalmart_wishboxcdekpackagemultiple.zip</file>
         <file type="plugin" group="task" id="wishboxradicalmartcdekorderregistrator">plg_task_wishboxradicalmartcdekorderregistrator.zip</file>
-        <file type="plugin" group="task" id="radicalmartorderstatusupdater">plg_wishboxcdek_radicalmartorderstatusupdater.zip</file>
+        <file type="plugin" group="wishboxcdek" id="radicalmartorderstatusupdater">plg_wishboxcdek_radicalmartorderstatusupdater.zip</file>
     </files>
 </extension>

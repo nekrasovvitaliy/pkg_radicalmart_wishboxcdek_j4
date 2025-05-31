@@ -3,12 +3,15 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMart\Wishboxcdekorderstatusupdater\Extension;
+namespace Joomla\Plugin\RadicalMart\WishboxCdekOrderStatusUpdater\Extension;
 
 use Exception;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Document\Document;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Toolbar\Toolbar;
+use Joomla\CMS\Toolbar\ToolbarFactoryInterface;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
 use function defined;
@@ -22,7 +25,7 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-class Wishboxcdekorderstatusupdater extends CMSPlugin implements SubscriberInterface
+final class WishboxCdekOrderStatusUpdater extends CMSPlugin implements SubscriberInterface
 {
 	/**
 	 * Load the language file on instantiation.
@@ -38,7 +41,7 @@ class Wishboxcdekorderstatusupdater extends CMSPlugin implements SubscriberInter
 	 *
 	 * @var  boolean
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public bool $radicalmart = true;
 
@@ -47,7 +50,7 @@ class Wishboxcdekorderstatusupdater extends CMSPlugin implements SubscriberInter
 	 *
 	 * @var  boolean
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 *
 	 * @noinspection PhpUnused
 	 */
@@ -58,7 +61,7 @@ class Wishboxcdekorderstatusupdater extends CMSPlugin implements SubscriberInter
 	 *
 	 * @return  array
 	 *
-	 * @since   1.2.0
+	 * @since   1.0.0
 	 */
 	public static function getSubscribedEvents(): array
 	{
@@ -88,17 +91,46 @@ class Wishboxcdekorderstatusupdater extends CMSPlugin implements SubscriberInter
 			return;
 		}
 
+		/** @var Document $document */
+		$document = $app->getDocument();
+
 		$option = $app->getInput()->getCmd('option', '');
 		$view = $app->getInput()->getCmd('view', '');
 
 		if ($option == 'com_radicalmart' && $view == 'orders')
 		{
-			ToolBarHelper::custom(
-				'wishboxcdekorders.register',
-				'copy',
-				'copy_f2.png',
-				Text::_('PLG_RADICALMART_WISHBOXCDEK_UPDATE_ORDER_STATUS')
+			/** @var Toolbar $toolbar */
+			$toolbar = $document->getToolbar();
+
+			$html = LayoutHelper::render(
+				'plugins.radicalmart.wishboxcdekorderstatusupdater.toolbar.update-statuses',
+				[
+					'redirectUrl' => 'index.php?option=com_radicalmart&view=orders'
+				]
 			);
+
+			$factory = Factory::getContainer()->get(ToolbarFactoryInterface::class);
+
+			$button = $factory->createButton($toolbar, 'Custom')
+				->name('wishboxcdek-update-statuses')
+				->text('')
+				->task('')
+				->html($html);
+
+			$tempItems = $toolbar->getItems();
+			$items = [];
+
+			foreach ($tempItems as $k => $tempItem)
+			{
+				if ($k == 2)
+				{
+					$items[] = $button;
+				}
+
+				$items[] = $tempItem;
+			}
+
+			$toolbar->setItems($items);
 		}
 	}
 }

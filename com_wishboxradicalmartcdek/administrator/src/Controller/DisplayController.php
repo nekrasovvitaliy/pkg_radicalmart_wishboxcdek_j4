@@ -3,9 +3,8 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliY@list.ru>
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\Controller;
+namespace Joomla\Component\WishboxRadicalMartCdek\Administrator\Controller;
 
-use Exception;
 use Joomla\CMS\MVC\Controller\BaseController;
 use function defined;
 
@@ -14,7 +13,7 @@ defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Wishboxradicalmartcdek primary display controller.
+ * WishboxRadicalMartCdek primary display controller.
  *
  * @since 1.0.0
  */
@@ -28,23 +27,4 @@ class DisplayController extends BaseController
 	 * @since  1.0.0
 	 */
 	protected $default_view = 'dashboard'; // phpcs:ignore
-
-	/**
-	 * Method to display a view.
-	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe URL parameters and their variable types, for valid values see {@link InputFilter::clean()}.
-	 *
-	 * @return  static  A \JControllerLegacy object to support chaining.
-	 *
-	 * @throws Exception
-	 *
-	 * @since   1.0.0
-	 *
-	 * @noinspection PhpMissingReturnTypeInspection
-	 */
-	public function display($cachable = false, $urlparams = [])
-	{
-		return parent::display();
-	}
 }

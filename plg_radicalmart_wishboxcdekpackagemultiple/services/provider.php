@@ -1,15 +1,18 @@
 <?php
 /**
- * @copyright   (с) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (с) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\Wishboxcdekpackagemultiple\Extension\Wishboxcdekpackagemultiple;
+use Joomla\Plugin\Radicalmart\WishboxCdekPackageMultiple\Extension\WishboxCdekPackageMultiple;
+use WishboxCdekSDK2\CdekClientV2;
 
 defined('_JEXEC') or die;
 
@@ -26,16 +29,24 @@ return new class implements ServiceProviderInterface
 	 */
 	public function register(Container $container): void
 	{
+		$componentParams = ComponentHelper::getParams('com_wishboxcdek');
+
+		$container->registerServiceProvider(
+			new CdekClientV2(
+				$componentParams->get('account', ''),
+				$componentParams->get('secure', ''),
+				60.0
+			)
+		);
+
 		$container->set(
 			PluginInterface::class,
 			function (Container $container)
 			{
-				$subject = $container->get(DispatcherInterface::class);
-				$plugin  = new Wishboxcdekpackagemultiple(
-					$subject,
-					(array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekpackagemultiple')
-				);
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekpackagemultiple');
 
+				$plugin  = new WishboxCdekPackageMultiple($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
 
 				return $plugin;

@@ -3,74 +3,17 @@
   <component name="PublishConfigData" autoUpload="On explicit save action" serverName="joomla503.test1.ru" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false" autoUploadExternalChanges="true" showAutoUploadSettingsWarning="false">
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
-      <paths name="Joomla433">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="classes.test1.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="dolzav.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="g-p-s.com.ua">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="goorin.spb.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="goorin.test1.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="hohloms.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="joomla440.test1.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
       <paths name="joomla503.test1.ru">
         <serverdata>
           <mappings>
             <mapping deploy="plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek" web="/" />
             <mapping deploy="plugins\radicalmart\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdek" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator" web="/" />
             <mapping deploy="administrator\components\com_wishboxradicalmartcdek" local="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator" web="/" />
             <mapping deploy="plugins\task\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/language" web="/" />
             <mapping deploy="plugins\radicalmart\wishboxcdekonepackage" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage" web="/" />
             <mapping deploy="plugins\radicalmart\wishboxcdekpackagemultiple" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple" web="/" />
-            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator" web="/" />
+            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator\wishboxradicalmartcdekorderregistrator.xml" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/wishboxradicalmartcdekorderregistrator.xml" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/language" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/language" web="/" />
             <mapping deploy="layouts\plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts" web="/" />
@@ -79,83 +22,27 @@
             <mapping deploy="plugins\content\wishboxradicalmartcdekorderstatusupdater" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/language" web="/" />
             <mapping deploy="administrator\language" local="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator/language" web="/" />
-            <mapping deploy="plugins\content\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderregistrator/language" web="/" />
+            <mapping deploy="plugins\content\wishboxradicalmartcdekorderregistrator\src" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/src" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekorderstatusupdater" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater" web="/" />
+            <mapping deploy="layouts\plugins\radicalmart\wishboxcdekorderstatusupdater" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/layouts" web="/" />
+            <mapping deploy="media\plg_radicalmart_wishboxcdekorderstatusupdater" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/media" web="/" />
+            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator\src" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/src" web="/" />
+            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator\services" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/services" web="/" />
+            <mapping deploy="plugins\content\wishboxradicalmartcdekorderregistrator\services" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/services" web="/" />
+            <mapping deploy="plugins\content\wishboxradicalmartcdekorderregistrator\wishboxradicalmartcdekorderregistrator.xml" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderregistrator/wishboxradicalmartcdekorderregistrator.xml" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator\src" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/src" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator\services" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/services" web="/" />
+            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator\wishboxcdekorderregistrator.xml" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator/wishboxcdekorderregistrator.xml" web="/" />
           </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderstatusupdater/build" />
+          </excludedPaths>
         </serverdata>
       </paths>
-      <paths name="lubimovka.fa4.ru">
-        <serverdata>
-          <mappings>
-            <mapping deploy="plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdek" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator" web="/" />
-            <mapping deploy="administrator\components\com_wishboxradicalmartcdek" local="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator" web="/" />
-            <mapping deploy="plugins\task\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="optom.semena-tut.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="playandlearn.ru">
+      <paths name="radicalized.ru">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="playandlearn.test.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="shop.silkfantasy.az">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="testphp8.semena-tut.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="testphp8optom.semena-tut.ru">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="update.duscha.ru">
-        <serverdata>
-          <mappings>
-            <mapping deploy="plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdek" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdekorderregistrator" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekorderregistrator" web="/" />
-            <mapping deploy="administrator\components\com_wishboxradicalmartcdek" local="$PROJECT_DIR$/com_wishboxradicalmartcdek/administrator" web="/" />
-            <mapping deploy="plugins\task\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_task_wishboxradicalmartcdekorderregistrator" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/language" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdekonepackage" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage" web="/" />
-            <mapping deploy="plugins\radicalmart\wishboxcdekpackagemultiple" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekpackagemultiple" web="/" />
-            <mapping deploy="plugins\console\wishboxradicalmartcdekorderregistrator" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_console_wishboxradicalmartcdekorderregistrator/language" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_radicalmart_wishboxcdekonepackage/language" web="/" />
-            <mapping deploy="layouts\plugins\radicalmart_shipping\wishboxcdek" local="$PROJECT_DIR$/plg_radicalmart_shipping_wishboxcdek/layouts" web="/" />
-            <mapping deploy="plugins\wishboxcdek\radicalmartorderstatusupdater" local="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_wishboxcdek_radicalmartorderstatusupdater/language" web="/" />
-            <mapping deploy="plugins\content\wishboxradicalmartcdekorderstatusupdater" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater" web="/" />
-            <mapping deploy="administrator\language" local="$PROJECT_DIR$/plg_content_wishboxradicalmartcdekorderstatusupdater/language" web="/" />
           </mappings>
         </serverdata>
       </paths>

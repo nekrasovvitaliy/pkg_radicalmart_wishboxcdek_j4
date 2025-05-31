@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU/GPL license: https://www.gnu.org/copyleft/gpl.html
  */
 use Joomla\CMS\Form\Form;
@@ -18,14 +18,14 @@ extract($displayData);
  */
 ?>
 <div class="uk-grid-small" uk-grid="">
-	<?php if ($shipping->params->get('field_cityCode', 1)): ?>
+	<?php if ($shipping->params->get('field_city_code', 1)): ?>
         <div class="uk-width-1-1">
-            <?php echo $form->renderField('cityCode', 'shipping'); ?>
+            <?php echo $form->renderField('city_code', 'shipping'); ?>
         </div>
 	<?php endif; ?>
-	<?php if ($shipping->params->get('field_officeCode', 1)): ?>
+	<?php if ($shipping->params->get('field_office_code', 1)): ?>
         <div class="uk-width-1-1">
-			<?php echo $form->renderField('officeCode', 'shipping'); ?>
+			<?php echo $form->renderField('office_code', 'shipping'); ?>
         </div>
 	<?php endif; ?>
 
@@ -44,7 +44,7 @@ extract($displayData);
 	<?php endif; ?>
 
     <div class="uk-width-1-1">
-		<?php echo $form->renderField('tariffCode', 'shipping'); ?>
+		<?php echo $form->renderField('tariff_code', 'shipping'); ?>
     </div>
 
     <div class="uk-width-1-1">

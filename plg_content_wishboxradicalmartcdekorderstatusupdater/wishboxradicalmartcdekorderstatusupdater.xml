@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="plugin" group="content" method="upgrade">
+<extension type="plugin" group="content" method="upgrade">
 	<name>plg_content_wishboxradicalmartcdekorderstatusupdater</name>
 	<author>Nekrasov Vitaliy</author>
 	<creationDate>October 2024</creationDate>
@@ -11,6 +11,7 @@
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder plugin="wishboxradicalmartcdekorderstatusupdater">services</folder>
+		<folder>forms</folder>
 		<folder>src</folder>
 	</files>
 	<languages>

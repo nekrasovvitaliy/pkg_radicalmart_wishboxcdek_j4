@@ -6,7 +6,7 @@
     <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
     <version>1.0.0</version>
     <description>COM_WISHBOXRADICALMARTCDEK_XML_DESCRIPTION</description>
-    <namespace path="src">Joomla\Component\Wishboxradicalmartcdek</namespace>
+    <namespace path="src">Joomla\Component\WishboxRadicalMartCdek</namespace>
     <administration>
         <menu img="class:bookmark">com_wishboxradicalmartcdek</menu>
         <files folder="administrator">

@@ -3,14 +3,15 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMart\Wishboxcdekorderregistrator\Extension;
+namespace Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Extension;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Factory\MVCFactoryServiceTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\OrderService;
 use Joomla\Event\Event;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Administrator\Model\OrdersModel;
 use stdClass;
 use function defined;
 
@@ -23,8 +24,10 @@ defined('_JEXEC') or die;
  *
  * @noinspection PhpUnused
  */
-class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterface
+final class WishboxCdekOrderRegistrator extends CMSPlugin implements SubscriberInterface
 {
+	use MVCFactoryServiceTrait;
+
 	/**
 	 * Load the language file on instantiation.
 	 *
@@ -39,7 +42,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 *
 	 * @var  boolean
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public bool $radicalmart = true;
 
@@ -48,7 +51,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 *
 	 * @var  boolean
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 *
 	 * @noinspection PhpUnused
 	 */
@@ -59,15 +62,15 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 *
 	 * @return  array
 	 *
-	 * @since   1.2.0
+	 * @since   1.0.0
 	 */
 	public static function getSubscribedEvents(): array
 	{
 		return [
 			'onBeforeRender'                            => 'onBeforeRender',
-			'onRadicalMartBeforeOrderSave'              => 'onRadicalMartBeforeOrderSave',
-			'onRadicalMartAfterOrderSave'               => 'onRadicalMartAfterOrderSave',
-			'onRadicalMartAfterChangeOrderStatus'       => 'onRadicalMartAfterChangeOrderStatus'
+			'onRadicalMartBeforeOrderSave'              => 'onBeforeOrderSave',
+			'onRadicalMartAfterOrderSave'               => 'onAfterOrderSave',
+			'onRadicalMartAfterChangeOrderStatus'       => 'onAfterChangeOrderStatus'
 		];
 	}
 
@@ -88,7 +91,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartBeforeOrderSave(
+	public function onBeforeOrderSave(
 		string $context,
 		array &$data,
 		array $formData,
@@ -118,7 +121,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartAfterOrderSave(
+	public function onAfterOrderSave(
 		string $context,
 		array $formData,
 		array $data,
@@ -131,6 +134,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 			return;
 		}
 
+		$app = $this->getApplication();
 		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 
 		$allowedStatusIds = [
@@ -144,8 +148,12 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 			return;
 		}
 
-		$orderService = new OrderService;
-		$orderService->register($order);
+		/** @var OrdersModel $ordersModel */
+		$ordersModel = $app->bootPlugin('wishboxcdekorderregistrator', 'radicalmart')
+			->getMVCFactory()
+			->createModel('Orders', 'Administrator');
+
+		$ordersModel->register($order);
 	}
 
 	/**
@@ -164,7 +172,7 @@ class Wishboxcdekorderregistrator extends CMSPlugin implements SubscriberInterfa
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartAfterChangeOrderStatus(
+	public function onAfterChangeOrderStatus(
 		string $context,
 		stdClass $order,
 		int $oldStatus,

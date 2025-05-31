@@ -3,21 +3,22 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Joomla\Plugin\Radicalmart\Wishboxcdekonepackage\Extension;
+namespace Joomla\Plugin\Radicalmart\WishboxCdekOnePackage\Extension;
 
 use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\Wishboxcdek\Site\Trait\ApiClientTrait;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\CalculatorDelegate\GetPackagesEvent;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPatchPackagesEvent;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Event\Service\RegistratorDelegate\GetOrdersPostPackagesEvent;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Event\Model\CalculatorDelegate\GetPackagesEvent;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Event\Model\RegistratorDelegate\GetOrdersPatchPackagesEvent;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistrator\Event\Model\RegistratorDelegate\GetOrdersPostPackagesEvent;
 use Joomla\Registry\Registry;
 use stdClass;
+use WishboxCdekSDK2\Factory\CdekClientV2FactoryAwareInterface;
+use WishboxCdekSDK2\Factory\CdekClientV2FactoryAwareTrait;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\MoneyRequest as OrdersPatchMoneyRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\PackageRequest as OrdersPatchPackageRequest;
 use WishboxCdekSDK2\Model\Request\Orders\OrdersPatch\Package\ItemRequest as OrdersPatchPackageItemRequest;
@@ -33,11 +34,11 @@ defined('_JEXEC') or die;
 /**
  * @since 1.0.0
  */
-class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
+final class WishboxCdekOnePackage extends CMSPlugin implements SubscriberInterface, CdekClientV2FactoryAwareInterface
 {
 	use MVCFactoryAwareTrait;
 	use DatabaseAwareTrait;
-	use ApiClientTrait;
+	use CdekClientV2FactoryAwareTrait;
 
 	/**
 	 * @var boolean
@@ -56,14 +57,12 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages'
-			=> 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages'
-			=> 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
-			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'     => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages',
-			'onRadicalMartPrepareMethodForm'                            => 'onRadicalMartPrepareMethodForm',
-			'onRadicalMartGetOrderForm' => 'onRadicalMartGetOrderForm',
-			'onRadicalMartBeforeOrderSave' => 'onRadicalMartBeforeOrderSave'
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages'  => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
+			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
+			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'             => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages',
+			'onRadicalMartPrepareMethodForm'                                    => 'onRadicalMartPrepareMethodForm',
+			'onRadicalMartGetOrderForm'                                         => 'onRadicalMartGetOrderForm',
+			'onRadicalMartBeforeOrderSave'                                      => 'onBeforeOrderSave'
 		];
 	}
 
@@ -82,28 +81,28 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	{
 		$delegate = $event->getRegistratorDelegate();
 
-		$useDefaultPackageWeight = $delegate->order->shipping->params->get('wishboxcdekonepackageUseDefaultWeight');
+		$useDefaultPackageWeight = $delegate->order->shipping->params->get('wishboxcdekonepackage.use_default_weight');
 
 		if ($useDefaultPackageWeight)
 		{
-			$weight = $delegate->order->shipping->params->get('wishboxcdekonepackageDefaultWeight');
+			$weight = $delegate->order->shipping->params->get('wishboxcdekonepackage.default_weight');
 		}
 		else
 		{
 			$weight = $delegate->getTotalWeight();
 		}
 
-		if (isset($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'])
-			&& is_array($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'])
-			&& (!empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['width'])
-			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['height'])
-			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['length'])))
+		if (isset($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'])
+			&& is_array($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'])
+			&& (!empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['width'])
+			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['height'])
+			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['length'])))
 		{
-			$dimensions = $delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'];
+			$dimensions = $delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'];
 		}
 		else
 		{
-			$dimensions = (array) $delegate->order->shipping->params->get('wishboxcdekonepackageDefaultDimensions');
+			$dimensions = (array) $delegate->order->shipping->params->get('wishboxcdekonepackage.default_dimensions');
 		}
 
 		$package = (new OrdersPostPackageRequest)
@@ -119,12 +118,21 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 
 		foreach ($products as $product)
 		{
-			$payment = (new OrdersPostMoneyRequest)->setValue($product->payment);
+			$productCost = $product->cost;
 
-			if ($delegate->order->shipping->params->get('product_payment.use_product_payment'))
+			if ($delegate->order->shipping->params->get('wishboxcdekonepackage.use_default_product_cost', 0))
+			{
+				$productCost = (float) $delegate->order->shipping->params->get('wishboxcdekonepackage.default_product_cost', 0);
+			}
+
+			$payment = (new OrdersPostMoneyRequest)
+				->setValue(0)
+				->setVatSum(0);
+
+			if ($delegate->order->shipping->params->get('wishboxcdekonepackage.product_payment.use_product_payment', 0))
 			{
 				$vatRate = (int) $delegate->order->shipping->params->get('product_payment.product_payment_vat_rate');
-				$vatSum = $product->payment * (1 - (100 / (100 + $vatRate)));
+				$vatSum = (float) $product->price * (1 - (100 / (100 + $vatRate)));
 				$payment->setVatSum($vatSum)
 					->setVatRate($vatRate);
 			}
@@ -133,7 +141,7 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 				->setName($product->name)
 				->setWareKey($product->code)
 				->setPayment($payment)
-				->setCost($product->cost)
+				->setCost($productCost)
 				->setWeight($product->weight)
 				->setAmount($product->quantity);
 		}
@@ -158,29 +166,29 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	{
 		$delegate = $event->getRegistratorDelegate();
 
-		$apiClient = $this->getApiClient();
+		$apiClient = $this->getCdekClientV2Factory()->getDefaultClient();
 		$existingOrdersGetResponse = $apiClient->getOrderInfoByImNumber($delegate->getOrderNumber());
 
-		if ($delegate->order->shipping->params->get('wishboxcdekonepackageUseDefaultWeight'))
+		if ($delegate->order->shipping->params->get('wishboxcdekonepackage.use_default_weight'))
 		{
-			$weight = $delegate->order->shipping->params->get('wishboxcdekonepackageDefaultWeight');
+			$weight = $delegate->order->shipping->params->get('wishboxcdekonepackage.default_weight');
 		}
 		else
 		{
 			$weight = $delegate->getTotalWeight();
 		}
 
-		if (isset($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'])
-			&& is_array($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'])
-			&& (!empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['width'])
-			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['height'])
-			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackageDimensions']['length'])))
+		if (isset($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'])
+			&& is_array($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'])
+			&& (!empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['width'])
+			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['height'])
+			&& !empty($delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions']['length'])))
 		{
-			$dimensions = $delegate->order->formData['shipping']['wishboxcdekonepackageDimensions'];
+			$dimensions = $delegate->order->formData['shipping']['wishboxcdekonepackage']['dimensions'];
 		}
 		else
 		{
-			$dimensions = (array) $delegate->order->shipping->params->get('wishboxcdekonepackageDefaultDimensions');
+			$dimensions = (array) $delegate->order->shipping->params->get('wishboxcdekonepackage.default_dimensions');
 		}
 
 		$package = new OrdersPatchPackageRequest;
@@ -200,20 +208,22 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 
 		foreach ($products as $product)
 		{
-			$payment = (new OrdersPatchMoneyRequest)->setValue($product->payment);
+			$paymentRequest = (new OrdersPatchMoneyRequest)
+				->setValue(0)
+				->setVatSum(0);
 
 			if ($delegate->order->shipping->params->get('product_payment.use_product_payment', 0))
 			{
 				$vatRate = (int) $delegate->order->shipping->params->get('product_payment.product_payment_vat_rate');
-				$vatSum = $product->payment * (1 - (100 / (100 + $vatRate)));
-				$payment->setVatSum($vatSum)
+				$vatSum = (float) $product->price * (1 - (100 / (100 + $vatRate)));
+				$paymentRequest->setVatSum($vatSum)
 					->setVatRate($vatRate);
 			}
 
 			$items[] = (new OrdersPatchPackageItemRequest)
 				->setName($product->name)
 				->setWareKey($product->code)
-				->setPayment($payment)
+				->setPayment($paymentRequest)
 				->setCost($product->cost)
 				->setWeight($product->weight)
 				->setAmount($product->quantity);
@@ -239,9 +249,9 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	{
 		$delegate = $event->getCalculatorDelegate();
 
-		if ($delegate->method->params->get('wishboxcdekonepackageUseDefaultWeight'))
+		if ($delegate->method->params->get('wishboxcdekonepackage.use_default_weight'))
 		{
-			$weight = (int) $delegate->getMethod()->params->get('wishboxcdekonepackageDefaultWeight');
+			$weight = (int) $delegate->getMethod()->params->get('wishboxcdekonepackage.default_weight');
 		}
 		else
 		{
@@ -250,18 +260,18 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 
 		$formData = $delegate->getFormData();
 
-		if (isset($formData['shipping']['wishboxcdekonepackageDimensions']))
+		if (isset($formData['shipping']['wishboxcdekonepackage']['dimensions']))
 		{
-			$dimensions = $formData['shipping']['wishboxcdekonepackageDimensions'];
+			$dimensions = $formData['shipping']['wishboxcdekonepackage']['dimensions'];
 		}
 		else
 		{
-			$dimensions = (array) $delegate->method->params->get('wishboxcdekonepackageDefaultDimensions');
+			$dimensions = (array) $delegate->method->params->get('wishboxcdekonepackage.default_dimensions');
 		}
 
 		if (empty($dimensions['height']) || empty($dimensions['height']) || empty($dimensions['height']))
 		{
-			$dimensions = (array) $delegate->method->params->get('wishboxcdekonepackageDefaultDimensions');
+			$dimensions = (array) $delegate->method->params->get('wishboxcdekonepackage.default_dimensions');
 		}
 
 		$packageRequest = (new TarifflistPostPackageRequest)
@@ -361,7 +371,7 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 	 * @noinspection PhpUnused
 	 * @noinspection PhpUnusedParameterInspection
 	 */
-	public function onRadicalMartBeforeOrderSave(
+	public function onBeforeOrderSave(
 		string $context,
 		array &$data,
 		array $formData,
@@ -382,10 +392,10 @@ class Wishboxcdekonepackage extends CMSPlugin implements SubscriberInterface
 			return;
 		}
 
-		$registry = new Registry($data['shipping']);
-		$d = $registry->get('data');
-		$d->wishboxcdekonepackageDimensions = $shipping->params->get('wishboxcdekonepackageDefaultDimensions');
-		$registry->set('data', $d);
-		$data['shipping'] = $registry->toString();
+		$defaultDimensions = $shipping->params->get('wishboxcdekonepackage.default_dimensions');
+
+		$shipping = new Registry($data['shipping']);
+		$shipping->set('data.wishboxcdekonepackage.dimensions', $defaultDimensions);
+		$data['shipping'] = $shipping->toString();
 	}
 }

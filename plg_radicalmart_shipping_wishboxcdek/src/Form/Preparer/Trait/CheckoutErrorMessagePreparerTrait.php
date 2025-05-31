@@ -1,14 +1,13 @@
 <?php
 /**
- * @copyright (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license GNU General Public License version 2 or later
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\Component\Wishboxcdek\Site\Exception\NoAvailableTariffsException;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
 
 /**
  * @method getTariffCode(): integer
@@ -32,13 +31,19 @@ trait CheckoutErrorMessagePreparerTrait
 	 */
 	protected function prepareErrorMessageField(): void
 	{
+		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0)
 		{
 			try
 			{
-				CalculatorService::getShippingTariffs(
+				/** @var \Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel $calculatorModel */
+				$calculatorModel = $app->bootComponent('com_wishboxradicalmartcdek')
+					->getMVCFactory()
+					->createModel('Calculator', 'Administrator');
+
+				$calculatorModel->getShippingTariffs(
 					$this->getShipping(),
 					$this->getFormData(),
 					$this->getProducts()
@@ -73,9 +78,11 @@ trait CheckoutErrorMessagePreparerTrait
 	/**
 	 * @param   string  $message  Message
 	 *
+	 * @throws Exception
+	 *
 	 * @since 1.0.0
 	 */
-	private function setMessage(string $message, string $class="alert alert-warning"): void
+	private function setMessage(string $message, string $class = 'alert alert-warning'): void
 	{
 		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(

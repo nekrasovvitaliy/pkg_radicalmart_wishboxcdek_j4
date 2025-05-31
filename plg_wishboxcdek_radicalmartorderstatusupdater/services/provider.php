@@ -6,15 +6,16 @@
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Wishboxcdek\RadicalMartOrderStatusUpdater\Extension\RadicalMartOrderStatusUpdater;
+use Joomla\Plugin\WishboxCdek\RadicalMartOrderStatusUpdater\Extension\RadicalMartOrderStatusUpdater;
 
 defined('_JEXEC') or die;
 
-return new class implements ServiceProviderInterface {
-
+return new class implements ServiceProviderInterface
+{
 	/**
 	 * Registers the service provider with a DI container.
 	 *
@@ -26,14 +27,16 @@ return new class implements ServiceProviderInterface {
 	 */
 	public function register(Container $container): void
 	{
-		$container->set(PluginInterface::class,
+		$container->set(
+			PluginInterface::class,
 			function (Container $container)
 			{
-				$plugin = PluginHelper::getPlugin('wishboxcdek', 'radicalmartorderstatusupdater');
-				$subject = $container->get(DispatcherInterface::class);
+				$dispatcher = $container->get(DispatcherInterface::class);
+				$config = (array) PluginHelper::getPlugin('wishboxcdek', 'radicalmartorderstatusupdater');
 
-				$plugin = new RadicalMartOrderStatusUpdater($subject, (array) $plugin);
+				$plugin = new RadicalMartOrderStatusUpdater($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
+				$plugin->setDatabase($container->get(DatabaseInterface::class));
 
 				return $plugin;
 			}

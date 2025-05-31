@@ -78,13 +78,13 @@ return new class implements ServiceProviderInterface
 				protected string $minimumWishbox = '1.0.0';
 
 				/**
-				 * Minimum Wishboxcdek library version required to install the extension.
+				 * Minimum WishboxCdek library version required to install the extension.
 				 *
 				 * @var  string
 				 *
 				 * @since  1.0.0
 				 */
-				protected string $minimumWishboxcdek = '1.0.0';
+				protected string $minimumWishboxCdek = '1.0.0';
 
 				/**
 				 * Constructor.
@@ -96,7 +96,7 @@ return new class implements ServiceProviderInterface
 				public function __construct(AdministratorApplication $app)
 				{
 					$this->app = $app;
-					$this->db  = Factory::getContainer()->get('DatabaseDriver');
+					$this->db  = Factory::getContainer()->get(DatabaseDriver::class);
 				}
 
 				/**
@@ -142,7 +142,7 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Function called before extension installation/update/removal procedure commences.
+				 * Function called before the extension installation / update / removal procedure commences.
 				 *
 				 * @param   string            $type     The type of change (install or discover_install, update, uninstall)
 				 * @param   InstallerAdapter  $adapter  The adapter calling this method
@@ -163,7 +163,7 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Function called after extension installation/update/removal procedure commences.
+				 * Function called after the extension installation / update / removal procedure commences.
 				 *
 				 * @param   string            $type     The type of change (install or discover_install, update, uninstall)
 				 * @param   InstallerAdapter  $adapter  The adapter calling this method
@@ -214,7 +214,7 @@ return new class implements ServiceProviderInterface
 
 					$wishboxLibraryVersion = $this->getWishboxLibraryVersion();
 
-					// Check Wishbox library version
+					// Check the Wishbox library version
 					if (!(version_compare($wishboxLibraryVersion, $this->minimumWishbox) >= 0))
 					{
 						$app->enqueueMessage(
@@ -225,13 +225,13 @@ return new class implements ServiceProviderInterface
 						return false;
 					}
 
-					$wishboxcdekLibraryVersion = $this->getWishboxcdekLibraryVersion();
+					$wishboxcdekLibraryVersion = $this->getWishboxCdekLibraryVersion();
 
-					// Check Wishbox library version
-					if (!(version_compare($wishboxcdekLibraryVersion, $this->minimumWishboxcdek) >= 0))
+					// Check the Wishbox library version
+					if (!(version_compare($wishboxcdekLibraryVersion, $this->minimumWishboxCdek) >= 0))
 					{
 						$app->enqueueMessage(
-							Text::sprintf('PKG_RADICALMART_WISHBOXCDEK_ERROR_COMPATIBLE_WISHBOXCDEK_LIBRARY', $this->minimumWishboxcdek),
+							Text::sprintf('PKG_RADICALMART_WISHBOXCDEK_ERROR_COMPATIBLE_WISHBOXCDEK_LIBRARY', $this->minimumWishboxCdek),
 							'error'
 						);
 
@@ -248,8 +248,9 @@ return new class implements ServiceProviderInterface
 				 */
 				protected function getWishboxLibraryVersion(): string
 				{
-					$extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
+					$extensionTable = new Extension(Factory::getContainer()->get(DatabaseDriver::class));
 					$extensionTable->load(['name' => 'lib_wishbox']);
+
 					/** @noinspection PhpUndefinedFieldInspection */
 					$manifestCache = new Registry($extensionTable->manifest_cache); // phpcs:ignore
 
@@ -261,10 +262,11 @@ return new class implements ServiceProviderInterface
 				 *
 				 * @since 1.0.0
 				 */
-				protected function getWishboxcdekLibraryVersion(): string
+				protected function getWishboxCdekLibraryVersion(): string
 				{
-					$extensionTable = new Extension(Factory::getContainer()->get('DatabaseDriver'));
+					$extensionTable = new Extension(Factory::getContainer()->get(DatabaseDriver::class));
 					$extensionTable->load(['name' => 'lib_wishboxcdek']);
+
 					/** @noinspection PhpUndefinedFieldInspection */
 					$manifestCache = new Registry($extensionTable->manifest_cache); // phpcs:ignore
 

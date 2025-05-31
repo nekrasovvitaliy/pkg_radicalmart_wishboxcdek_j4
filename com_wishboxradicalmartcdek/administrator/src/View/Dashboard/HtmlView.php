@@ -1,9 +1,9 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later;
  */
-namespace Joomla\Component\Wishboxradicalmartcdek\Administrator\View\Dashboard;
+namespace Joomla\Component\WishboxRadicalMartCdek\Administrator\View\Dashboard;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
@@ -15,10 +15,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Helper\WishboxradicalmartcdekHelper;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Helper\WishboxRadicalMartCdekHelper;
 
 /**
- * View class for a dashboard.
+ * View class for the dashboard.
  *
  * @since  1.0.0
  */
@@ -57,7 +57,7 @@ class HtmlView extends BaseHtmlView
 	protected function addToolbar(): void
 	{
 		$app = Factory::getApplication();
-		$canDo = WishboxradicalmartcdekHelper::getActions();
+		$canDo = WishboxRadicalMartCdekHelper::getActions();
 		$option = strtolower($app->getInput()->get('option', ''));
 		ToolbarHelper::title(Text::_(mb_strtoupper($option)), 'generic');
 

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form addfieldprefix="Joomla\Component\RadicalMart\Administrator\Field">
 	<fieldset>
-		<field name="country" type="text"
-			   label="COM_RADICALMART_COUNTRY"/>
-		<field name="city" type="text"
-			   label="COM_RADICALMART_CITY"/>
+		<field name="country"
+			   type="text"
+			   label="COM_RADICALMART_COUNTRY"
+		/>
 
-		<field name="cityCode"
+		<field name="city"
+			   type="text"
+			   label="COM_RADICALMART_CITY"
+		/>
+
+		<field name="city_code"
 			   type="listajaxsearch"
 			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
 			   required="true"
@@ -20,7 +25,7 @@
 			<option value="17">Пушкино</option>
 		</field>
 
-		<field name="officeCode"
+		<field name="office_code"
 			   type="office"
 			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 			   required="true"
@@ -35,19 +40,39 @@
 			   required="true"
 		/>
 
-		<field name="zip" type="text"
-			   label="COM_RADICALMART_ZIP"/>
-		<field name="street" type="text"
-			   label="COM_RADICALMART_STREET"/>
-		<field name="house" type="text"
-			   label="COM_RADICALMART_HOUSE"/>
-		<field name="building" type="text"
-			   label="COM_RADICALMART_BUILDING"/>
-		<field name="entrance" type="text"
-			   label="COM_RADICALMART_ENTRANCE"/>
-		<field name="floor" type="text"
-			   label="COM_RADICALMART_FLOOR"/>
-		<field name="apartment" type="text"
-			   label="COM_RADICALMART_APARTMENT"/>
+		<field name="zip"
+			   type="text"
+			   label="COM_RADICALMART_ZIP"
+		/>
+
+		<field name="street"
+			   type="text"
+			   label="COM_RADICALMART_STREET"
+		/>
+
+		<field name="house"
+			   type="text"
+			   label="COM_RADICALMART_HOUSE"
+		/>
+
+		<field name="building"
+			   type="text"
+			   label="COM_RADICALMART_BUILDING"
+		/>
+
+		<field name="entrance"
+			   type="text"
+			   label="COM_RADICALMART_ENTRANCE"
+		/>
+
+		<field name="floor"
+			   type="text"
+			   label="COM_RADICALMART_FLOOR"
+		/>
+
+		<field name="apartment"
+			   type="text"
+			   label="COM_RADICALMART_APARTMENT"
+		/>
 	</fieldset>
 </form>

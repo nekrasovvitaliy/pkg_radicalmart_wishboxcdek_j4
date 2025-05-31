@@ -1,14 +1,14 @@
 <?php
 /**
- * @copyright (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\RadicalMartShipping\Wishboxcdek\Form\Preparer\Trait;
+namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
 use Joomla\CMS\Factory;
-use Joomla\Component\Wishboxcdek\Administrator\Table\TariffTable;
-use Joomla\Component\Wishboxradicalmartcdek\Administrator\Service\CalculatorService;
+use Joomla\Component\WishboxCdek\Administrator\Table\TariffTable;
+use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel;
 use Wishbox\ShippingService\ShippingTariff;
 
 /**
@@ -41,7 +41,12 @@ trait CheckoutTariffcodePreparerTrait
 			{
 				if ($this->getForm()->getName() == 'com_radicalmart.checkout')
 				{
-					$shippingTariffs = CalculatorService::getShippingTariffs(
+					/** @var CalculatorModel $calculatorModel */
+					$calculatorModel = $app->bootComponent('com_wishboxradicalmartcdek')
+						->getMVCFactory()
+						->createModel('Calculator', 'Administrator');
+
+					$shippingTariffs = $calculatorModel->getShippingTariffs(
 						$this->getShipping(),
 						$this->getFormData(),
 						$this->getProducts()
@@ -50,7 +55,7 @@ trait CheckoutTariffcodePreparerTrait
 				else
 				{
 					/** @var integer $tariffCode */
-					$tariffCode = $this->getShipping()->order->price['tariffCode'];
+					$tariffCode = $this->getShipping()->order->price['tariff_code'];
 
 					/** @var TariffTable $tariffTable */
 					$tariffTable = $app->bootComponent('com_wishboxcdek')
@@ -74,7 +79,7 @@ trait CheckoutTariffcodePreparerTrait
 					$shippingTariffPricesByCodes = self::getTariffPricesByCodes($shippingTariffs);
 
 					if (!$this->getForm()->setFieldAttribute(
-						'tariffCode',
+						'tariff_code',
 						'prices_by_codes',
 						json_encode($shippingTariffPricesByCodes),
 						$this->shippingFieldAttributeGroup
@@ -86,7 +91,7 @@ trait CheckoutTariffcodePreparerTrait
 					$shippingTariffPeriodsByCodes = self::getTariffPeriodsByCodes($shippingTariffs);
 
 					if (!$this->getForm()->setFieldAttribute(
-						'tariffCode',
+						'tariff_code',
 						'periods_by_codes',
 						json_encode($shippingTariffPeriodsByCodes),
 						$this->shippingFieldAttributeGroup
@@ -102,7 +107,7 @@ trait CheckoutTariffcodePreparerTrait
 		}
 		else
 		{
-			if (!$this->getForm()->removeField('tariffCode', $this->shippingFieldAttributeGroup))
+			if (!$this->getForm()->removeField('tariff_code', $this->shippingFieldAttributeGroup))
 			{
 				throw new Exception('failed to removeField', 500);
 			}

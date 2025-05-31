@@ -3,7 +3,7 @@
 	<fieldset name="shipping">
 		<fields name="shipping">
 
-			<field name="cityCode"
+			<field name="city_code"
 				   type="listajaxsearch"
 				   label="COM_RADICALMART_CITY"
 				   required="true"
@@ -18,7 +18,7 @@
 				<option value="17">Пушкино</option>
 			</field>
 
-			<field name="officeCode"
+			<field name="office_code"
 				   type="office"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 				   required="true"
@@ -34,19 +34,22 @@
 				   required="true"
 			/>
 
-			<field name="trackingNumber"
+			<field name="tracking_number"
 				   type="text"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TRACKING_NUMBER_LABEL"
 				   readonly="true"
 			/>
 
-			<field name="country" type="text"
+			<field name="country"
+				   type="text"
 				   label="COM_RADICALMART_COUNTRY"
 				   required="true" />
-			<field name="city" type="text"
+			<field name="city"
+				   type="text"
 				   label="COM_RADICALMART_CITY"
 				   required="true" />
-			<field name="zip" type="text"
+			<field name="zip"
+				   type="text"
 				   label="COM_RADICALMART_ZIP"
 				   required="true" />
 			<field name="street" type="text"
@@ -87,33 +90,38 @@
 				   translateformat="true"
 				   showtime="false"
 				   filter="user_utc"/>
+
 			<field name="note" type="textarea"
 				   label="COM_RADICALMART_NOTE"/>
+
 			<fields name="price">
-				<field name="base"
-					   type="price"
+				<field name="base" type="price"
 					   label="COM_RADICALMART_PRICE"
 					   currency="{currency_code}"
 					   class="clean-price"
 				/>
+
 				<field name="tariff"
 					   type="price"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_TARIFF_PRICE_LABEL"
 					   currency="{currency_code}"
 					   class="clean-price"
 				/>
-				<field name="tariffCode"
+
+				<field name="tariff_code"
 					   type="tariff"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_TARIFF_LABEL"
 					   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
 					   readonly="true"
 				/>
+
 				<field name="period_min"
 					   type="text"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MIN_LABEL"
 					   readonly="true"
 					   addonAfter="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_DAYS_LABEL"
 				/>
+
 				<field name="period_max"
 					   type="text"
 					   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_PERIOD_MAX_LABEL"

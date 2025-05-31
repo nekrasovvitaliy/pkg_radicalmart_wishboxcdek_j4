@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2024 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;
@@ -26,7 +26,8 @@ return new class implements ServiceProviderInterface
 	{
 		$container->set(
 			InstallerScriptInterface::class,
-			new class ($container->get(AdministratorApplication::class)) implements InstallerScriptInterface {
+			new class ($container->get(AdministratorApplication::class)) implements InstallerScriptInterface
+			{
 				/**
 				 * The application object
 				 *
@@ -55,7 +56,7 @@ return new class implements ServiceProviderInterface
 				public function __construct(AdministratorApplication $app)
 				{
 					$this->app = $app;
-					$this->db  = Factory::getContainer()->get('DatabaseDriver');
+					$this->db  = Factory::getContainer()->get(DatabaseDriver::class);
 				}
 
 				/**
@@ -103,7 +104,7 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Function called before extension installation/update/removal procedure commences.
+				 * Function called before the extension installation / update / removal procedure commences.
 				 *
 				 * @param   string            $type     The type of change (install or discover_install, update, uninstall)
 				 * @param   InstallerAdapter  $adapter  The adapter calling this method
@@ -118,7 +119,7 @@ return new class implements ServiceProviderInterface
 				}
 
 				/**
-				 * Function called after extension installation/update/removal procedure commences.
+				 * Function called after the extension installation / update / removal procedure commences.
 				 *
 				 * @param   string            $type     The type of change (install or discover_install, update, uninstall)
 				 * @param   InstallerAdapter  $adapter  The adapter calling this method

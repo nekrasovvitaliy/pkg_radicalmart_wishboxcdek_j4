@@ -3,13 +3,16 @@
  * @copyright   (с) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\Wishboxcdekonepackage\Extension\Wishboxcdekonepackage;
+use Joomla\Plugin\Radicalmart\WishboxCdekOnePackage\Extension\WishboxCdekOnePackage;
+use WishboxCdekSDK2\Factory\CdekClientV2FactoryInterface;
+use WishboxCdekSDK2\Service\Provider\CdekClientV2Factory;
 
 defined('_JEXEC') or die;
 
@@ -26,17 +29,18 @@ return new class implements ServiceProviderInterface
 	 */
 	public function register(Container $container): void
 	{
+		$container->registerServiceProvider(new CdekClientV2Factory);
+
 		$container->set(
 			PluginInterface::class,
 			function (Container $container)
 			{
 				$dispatcher = $container->get(DispatcherInterface::class);
-				$plugin  = new Wishboxcdekonepackage(
-					$dispatcher,
-					(array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekonepackage')
-				);
+				$config = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekonepackage');
 
+				$plugin = new WishboxCdekOnePackage($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
+				$plugin->setCdekClientV2Factory($container->get(CdekClientV2FactoryInterface::class));
 
 				return $plugin;
 			}
