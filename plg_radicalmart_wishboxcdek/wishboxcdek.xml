@@ -7,7 +7,7 @@
 	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
 	<license>GNU General Public License version 2 or later</license>
 	<description>PLG_RADICALMART_WISHBOXCDEK_XML_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\Radicalmart\WishboxCdek</namespace>
+	<namespace path="src">Joomla\Plugin\RadicalMart\WishboxCdek</namespace>
 	<files>
 		<folder plugin="wishboxcdek">services</folder>
 		<folder>src</folder>

@@ -12,7 +12,7 @@
 
 			<field name="tariff_codes" type="Tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFFS_LABEL"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 				   hide_default="1"
 				   hide_none="1"
 				   layout="joomla.form.field.list-fancy-select"
@@ -319,7 +319,7 @@
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_SENDER_OFFICE_LABEL"
 				   required="true"
 				   remote-search="1"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 				   hide_default="true" />
 
 			<field name="sender_name" type="text"

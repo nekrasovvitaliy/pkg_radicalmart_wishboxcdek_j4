@@ -30,7 +30,7 @@
                                    type="WishboxCdekStatus"
                                    label="PLG_CONTENT_WISHBOXRADICALMARTCDEKORDERSTATUSUPDATER_FIELD_CDEK_STATUS_LABEL"
                                    required="true"
-                                   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+                                   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
                             />
 
                             <field name="new_status_id"

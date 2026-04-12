@@ -17,13 +17,13 @@
 			<field name="city_code"
 				   type="value_city"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_CITY_LABEL"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 			/>
 
 			<field name="office_code"
 				   type="value_office"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 			/>
 
 			<field name="address"
@@ -35,7 +35,7 @@
 			<field name="tariff_code"
 				   type="value_tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 			/>
 
 			<field name="tracking_number"

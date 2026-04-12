@@ -11,7 +11,7 @@ use Joomla\Component\RadicalMart\Administrator\Helper\LayoutsHelper;
 
 defined('_JEXEC') or die;
 
-/* @deprecated  RadicalMart Shipping - Wishboxcdek v? */
+/* @deprecated  RadicalMart Shipping - WishboxCdek v? */
 if (LayoutsHelper::isSiteLayoutOverride('plugins.radicalmart_shipping.wishboxcdek.checkout'))
 {
 	echo LayoutsHelper::renderSiteLayout('plugins.radicalmart_shipping.wishboxcdek.checkout', $displayData);

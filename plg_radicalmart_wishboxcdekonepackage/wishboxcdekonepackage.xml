@@ -7,7 +7,7 @@
     <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
     <version>1.0.0</version>
     <description>PLG_RADICALMART_WISHBOXCDEKONEPACKAGE_XML_DESCRIPTION</description>
-    <namespace path="src">Joomla\Plugin\Radicalmart\WishboxCdekOnePackage</namespace>
+    <namespace path="src">Joomla\Plugin\RadicalMart\WishboxCdekOnePackage</namespace>
     <scriptfile>script.php</scriptfile>
     <files>
         <folder>forms</folder>

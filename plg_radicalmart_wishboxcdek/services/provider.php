@@ -10,7 +10,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\WishboxCdek\Extension\WishboxCdek;
+use Joomla\Plugin\RadicalMart\WishboxCdek\Extension\WishboxCdek;
 
 defined('_JEXEC') or die;
 

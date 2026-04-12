@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="SshConfigs">
-    <configs>
-      <sshConfig host="radicalized.ru" id="302eb98c-8449-4035-8c31-3dc0ea40de61" keyPath="C:\Users\Mari\.ssh\contabo_ed25519.ppk" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
-    </configs>
-  </component>
-</project>

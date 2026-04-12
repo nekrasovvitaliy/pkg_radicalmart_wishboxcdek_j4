@@ -32,7 +32,7 @@
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 				   required="true"
 				   remote-search="1"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
 				   allowed_cod="false"
@@ -45,7 +45,7 @@
 			<field name="office_yandex_map"
 				   type="OfficeYandexMap"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 				   allowed_cod="true"
 			/>
 
@@ -53,7 +53,7 @@
 				   type="tariff"
 				   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_TARIFF_LABEL"
 				   required="true"
-				   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+				   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 				   hide_default="true"
 				   hide_none="true"
 				   onchange="RadicalMartCheckout().reloadForm(this);"

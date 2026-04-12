@@ -2,8 +2,7 @@
     <fieldset name="wishboxcdekonepackage" label="PLG_RADICALMART_WISHBOXCDEKONEPACKAGE_FIELDSET_ONE_PACKAGE">
         <fields name="params">
             <fields name="wishboxcdekonepackage">
-                <field name="use_default_product_cost"
-                       type="radio"
+                <field name="use_default_product_cost" type="radio"
                        label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PRODUCT_COST_LABEL"
                        default="1"
                        layout="joomla.form.field.radio.switcher"
@@ -12,14 +11,11 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field
-                        name="default_product_cost"
-                        type="number"
-                        label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PRODUCT_COST_LABEL"
-                        showon="useDefaultProductCost:1" />
+                <field name="default_product_cost" type="number"
+                       label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PRODUCT_COST_LABEL"
+                       showon="use_default_product_cost:1" />
 
-                <field name="use_default_weight"
-                       type="radio"
+                <field name="use_default_weight" type="radio"
                        label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_USE_DEFAULT_PACKAGE_WEIGHT_LABEL"
                        default="1"
                        layout="joomla.form.field.radio.switcher"
@@ -30,13 +26,22 @@
 
                 <field name="default_weight" type="number"
                        label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_WEIGHT_G_LABEL"
-                       showon="wishboxcdekonepackageUseDefaultWeight:1" />
+                       showon="use_default_weight:1" />
+
+                <field name="use_default_package_dimensions" type="radio"
+                       label="PLG_RADICALMART_WISHBOXCDEKONEPACKAGE_FIELD_USE_DEFAULT_PACKAGE_DIMENSIONS_LABEL"
+                       default="1"
+                       layout="joomla.form.field.radio.switcher"
+                       filter="integer">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
 
                 <field name="default_dimensions" type="subform"
                        label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_DEFAULT_PACKAGE_DIMENSIONS_LABEL"
                        buttons="add,remove,move"
                        layout="joomla.form.field.subform.repeatable"
-                       showon="useDefaultPackageDimensions:1">
+                       showon="use_default_package_dimensions:1">
                     <form>
                         <fieldset>
                             <field name="width" type="number"

@@ -11,6 +11,9 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Component\RadicalMart\Administrator\Helper\PriceHelper as RadicalMartPriceHelper;
+use Joomla\Component\WishboxCdek\Administrator\Table\CityTable;
+use Joomla\Component\WishboxCdek\Administrator\Table\OfficeTable;
+use Joomla\Component\WishboxCdek\Administrator\Table\TariffTable;
 use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\ParameterType;
@@ -330,7 +333,6 @@ final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 		// Remove empty fields in the site_order form
 		if (str_contains($form->getName(), 'order_site'))
 		{
-			// Remove fields
 			$fields = [
 				'country',
 				'city',
@@ -516,7 +518,7 @@ final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 		array $currency
 	): void
 	{
-		if ($shipping->params->get('includeShippingPriceInOrder', 0))
+		if ($shipping->params->get('include_shipping_price_in_order', 0))
 		{
 			if (!empty($shipping->order->price['base']))
 			{
@@ -689,7 +691,6 @@ final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 		bool $isNew
 	): void
 	{
-		// Cleanup data
 		unset($data['recalculate_price']);
 		unset($data['data']['recalculate_price']);
 	}
@@ -787,15 +788,18 @@ final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 
 		if (!empty($data['city_code']))
 		{
+			/** @var CityTable $cityTable */
 			$cityTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('City', 'Administrator');
+
 			$cityTable->load(['code' => $data['city_code']]);
 			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_CITY'] = $cityTable->cityname;
 		}
 
 		if (!empty($data['office_code']))
 		{
+			/** @var OfficeTable $officeTable */
 			$officeTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('Office', 'Administrator');
@@ -806,9 +810,11 @@ final class WishboxCdek extends CMSPlugin implements SubscriberInterface
 
 		if (!empty($data['tariff_code']))
 		{
+			/** @var TariffTable $tariffTable */
 			$tariffTable = $app->bootComponent('com_wishboxcdek')
 				->getMVCFactory()
 				->createTable('Tariff', 'Administrator');
+
 			$tariffTable->load(['code' => $data['tariff_code']]);
 			$result['PLG_RADICALMART_SHIPPING_WISHBOXCDEK_SHIPPING_TARIFF'] = $tariffTable->name;
 		}

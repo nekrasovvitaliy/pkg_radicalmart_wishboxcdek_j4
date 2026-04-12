@@ -7,7 +7,7 @@
 	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
 	<version>1.0.0</version>
 	<description>PLG_WISHBOXCDEK_RADICALMARTORDERSTATUSUPDATER_XML_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\Wishboxcdek\RadicalMartOrderStatusUpdater</namespace>
+	<namespace path="src">Joomla\Plugin\WishboxCdek\RadicalMartOrderStatusUpdater</namespace>
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder plugin="radicalmartorderstatusupdater">services</folder>

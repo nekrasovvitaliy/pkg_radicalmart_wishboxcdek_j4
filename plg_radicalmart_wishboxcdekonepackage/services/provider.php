@@ -10,7 +10,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
-use Joomla\Plugin\Radicalmart\WishboxCdekOnePackage\Extension\WishboxCdekOnePackage;
+use Joomla\Plugin\RadicalMart\WishboxCdekOnePackage\Extension\WishboxCdekOnePackage;
 use WishboxCdekSDK2\Factory\CdekClientV2FactoryInterface;
 use WishboxCdekSDK2\Service\Provider\CdekClientV2Factory;
 

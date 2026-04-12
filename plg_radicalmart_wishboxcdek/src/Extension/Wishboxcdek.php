@@ -3,7 +3,7 @@
  * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
-namespace Joomla\Plugin\Radicalmart\WishboxCdek\Extension;
+namespace Joomla\Plugin\RadicalMart\WishboxCdek\Extension;
 
 use Exception;
 use Joomla\CMS\User\UserFactoryAwareTrait;

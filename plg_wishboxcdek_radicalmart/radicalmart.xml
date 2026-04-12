@@ -6,7 +6,7 @@
 	<authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
 	<version>1.0.0</version>
 	<description>PLG_WISHBOXCDEK_JSHOPPING_XML_DESCRIPTION</description>
-	<namespace path="src">Joomla\Plugin\Wishboxcdek\Jshopping</namespace>
+	<namespace path="src">Joomla\Plugin\WishboxCdek\JShopping</namespace>
 	<scriptfile>script.php</scriptfile>
 	<files>
 		<folder plugin="jshopping">services</folder>

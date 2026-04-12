@@ -30,7 +30,7 @@
 			   label="PLG_RADICALMART_SHIPPING_WISHBOXCDEK_FIELD_OFFICE_LABEL"
 			   required="true"
 			   remote-search="1"
-			   addfieldprefix="Joomla\Component\Wishboxcdek\Administrator\Field"
+			   addfieldprefix="Joomla\Component\WishboxCdek\Administrator\Field"
 			   hide_default="true"
 		/>
 
