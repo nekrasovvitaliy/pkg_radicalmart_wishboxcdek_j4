@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="19667231-90a4-43c1-877c-1266a63a7cf3" name="watt-shop.com">
+        <fileTransfer accessType="SFTP" host="192.168.0.112" port="22" sshConfigId="09d85e84-047c-43b5-b52c-c2fe73f8bd7f" sshConfig="root@192.168.0.112:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

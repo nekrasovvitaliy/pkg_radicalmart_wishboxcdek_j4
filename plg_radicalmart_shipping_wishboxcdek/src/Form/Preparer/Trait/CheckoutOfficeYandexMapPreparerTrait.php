@@ -1,19 +1,26 @@
 <?php
 /**
- * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license    GNU General Public License version 2 or later
+ * @copyright  (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license        GNU General Public License version 2 or later
  */
+
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel;
+use Joomla\CMS\Form\Form;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Service\Calculator\Adapter\CalculatorAdapterService;
+use stdClass;
+use WishboxCdekLibrary\Service\Calculator\CalculatorService;
 
 /**
- * @method getTariffCode(): integer
- * @method getForm(): Form
- * @method getFormData(): Form data
- * @method getProducts(): array
- * @method getShipping(): stdClass
+ * @method int getTariffCode()
+ * @method Form getForm()
+ * @method array getFormData()
+ * @method array getProducts()
+ * @method stdClass getShipping()
+ * @method CalculatorService getCalculatorService()
+ * @method DispatcherInterface getDispatcher()
  *
  * @since 1.0.0
  */
@@ -52,25 +59,24 @@ trait CheckoutOfficeYandexMapPreparerTrait
 
 				if (method_exists($this, 'getProducts'))
 				{
-					$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
-						->getMVCFactory()
-						->createModel('CalculatorDelegate', 'Administrator');
+					$calculatorAdapterService = new CalculatorAdapterService(
+						$this->shipping,
+						$this->formData,
+						$this->products,
+						$this->getDispatcher()
+					);
 
-					$calculatorDelegateModel->setMethod($this->getShipping())
-						->setFormData($this->getFormData())
-						->setProducts($this->getProducts());
-
-					$packageRequests = $calculatorDelegateModel->getPackages();
+					$packageRequests = $calculatorAdapterService->getPackages();
 
 					$packagesData = [];
 
 					foreach ($packageRequests as $packageRequest)
 					{
 						$packagesData[] = [
-							'weight' => $packageRequest->getWeight() * 0.001,
-							'width'  => $packageRequest->getWidth(),
-							'height' => $packageRequest->getHeight(),
-							'length' => $packageRequest->getLength()
+							'weight' => $packageRequest->weight * 0.001,
+							'width'  => $packageRequest->width,
+							'height' => $packageRequest->height,
+							'length' => $packageRequest->length
 						];
 					}
 
@@ -89,25 +95,19 @@ trait CheckoutOfficeYandexMapPreparerTrait
 
 					try
 					{
-						/** @var CalculatorModel $calculatorModel */
-						$calculatorModel = $app->bootComponent('com_wishboxcdek')
-							->getMVCFactory()
-							->createModel('Calculator', 'Site');
+						$shippingTariffs = $this->getCalculatorService()->getShippingTariffs($calculatorAdapterService);
 
-						$calculatorModel->getShippingTariffs(
-							$this->getShipping(),
-							$this->getFormData(),
-							$this->getProducts()
-						);
-
-						if (!$this->getForm()->setFieldAttribute(
-							'office_yandex_map',
-							'shipping_tariff',
-							json_encode($shippingTariff->toArray()),
-							$this->shippingFieldAttributeGroup
-						))
+						if (count($shippingTariffs))
 						{
-							throw new Exception('failed to set attribute', 500);
+							if (!$this->getForm()->setFieldAttribute(
+								'office_yandex_map',
+								'shipping_tariff',
+								json_encode($shippingTariffs[0]->toArray()),
+								$this->shippingFieldAttributeGroup
+							))
+							{
+								throw new Exception('failed to set attribute', 500);
+							}
 						}
 					}
 					catch (Exception $e)

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrsov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrsov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later;
  */
 use Joomla\CMS\Extension\PluginInterface;
@@ -10,6 +10,8 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Extension\WishboxCdek;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Service\Calculator\RadicalMartShippingCalculatorService;
+use WishboxCdekLibrary\Service\Calculator\CalculatorService;
 
 defined('_JEXEC') or die;
 
@@ -35,6 +37,17 @@ return new class implements ServiceProviderInterface {
 
 				$plugin = new WishboxCdek($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
+
+				Factory::getApplication()->bootComponent('com_wishboxcdek');
+
+				$calculatorService = Factory::getContainer()->get(CalculatorService::class);
+
+				$radicalMartShippingCalculatorService = new RadicalMartShippingCalculatorService;
+				$radicalMartShippingCalculatorService->setCalculatorService($calculatorService);
+				$radicalMartShippingCalculatorService->setDispatcher($dispatcher);
+
+				$plugin->setCalculatorService($calculatorService);
+				$plugin->setRadicalMartShippingCalculatorService($radicalMartShippingCalculatorService);
 
 				return $plugin;
 			}

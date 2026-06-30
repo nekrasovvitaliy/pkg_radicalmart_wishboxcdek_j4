@@ -1,22 +1,29 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\Component\WishboxCdek\Site\Exception\NoAvailableTariffsException;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Service\Calculator\Adapter\CalculatorAdapterService;
+use stdClass;
+use WishboxCdekLibrary\Service\Calculator\CalculatorService;
 
 /**
- * @method getTariffCode(): integer
- * @method getFormData(): Form data
- * @method getProducts(): array
- * @method getShipping(): stdClass
- * @method getCityCode()
- * @method isTariffToPoint()
- * @method getForm() \Joomla\CMS\Form
+ * @method int getTariffCode()
+ * @method array getFormData()
+ * @method array getProducts()
+ * @method stdClass getShipping()
+ * @method int getCityCode()
+ * @method bool isTariffToPoint()
+ * @method Form getForm()
+ * @method CalculatorService getCalculatorService()
+ * @method DispatcherInterface getDispatcher()
  *
  * @since 1.0.0
  */
@@ -31,39 +38,33 @@ trait CheckoutErrorMessagePreparerTrait
 	 */
 	protected function prepareErrorMessageField(): void
 	{
-		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0)
 		{
 			try
 			{
-				/** @var \Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorModel $calculatorModel */
-				$calculatorModel = $app->bootComponent('com_wishboxradicalmartcdek')
-					->getMVCFactory()
-					->createModel('Calculator', 'Administrator');
+				$calculatorAdapterService = new CalculatorAdapterService(
+					$this->shipping,
+					$this->formData,
+					$this->products,
+					$this->getDispatcher()
+				);
 
-				$calculatorModel->getShippingTariffs(
-					$this->getShipping(),
-					$this->getFormData(),
-					$this->getProducts()
+				$this->getCalculatorService()->getShippingTariffs($calculatorAdapterService);
+			}
+			catch (NoAvailableTariffsException $e)
+			{
+				$this->setMessage(
+					Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_NO_AVAILABLE_TARIFFS_MESSAGE'),
+					'alert alert-info'
 				);
 			}
 			catch (Exception $e)
 			{
-				if ($e instanceof NoAvailableTariffsException)
-				{
-					$this->setMessage(
-						Text::_('PLG_RADICALMART_SHIPPING_WISHBOXCDEK_NO_AVAILABLE_TARIFFS_MESSAGE'),
-						'alert alert-info'
-					);
-				}
-				else
-				{
-					$this->setMessage(
-						$e->getMessage()
-					);
-				}
+				$this->setMessage(
+					$e->getMessage()
+				);
 			}
 		}
 		else
@@ -84,7 +85,6 @@ trait CheckoutErrorMessagePreparerTrait
 	 */
 	private function setMessage(string $message, string $class = 'alert alert-warning'): void
 	{
-		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(
 			'error_message',
 			'description',
@@ -95,7 +95,6 @@ trait CheckoutErrorMessagePreparerTrait
 			throw new Exception('Failed to set field attribute');
 		}
 
-		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(
 			'error_message',
 			'type',
@@ -106,7 +105,6 @@ trait CheckoutErrorMessagePreparerTrait
 			throw new Exception('Failed to set field attribute');
 		}
 
-		/** @noinspection PhpUndefinedFieldInspection */
 		if (!$this->getForm()->setFieldAttribute(
 			'error_message',
 			'class',

@@ -1,19 +1,24 @@
 <?php
 /**
- * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license    GNU General Public License version 2 or later
+ * @copyright  (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license        GNU General Public License version 2 or later
  */
+
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Service\Calculator\Adapter\CalculatorAdapterService;
+use stdClass;
 
 /**
- * @method getTariffCode(): integer
- * @method getForm(): Form
- * @method getFormData(): Form data
- * @method getProducts(): array
- * @method getShipping(): stdClass
+ * @method int getTariffCode()
+ * @method Form getForm()
+ * @method array getFormData()
+ * @method array getProducts()
+ * @method stdClass getShipping()
+ * @method DispatcherInterface getDispatcher()
  *
  * @since 1.0.0
  */
@@ -28,7 +33,6 @@ trait CheckoutOfficecodePreparerTrait
 	 */
 	protected function prepareOfficeCodeField(): void
 	{
-		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0 && $this->isTariffModeToPoint() === true)
@@ -47,25 +51,24 @@ trait CheckoutOfficecodePreparerTrait
 
 			if (method_exists($this, 'getProducts'))
 			{
-				$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
-					->getMVCFactory()
-					->createModel('CalculatorDelegate', 'Administrator');
+				$calculatorAdapterService = new CalculatorAdapterService(
+					$this->shipping,
+					$this->formData,
+					$this->products,
+					$this->getDispatcher()
+				);
 
-				$calculatorDelegateModel->setMethod($this->getShipping())
-					->setFormData($this->getFormData())
-					->setProducts($this->getProducts());
-
-				$packageRequests = $calculatorDelegateModel->getPackages();
+				$packages = $calculatorAdapterService->getPackages();
 
 				$packagesData = [];
 
-				foreach ($packageRequests as $packageRequest)
+				foreach ($packages as $packageDto)
 				{
 					$packagesData[] = [
-						'weight' => $packageRequest->getWeight() * 0.001,
-						'width'  => $packageRequest->getWidth(),
-						'height' => $packageRequest->getHeight(),
-						'length' => $packageRequest->getLength()
+						'weight' => $packageDto->weight * 0.001,
+						'width'  => $packageDto->width,
+						'height' => $packageDto->height,
+						'length' => $packageDto->length
 					];
 				}
 

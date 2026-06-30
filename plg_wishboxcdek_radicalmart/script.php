@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy
  * @license     GNU General Public License version 2 or later
  */
 use Joomla\CMS\Application\AdministratorApplication;

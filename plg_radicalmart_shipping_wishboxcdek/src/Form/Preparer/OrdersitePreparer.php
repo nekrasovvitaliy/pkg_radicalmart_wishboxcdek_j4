@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
@@ -27,21 +27,33 @@ class OrdersitePreparer extends FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected stdClass $shipping;
+	protected stdClass $shipping {
+		get {
+			return $this->shipping;
+		}
+	}
 
 	/**
 	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
-	protected array $formData;
+	protected array $formData {
+		get {
+			return $this->formData;
+		}
+	}
 
 	/**
 	 * @var   stdClass[]  $products  Products
 	 *
 	 * @since 1.0.0
 	 */
-	protected array $products;
+	protected array $products {
+		get {
+			return $this->products;
+		}
+	}
 
 	/**
 	 * @var string|null
@@ -120,33 +132,4 @@ class OrdersitePreparer extends FormPreparer
 		return $this->shipping->id;
 	}
 
-	/**
-	 * @return stdClass
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getShipping(): stdClass
-	{
-		return $this->shipping;
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since 1.0.0
-	 */
-	public function getFormData(): array
-	{
-		return $this->formData;
-	}
-
-	/**
-	 * @return stdClass[]
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getProducts(): array
-	{
-		return $this->products;
-	}
 }

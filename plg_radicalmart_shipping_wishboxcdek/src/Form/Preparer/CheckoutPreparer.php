@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
@@ -8,6 +8,8 @@ namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
 use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\Component\WishboxCdek\Site\Helper\WishboxCdekHelper;
+use Joomla\Event\DispatcherAwareInterface;
+use Joomla\Event\DispatcherAwareTrait;
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\FormPreparer;
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutErrorMessagePreparerTrait;
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficecodePreparerTrait;
@@ -15,12 +17,16 @@ use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOf
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutOfficeYandexMapPreparerTrait;
 use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait\CheckoutTariffcodePreparerTrait;
 use stdClass;
+use WishboxCdekLibrary\Service\Calculator\CalculatorServiceAwareInterface;
+use WishboxCdekLibrary\Service\Calculator\CalculatorServiceAwareTrait;
 
 /**
  * @since 1.0.0
  */
-class CheckoutPreparer extends FormPreparer
+class CheckoutPreparer extends FormPreparer implements CalculatorServiceAwareInterface, DispatcherAwareInterface
 {
+	use CalculatorServiceAwareTrait;
+	use DispatcherAwareTrait;
 	use CheckoutOfficecodePreparerTrait;
 	use CheckoutOfficeGoogleMapPreparerTrait;
 	use CheckoutOfficeYandexMapPreparerTrait;
@@ -32,21 +38,33 @@ class CheckoutPreparer extends FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected stdClass $shipping;
+	public stdClass $shipping {
+		get {
+			return $this->shipping;
+		}
+	}
 
 	/**
 	 * @var   array  $formData  Form data
 	 *
 	 * @since 1.0.0
 	 */
-	protected array $formData;
+	protected array $formData {
+		get {
+			return $this->formData;
+		}
+	}
 
 	/**
 	 * @var   array  $producs Products
 	 *
 	 * @since 1.0.0
 	 */
-	protected array $products;
+	protected array $products {
+		get {
+			return $this->products;
+		}
+	}
 
 	/**
 	 * @var string|null
@@ -129,36 +147,6 @@ class CheckoutPreparer extends FormPreparer
 	}
 
 	/**
-	 * @return stdClass
-	 *
-	 * @since 1.0.0
-	 */
-	public function getShipping(): stdClass
-	{
-		return $this->shipping;
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getFormData(): array
-	{
-		return $this->formData;
-	}
-
-	/**
-	 * @return array
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getProducts(): array
-	{
-		return $this->products;
-	}
-
-	/**
 	 * @return integer
 	 *
 	 * @since 1.0.0
@@ -167,7 +155,7 @@ class CheckoutPreparer extends FormPreparer
 	 */
 	protected function getCityCode(): int
 	{
-		$formData = $this->getFormData();
+		$formData = $this->formData;
 		$cityCode = (isset($formData['shipping']) && isset($formData['shipping']['city_code']))
 			? (int) $formData['shipping']['city_code']
 			: 0;

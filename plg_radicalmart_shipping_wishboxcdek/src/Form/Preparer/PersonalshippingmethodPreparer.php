@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer;
@@ -34,7 +34,11 @@ class PersonalshippingmethodPreparer extends FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected object|array $shipping;
+	protected object|array $shipping {
+		get {
+			return $this->shipping;
+		}
+	}
 
 	/**
 	 * @var string|null
@@ -115,16 +119,6 @@ class PersonalshippingmethodPreparer extends FormPreparer
 				? (int) $data['shipping']['shipping_method_' . $this->getShippingId()]['city_code']
 				: 0;
 		}
-	}
-
-	/**
-	 * @return object|array
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getShipping(): object|array
-	{
-		return $this->shipping;
 	}
 
 	/**

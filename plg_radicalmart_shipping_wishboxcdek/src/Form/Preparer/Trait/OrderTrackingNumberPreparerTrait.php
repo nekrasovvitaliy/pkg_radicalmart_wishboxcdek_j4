@@ -1,13 +1,12 @@
 <?php
 /**
- * @copyright (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Form\Form;
 
 /**
  * @method getTariffCode(): integer
@@ -33,7 +32,6 @@ trait OrderTrackingNumberPreparerTrait
 
 		$trackingNumberReadonlyAttribute = (bool) $componentParams->get('tracking_number_readonly_attribute', '1');
 
-		/** @var Form $form */
 		$form = $this->getForm();
 
 		if (!$form->setFieldAttribute('tracking_number', 'readonly', $trackingNumberReadonlyAttribute, $this->shippingFieldAttributeGroup))

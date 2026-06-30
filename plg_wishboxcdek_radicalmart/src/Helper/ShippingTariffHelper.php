@@ -1,26 +1,16 @@
 <?php
 /**
- * @copyright  2013-2025 Nekrasov Vitaliy
+ * @copyright  2013-2026 Nekrasov Vitaliy
  * @license    GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\WishboxCdek\JShopping\Helper;
 
 use Exception;
-use Joomla\Component\Jshopping\Site\Lib\JSFactory;
 use Wishbox\ShippingService\ShippingTariff;
 use function defined;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die;
-// phpcs:enable PSR1.Files.SideEffects
-
-// phpcs:disable PSR1.Files.SideEffects
-if (!file_exists(JPATH_SITE . '/components/com_jshopping/bootstrap.php'))
-{
-	throw new Exception("Please install component \"joomshopping\"", 500);
-}
-
-require_once JPATH_SITE . '/components/com_jshopping/bootstrap.php';
 // phpcs:enable PSR1.Files.SideEffects
 
 /**

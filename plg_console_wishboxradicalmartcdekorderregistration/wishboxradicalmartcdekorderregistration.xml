@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="console" method="upgrade">
+    <name>plg_console_wishboxradicalmartcdekorderregistration</name>
+    <author>Nekrasov Vitaliy</author>
+    <creationDate>March 2024</creationDate>
+    <license>GNU General Public License version 3 or later</license>
+    <authorEmail>nekrasov_vitaliy@list.ru</authorEmail>
+    <version>1.0.0</version>
+    <description>PLG_CONSOLE_WISHBOXRADICALMARTCDEKORDERREGISTRATION_XML_DESCRIPTION</description>
+    <namespace path="src">Joomla\Plugin\Console\WishboxRadicalMartCdekOrderRegistration</namespace>
+    <scriptfile>script.php</scriptfile>
+    <files>
+        <folder plugin="wishboxradicalmartcdekorderregistration">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_console_wishboxradicalmartcdekorderregistration.ini</language>
+        <language tag="en-GB">language/en-GB/plg_console_wishboxradicalmartcdekorderregistration.sys.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_console_wishboxradicalmartcdekorderregistration.ini</language>
+        <language tag="ru-RU">language/ru-RU/plg_console_wishboxradicalmartcdekorderregistration.sys.ini</language>
+    </languages>
+    <config>
+    </config>
+</extension>

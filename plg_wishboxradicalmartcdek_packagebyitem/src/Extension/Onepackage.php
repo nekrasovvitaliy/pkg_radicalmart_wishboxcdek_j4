@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright   (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Plugin\WishboxRadicalMartCdek\OnePackage\Extension;
@@ -8,8 +8,10 @@ namespace Joomla\Plugin\WishboxRadicalMartCdek\OnePackage\Extension;
 use Exception;
 use Joomla\CMS\MVC\Factory\MVCFactoryAwareTrait;
 use Joomla\CMS\Plugin\CMSPlugin;
-use Joomla\Component\WishboxCdek\Site\Interface\RegistratorDelegateInterface;
-use Joomla\Component\WishboxRadicalMartCdek\Administrator\Event\Model\CalculatorDelegate\GetPackagesEvent;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistration\Event\Service\OrderRegistrationAdapter\GetOrdersPatchPackagesEvent;
+use Joomla\Plugin\RadicalMart\WishboxCdekOrderRegistration\Event\Service\OrderRegistrationAdapter\GetOrdersPostPackagesEvent;
+use WishboxCdekLibrary\Event\Service\CalculatorAdapter\GetPackagesEvent;
+use WishboxCdekLibrary\Interface\OrderRegistrationAdapterInterface;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Event\SubscriberInterface;
 use WishboxCdekSDK2\Model\Request\Calculator\TariffListPost\PackageRequest as TariffListPostPackageRequest;
@@ -41,9 +43,9 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 	public static function getSubscribedEvents(): array
 	{
 		return [
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages'  => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages',
-			'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages' => 'onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages',
-			'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'             => 'onWishboxRadicalMartCdekCalculatorDelegateGetPackages'
+			'onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPostPackages'  => 'onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPostPackages',
+			'onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPatchPackages' => 'onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPatchPackages',
+			'onWishboxRadicalMartCdekCalculatorAdapterGetPackages'              => 'onWishboxRadicalMartCdekCalculatorAdapterGetPackages'
 		];
 	}
 
@@ -58,12 +60,12 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPostPackages(GetOrdersPostPackagesEvent $event): void
+	public function onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPostPackages(GetOrdersPostPackagesEvent $event): void
 	{
-		/** @var RegistratorDelegateInterface $delegate */
-		$delegate = $event->getRegistratorDelegate();
+		/** @var OrderRegistrationAdapterInterface $adapter */
+		$adapter = $event->getOrderRegistrationAdapter();
 
-		$totalWeight   = $delegate->getTotalWeight();
+		$totalWeight = $adapter->getTotalWeight();
 
 		$packageRequest = (new OrdersPostPackageRequest)
 			->setNumber('1')
@@ -72,7 +74,7 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 			->setWidth($packageWidth)
 			->setLength($packageLength);
 
-		$products = $delegate->getProducts();
+		$products = $adapter->getProducts();
 
 		$items = [];
 
@@ -102,14 +104,14 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekRegistratorDelegateGetOrdersPatchPackages(GetOrdersPatchPackagesEvent $event): void
+	public function onWishboxRadicalMartCdekOrderRegistrationAdapterGetOrdersPatchPackages(GetOrdersPatchPackagesEvent $event): void
 	{
-		$delegate = $event->getRegistratorDelegate();
+		$adapter = $event->getOrderRegistrationAdapter();
 
 		/** @var OrdersGetResponse $existingOrdersGetResponse */
 		$existingOrdersGetResponse = $event->getArgument(3);
 
-		$totalWeight   = $delegate->getTotalWeight();
+		$totalWeight = $adapter->getTotalWeight();
 
 		$packageRequest = new OrdersPatchPackageRequest;
 		$existingPackages = $existingOrdersGetResponse->getEntity()->getPackages();
@@ -122,7 +124,7 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 			->setWidth($packageWidth)
 			->setLength($packageLength);
 
-		$products = $delegate->getProducts();
+		$products = $adapter->getProducts();
 
 		$items = [];
 
@@ -152,12 +154,8 @@ final class OnePackage extends CMSPlugin implements SubscriberInterface
 	 *
 	 * @noinspection PhpUnused
 	 */
-	public function onWishboxRadicalMartCdekCalculatorDelegateGetPackages(GetPackagesEvent $event): void
+	public function onWishboxRadicalMartCdekCalculatorAdapterGetPackages(GetPackagesEvent $event): void
 	{
-		$delegate = $event->getCalculatorDelegate();
-
-
-
 		$packageRequest = (new TariffListPostPackageRequest)
 			->setWeight($this->getTotalWeight())
 			->setLength((int) $dimensions->length)

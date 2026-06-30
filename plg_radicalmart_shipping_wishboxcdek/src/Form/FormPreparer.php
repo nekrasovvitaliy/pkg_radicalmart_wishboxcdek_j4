@@ -1,14 +1,16 @@
 <?php
 /**
- * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license    GNU General Public License version 2 or later
+ * @copyright  (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license        GNU General Public License version 2 or later
  */
+
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form;
 
 use Exception;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\Component\RadicalMart\Administrator\Extension\RadicalMartComponent;
 use Joomla\Component\RadicalMart\Administrator\Table\ShippingMethodTable;
 use Joomla\Component\WishboxCdek\Site\Helper\WishboxCdekHelper;
 
@@ -22,7 +24,11 @@ abstract class FormPreparer
 	 *
 	 * @since 1.0.0
 	 */
-	protected Form $form;
+	protected Form $form {
+		get {
+			return $this->form;
+		}
+	}
 
 	/**
 	 * @param   Form  $form  Form
@@ -45,7 +51,7 @@ abstract class FormPreparer
 	{
 		$componentParams = ComponentHelper::getParams('com_wishboxradicalmartcdek');
 
-		if (!$this->getForm()->setFieldAttribute(
+		if (!$this->form->setFieldAttribute(
 			'office_code',
 			'deliverypoint_type',
 			$componentParams->get('deliverypoint_type', 'ALL'),
@@ -55,7 +61,7 @@ abstract class FormPreparer
 			throw new Exception('Failed to set field attribute');
 		}
 
-		if (!$this->getForm()->setFieldAttribute(
+		if (!$this->form->setFieldAttribute(
 			'office_code',
 			'deliverypoint_allowed_cod',
 			$componentParams->get('offices_filter_deliverypoint_allowed_cod', '0'),
@@ -77,10 +83,15 @@ abstract class FormPreparer
 	{
 		$app = Factory::getApplication();
 
+		/** @var RadicalMartComponent $radicalMartComponent */
+		$radicalMartComponent = $app->bootComponent('com_radicalmart');
+
 		/** @var ShippingMethodTable $table */
-		$table = $app->bootComponent('com_radicalmart')
-			->getMVCFactory()
-			->createTable('ShippingMethod', 'Administrator');
+		$table = $radicalMartComponent->getMVCFactory()
+			->createTable(
+				'ShippingMethod',
+				'Administrator'
+			);
 
 		$shippingId = $this->getShippingId();
 
@@ -92,16 +103,6 @@ abstract class FormPreparer
 		}
 
 		return true;
-	}
-
-	/**
-	 * @return Form
-	 *
-	 * @since 1.0.0
-	 */
-	protected function getForm(): Form
-	{
-		return $this->form;
 	}
 
 	/**
@@ -137,7 +138,7 @@ abstract class FormPreparer
 
 		if (method_exists($this, 'getShipping'))
 		{
-			$shipping = $this->getShipping();
+			$shipping   = $this->shipping;
 			$tariffMode = $shipping->params->get('tariff_mode');
 			list(, $to) = explode('-', $tariffMode);
 

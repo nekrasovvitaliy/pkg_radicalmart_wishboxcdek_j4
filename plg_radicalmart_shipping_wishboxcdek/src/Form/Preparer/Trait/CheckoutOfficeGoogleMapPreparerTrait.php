@@ -1,20 +1,23 @@
 <?php
 /**
- * @copyright  (c) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @copyright  (c) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
  * @license    GNU General Public License version 2 or later
  */
 namespace Joomla\Plugin\RadicalMartShipping\WishboxCdek\Form\Preparer\Trait;
 
 use Exception;
-use Joomla\CMS\Factory;
-use Joomla\Component\WishboxRadicalMartCdek\Administrator\Model\CalculatorDelegateModel;
+use Joomla\CMS\Form\Form;
+use Joomla\Event\DispatcherInterface;
+use Joomla\Plugin\RadicalMartShipping\WishboxCdek\Service\Calculator\Adapter\CalculatorAdapterService;
+use stdClass;
 
 /**
- * @method getTariffCode(): integer
- * @method getForm(): Form
- * @method getFormData(): Form data
- * @method getProducts(): array
- * @method getShipping(): stdClass
+ * @method int getTariffCode()
+ * @method Form getForm()
+ * @method array getFormData()
+ * @method array getProducts()
+ * @method stdClass getShipping()
+ * @method DispatcherInterface getDispatcher()
  *
  * @since 1.0.0
  */
@@ -29,7 +32,6 @@ trait CheckoutOfficeGoogleMapPreparerTrait
 	 */
 	protected function prepareOfficeGoogleMapField(): void
 	{
-		$app = Factory::getApplication();
 		$cityCode = $this->getCityCode();
 
 		if ($cityCode > 0)
@@ -52,26 +54,24 @@ trait CheckoutOfficeGoogleMapPreparerTrait
 
 				if (method_exists($this, 'getProducts'))
 				{
-					/** @var CalculatorDelegateModel $calculatorDelegateModel */
-					$calculatorDelegateModel = $app->bootComponent('com_wishboxradicalmartcdek')
-						->getMVCFactory()
-						->createModel('CalculatorDelegate', 'Administrator');
+					$calculatorAdapterService = new CalculatorAdapterService(
+						$this->shipping,
+						$this->formData,
+						$this->products,
+						$this->getDispatcher()
+					);
 
-					$calculatorDelegateModel->setMethod($this->getShipping());
-					$calculatorDelegateModel->setFormData($this->getFormData());
-					$calculatorDelegateModel->setProducts($this->getProducts());
-
-					$packageRequests = $calculatorDelegateModel->getPackages();
+					$packageRequests = $calculatorAdapterService->getPackages();
 
 					$packagesData = [];
 
 					foreach ($packageRequests as $packageRequest)
 					{
 						$packagesData[] = [
-							'weight' => $packageRequest->getWeight() * 0.001,
-							'width'  => $packageRequest->getWidth(),
-							'height' => $packageRequest->getHeight(),
-							'length' => $packageRequest->getLength()
+							'weight' => $packageRequest->weight * 0.001,
+							'width'  => $packageRequest->width,
+							'height' => $packageRequest->height,
+							'length' => $packageRequest->length
 						];
 					}
 

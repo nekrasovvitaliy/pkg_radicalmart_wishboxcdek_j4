@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright   (с) 2013-2025 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright   (с) 2013-2026 Nekrasov Vitaliy <nekrasov_vitaliy@list.ru>
+ * @license         GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use GuzzleHttp\Psr7\HttpFactory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -11,13 +13,12 @@ use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 use Joomla\Event\DispatcherInterface;
 use Joomla\Plugin\RadicalMart\WishboxCdekOnePackage\Extension\WishboxCdekOnePackage;
-use WishboxCdekSDK2\Factory\CdekClientV2FactoryInterface;
-use WishboxCdekSDK2\Service\Provider\CdekClientV2Factory;
+use Symfony\Component\HttpClient\Psr18Client;
+use WishboxCdek\CdekClient;
 
 defined('_JEXEC') or die;
 
-return new class implements ServiceProviderInterface
-{
+return new class implements ServiceProviderInterface {
 	/**
 	 * Registers the service provider with a DI container.
 	 *
@@ -25,22 +26,51 @@ return new class implements ServiceProviderInterface
 	 *
 	 * @return  void
 	 *
-	 * @since   1.0.0
+	 * @since        1.0.0
+	 *
+	 * @noinspection PhpUnusedParameterInspection
+	 * @noinspection PhpUnnecessaryLocalVariableInspection
 	 */
 	public function register(Container $container): void
 	{
-		$container->registerServiceProvider(new CdekClientV2Factory);
+		$container->set(
+			CdekClient::class,
+			function (Container $container) {
+				$componentParams = ComponentHelper::getParams('com_wishboxcdek');
+
+				$baseUrl  = 'https://api.cdek.ru/';
+				$account  = $componentParams->get('account', '');
+				$password = $componentParams->get('secure', '');
+
+				$httpFactory = new HttpFactory();
+				$psr18       = new Psr18Client(null, $httpFactory, $httpFactory);
+
+				require_once JPATH_SITE . '/vendor/autoload.php';
+
+				$cdekClient = new CdekClient(
+					$psr18,
+					$httpFactory,
+					$httpFactory,
+					[
+						'base_url' => $baseUrl,
+						'account'  => $account,
+						'password' => $password,
+					]
+				);
+
+				return $cdekClient;
+			}
+		);
 
 		$container->set(
 			PluginInterface::class,
-			function (Container $container)
-			{
+			function (Container $container) {
 				$dispatcher = $container->get(DispatcherInterface::class);
-				$config = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekonepackage');
+				$config     = (array) PluginHelper::getPlugin('radicalmart', 'wishboxcdekonepackage');
 
 				$plugin = new WishboxCdekOnePackage($dispatcher, $config);
 				$plugin->setApplication(Factory::getApplication());
-				$plugin->setCdekClientV2Factory($container->get(CdekClientV2FactoryInterface::class));
+				$plugin->setCdekClient($container->get(CdekClient::class));
 
 				return $plugin;
 			}
